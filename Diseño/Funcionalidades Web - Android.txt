@@ -1,0 +1,42 @@
+Android:
+
+1. Solicitante:
+
+Android:
+
+- Consultar perfil.
+- Puntuar trabajador.
+- Iniciar sesión.
+- Enviar petición.
+- Buscar trabajador.
+
+Web:
+
+- Consultar perfil.
+- Puntuar trabajador.
+- Iniciar sesión.
+- Crear cuenta.
+- Enviar petición.
+- Consultar peticiones.
+- Modificar cuenta.
+- Buscar trabajador.
+
+2. Prestador de servicios:
+
+Android:
+
+- Iniciar sesión.
+- Consultar solicitudes.
+- Responder solicitud.
+- Establecer disponibilidad.
+- Consultar perfil.
+
+Web:
+
+- Iniciar sesión.
+- Crear cuenta.
+- Consultar solicitudes.
+- Responder solicitud.
+- Modificar perfil.
+- Establecer disponibilidad.
+- Consultar perfil.
