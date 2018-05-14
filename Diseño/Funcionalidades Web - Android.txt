@@ -13,13 +13,10 @@ Android:
 Web:
 
 - Consultar perfil.
-- Puntuar trabajador.
 - Iniciar sesión.
 - Crear cuenta.
-- Enviar petición.
 - Consultar peticiones.
 - Modificar cuenta.
-- Buscar trabajador.
 
 2. Prestador de servicios:
 
@@ -35,8 +32,6 @@ Web:
 
 - Iniciar sesión.
 - Crear cuenta.
-- Consultar solicitudes.
-- Responder solicitud.
 - Modificar perfil.
 - Establecer disponibilidad.
 - Consultar perfil.
