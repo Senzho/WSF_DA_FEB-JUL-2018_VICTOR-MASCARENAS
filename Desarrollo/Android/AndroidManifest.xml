@@ -16,11 +16,14 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ConsultarPerfilSolicitanteActivity" />
-        <activity android:name=".BuscarTrabajadorActivity" />
-        <activity android:name=".DatosTrabajadorActivity" />
-        <activity android:name=".EnviarPeticionActivity" />
-        <activity android:name=".PuntuarTrabajadorActivity"></activity>
+        <activity android:name=".Solicitante.ConsultarPerfilSolicitanteActivity" />
+        <activity android:name=".Solicitante.BuscarTrabajadorActivity" />
+        <activity android:name=".Solicitante.DatosTrabajadorActivity" />
+        <activity android:name=".Solicitante.EnviarPeticionActivity" />
+        <activity android:name=".Solicitante.PuntuarTrabajadorActivity" />
+        <activity android:name=".PrestadorServicios.ConsultarPerfilPrestadorActivity" />
+        <activity android:name=".PrestadorServicios.ConsultarSolicitudesActivity" />
+        <activity android:name=".PrestadorServicios.ResponderSolicitudActivity"></activity>
     </application>
 
 </manifest>

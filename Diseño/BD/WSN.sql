@@ -16,6 +16,32 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
+-- Table structure for table `estudio`
+--
+
+DROP TABLE IF EXISTS `estudio`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `estudio` (
+  `idEstudio` int(11) NOT NULL AUTO_INCREMENT,
+  `estudio` text,
+  `idPrestador` int(11) DEFAULT NULL,
+  PRIMARY KEY (`idEstudio`),
+  KEY `idPrestador` (`idPrestador`),
+  CONSTRAINT `estudio_ibfk_1` FOREIGN KEY (`idPrestador`) REFERENCES `prestadorservicios` (`idPrestador`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `estudio`
+--
+
+LOCK TABLES `estudio` WRITE;
+/*!40000 ALTER TABLE `estudio` DISABLE KEYS */;
+/*!40000 ALTER TABLE `estudio` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `posicion`
 --
 
@@ -172,4 +198,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-05-12  1:00:41
+-- Dump completed on 2018-05-19  0:02:52
