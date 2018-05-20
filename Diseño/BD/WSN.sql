@@ -84,6 +84,7 @@ CREATE TABLE `prestadorservicios` (
   `fechaNacimiento` date DEFAULT NULL,
   `idUsuario` int(11) DEFAULT NULL,
   `direccionPrestador` text,
+  `generoPrestador` int(11) DEFAULT NULL,
   PRIMARY KEY (`idPrestador`),
   KEY `idUsuario` (`idUsuario`),
   CONSTRAINT `prestadorservicios_ibfk_1` FOREIGN KEY (`idUsuario`) REFERENCES `usuario` (`idUsuario`)
@@ -115,10 +116,11 @@ CREATE TABLE `solicitante` (
   `fechaNacimiento` date DEFAULT NULL,
   `idUsuario` int(11) DEFAULT NULL,
   `tipo` int(11) DEFAULT NULL,
+  `generoSolicitante` int(11) DEFAULT NULL,
   PRIMARY KEY (`idSolicitante`),
   KEY `idUsuario` (`idUsuario`),
   CONSTRAINT `solicitante_ibfk_1` FOREIGN KEY (`idUsuario`) REFERENCES `usuario` (`idUsuario`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -127,6 +129,7 @@ CREATE TABLE `solicitante` (
 
 LOCK TABLES `solicitante` WRITE;
 /*!40000 ALTER TABLE `solicitante` DISABLE KEYS */;
+INSERT INTO `solicitante` VALUES (1,'Víctor Javier García Mascareñas','vijagama@outlook.es','2281843459','Camino Mata Obscura S/N Col. El Lencero','1997-04-23',2,1,1);
 /*!40000 ALTER TABLE `solicitante` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -177,7 +180,7 @@ CREATE TABLE `usuario` (
   `nombreUsuario` varchar(50) DEFAULT NULL,
   `contrasena` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`idUsuario`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -186,6 +189,7 @@ CREATE TABLE `usuario` (
 
 LOCK TABLES `usuario` WRITE;
 /*!40000 ALTER TABLE `usuario` DISABLE KEYS */;
+INSERT INTO `usuario` VALUES (2,'Victor','victor');
 /*!40000 ALTER TABLE `usuario` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -198,4 +202,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-05-19  0:02:52
+-- Dump completed on 2018-05-20 15:32:57
