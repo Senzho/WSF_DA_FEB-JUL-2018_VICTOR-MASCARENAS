@@ -27,8 +27,7 @@
         android:layout_marginTop="8dp"
         android:elevation="1dp"
         android:text="Nombre de solicitante."
-        android:textAlignment="textStart"
-        android:textSize="24sp"
+        android:textSize="20sp"
         app:layout_constraintLeft_toRightOf="@+id/imageView"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -36,13 +35,13 @@
         android:id="@+id/textGeneroSolicitante"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="2dp"
         android:text="Género"
-        android:textSize="20sp"
-        android:layout_marginTop="10dp"
-        app:layout_constraintTop_toBottomOf="@+id/textNombreSolicitante"
+        android:textSize="18sp"
         app:layout_constraintLeft_toRightOf="@+id/imageView"
-        android:layout_marginLeft="11dp"
-        android:layout_marginStart="11dp" />
+        app:layout_constraintTop_toBottomOf="@+id/textNombreSolicitante" />
 
     <TextView
         android:id="@+id/textEdadSolicitante"
@@ -50,9 +49,9 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="10dp"
         android:layout_marginRight="10dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="2dp"
         android:text="Edad."
-        android:textSize="20sp"
+        android:textSize="18sp"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textNombreSolicitante" />
 
@@ -60,32 +59,32 @@
         android:id="@+id/textCiudadSolicitante"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Ciudad."
-        android:textSize="24sp"
-        android:layout_marginTop="8dp"
-        app:layout_constraintTop_toBottomOf="@+id/imageView"
         android:layout_marginLeft="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="2dp"
+        android:text="Ciudad."
+        android:textSize="18sp"
         app:layout_constraintLeft_toLeftOf="parent"
-        android:layout_marginStart="8dp" />
+        app:layout_constraintTop_toBottomOf="@+id/imageView" />
 
     <TextView
         android:id="@+id/textDireccionSolicitante"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Dirección."
-        android:textSize="24sp"
-        android:layout_marginTop="8dp"
-        app:layout_constraintTop_toBottomOf="@+id/textCiudadSolicitante"
         android:layout_marginLeft="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="2dp"
+        android:text="Dirección."
+        android:textSize="18sp"
         app:layout_constraintLeft_toLeftOf="parent"
-        android:layout_marginStart="8dp" />
+        app:layout_constraintTop_toBottomOf="@+id/textCiudadSolicitante" />
 
     <TextView
         android:id="@+id/textView7"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="8dp"
-        android:layout_marginTop="44dp"
+        android:layout_marginTop="30dp"
         android:text="Mis peticiones"
         android:textColor="@color/colorAccent"
         android:textSize="40sp"
@@ -96,8 +95,11 @@
 
     <ListView
         android:layout_width="0dp"
-        android:layout_height="210dp"
+        android:layout_height="250dp"
+        android:layout_marginBottom="0dp"
+        android:layout_marginTop="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView7" />
@@ -106,12 +108,23 @@
         android:id="@+id/textTelefonoSolicitante"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="11dp"
-        android:layout_marginStart="11dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="2dp"
         android:text="Teléfono."
-        android:textSize="20sp"
+        android:textSize="18sp"
         app:layout_constraintLeft_toRightOf="@+id/imageView"
         app:layout_constraintTop_toBottomOf="@+id/textGeneroSolicitante" />
+
+    <TextView
+        android:id="@+id/textCorreo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="2dp"
+        android:text="Correo."
+        android:textSize="18sp"
+        app:layout_constraintLeft_toRightOf="@+id/imageView"
+        app:layout_constraintTop_toBottomOf="@+id/textTelefonoSolicitante" />
 
 </android.support.constraint.ConstraintLayout>

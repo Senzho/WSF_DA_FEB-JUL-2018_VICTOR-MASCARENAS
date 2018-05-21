@@ -1,3 +1,8 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package Modelo;
 
 import java.io.Serializable;
@@ -12,6 +17,10 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
 
+/**
+ *
+ * @author Victor Javier
+ */
 @Entity
 @Table(name = "posicion")
 @XmlRootElement
@@ -23,6 +32,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     , @NamedQuery(name = "Posicion.findByLongitud", query = "SELECT p FROM Posicion p WHERE p.longitud = :longitud")
     , @NamedQuery(name = "Posicion.findByLatitud", query = "SELECT p FROM Posicion p WHERE p.latitud = :latitud")})
 public class Posicion implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -49,39 +59,50 @@ public class Posicion implements Serializable {
     public Integer getIdPosicion() {
         return idPosicion;
     }
+
     public void setIdPosicion(Integer idPosicion) {
         this.idPosicion = idPosicion;
     }
+
     public Integer getTipo() {
         return tipo;
     }
+
     public void setTipo(Integer tipo) {
         this.tipo = tipo;
     }
+
     public Integer getIdTipo() {
         return idTipo;
     }
+
     public void setIdTipo(Integer idTipo) {
         this.idTipo = idTipo;
     }
+
     public Double getLongitud() {
         return longitud;
     }
+
     public void setLongitud(Double longitud) {
         this.longitud = longitud;
     }
+
     public Double getLatitud() {
         return latitud;
     }
+
     public void setLatitud(Double latitud) {
         this.latitud = latitud;
     }
+
     @Override
     public int hashCode() {
         int hash = 0;
         hash += (idPosicion != null ? idPosicion.hashCode() : 0);
         return hash;
     }
+
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
@@ -94,8 +115,10 @@ public class Posicion implements Serializable {
         }
         return true;
     }
+
     @Override
     public String toString() {
         return "Modelo.Posicion[ idPosicion=" + idPosicion + " ]";
     }
+    
 }

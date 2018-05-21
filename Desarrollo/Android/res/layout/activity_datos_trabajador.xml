@@ -18,16 +18,16 @@
         android:layout_marginStart="8dp" />
 
     <TextView
-        android:id="@+id/textView14"
+        android:id="@+id/textDistanciaPrestador"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
         android:text="Distancia."
-        android:textSize="20sp"
+        android:textSize="18sp"
         app:layout_constraintLeft_toRightOf="@+id/imageView6"
         android:layout_marginLeft="8dp"
         app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="8dp"
-        android:layout_marginStart="8dp" />
+        android:layout_marginTop="8dp" />
 
     <ImageView
         android:id="@+id/imageView7"
@@ -36,76 +36,77 @@
         app:srcCompat="@mipmap/globe"
         app:layout_constraintTop_toTopOf="parent"
         android:layout_marginTop="5dp"
-        app:layout_constraintLeft_toRightOf="@+id/textView14"
+        app:layout_constraintLeft_toRightOf="@+id/textDistanciaPrestador"
         android:layout_marginLeft="8dp"
         android:layout_marginStart="8dp" />
 
     <TextView
-        android:id="@+id/textView15"
+        android:id="@+id/textTelefonoPrestador"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Teléfono."
-        android:textSize="20sp"
+        android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
+        android:layout_marginTop="8dp"
+        android:text="Teléfono."
+        android:textSize="18sp"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/textView16"
+        android:id="@+id/textEdadPrestador"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="2dp"
         android:text="Edad."
-        android:textSize="20sp"
+        android:textSize="18sp"
         app:layout_constraintLeft_toRightOf="@+id/imageView6"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="8dp"
-        app:layout_constraintTop_toBottomOf="@+id/textView14"
-        android:layout_marginStart="8dp" />
+        app:layout_constraintTop_toBottomOf="@+id/textDistanciaPrestador" />
 
     <TextView
-        android:id="@+id/textView17"
+        android:id="@+id/textCiudadPrestador"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Ciudad."
-        android:textSize="20sp"
-        app:layout_constraintLeft_toRightOf="@+id/imageView6"
         android:layout_marginLeft="8dp"
-        android:layout_marginTop="8dp"
-        app:layout_constraintTop_toBottomOf="@+id/textView16"
-        android:layout_marginStart="8dp" />
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="2dp"
+        android:text="Ciudad."
+        android:textSize="18sp"
+        app:layout_constraintLeft_toRightOf="@+id/imageView6"
+        app:layout_constraintTop_toBottomOf="@+id/textEdadPrestador" />
 
     <TextView
-        android:id="@+id/textView18"
+        android:id="@+id/textDescripcionProfesional"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="2dp"
         android:text="Descripción profesional."
-        android:textSize="20sp"
+        android:textSize="18sp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView6"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp" />
+        app:layout_constraintHorizontal_bias="0.0" />
 
     <TextView
-        android:id="@+id/textView19"
+        android:id="@+id/textDireccionPrestador"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
         android:text="Dirección."
-        android:textSize="20sp"
+        android:textSize="18sp"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView18"
-        app:layout_constraintHorizontal_bias="0.0"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp" />
+        app:layout_constraintTop_toBottomOf="@+id/textDescripcionProfesional" />
 
     <TextView
         android:id="@+id/textView20"
@@ -117,24 +118,25 @@
         android:textStyle="bold"
         android:layout_marginLeft="8dp"
         app:layout_constraintLeft_toLeftOf="parent"
-        android:layout_marginTop="17dp"
-        app:layout_constraintTop_toBottomOf="@+id/textView19"
+        android:layout_marginTop="12dp"
+        app:layout_constraintTop_toBottomOf="@+id/textDireccionPrestador"
         android:layout_marginStart="8dp" />
 
     <TextView
-        android:id="@+id/textView21"
+        android:id="@+id/textEstudio"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="0dp"
         android:text="Estudio."
-        android:textSize="20sp"
+        android:textSize="18sp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView20"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp" />
+        app:layout_constraintHorizontal_bias="0.0" />
 
     <TextView
         android:id="@+id/textView22"
@@ -147,7 +149,7 @@
         android:layout_marginLeft="8dp"
         app:layout_constraintLeft_toLeftOf="parent"
         android:layout_marginTop="8dp"
-        app:layout_constraintTop_toBottomOf="@+id/textView21"
+        app:layout_constraintTop_toBottomOf="@+id/textEstudio"
         android:layout_marginStart="8dp" />
 
     <Button
@@ -168,8 +170,10 @@
         android:layout_width="30dp"
         android:layout_height="30dp"
         app:srcCompat="@mipmap/star_fill"
-        tools:layout_editor_absoluteY="284dp"
-        tools:layout_editor_absoluteX="306dp" />
+        android:layout_marginRight="44dp"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginTop="32dp"
+        app:layout_constraintTop_toBottomOf="@+id/textEstudio" />
 
     <TextView
         android:id="@+id/textView23"
@@ -181,15 +185,28 @@
         android:textStyle="bold"
         android:layout_marginRight="16dp"
         app:layout_constraintRight_toRightOf="parent"
-        android:layout_marginTop="15dp"
-        app:layout_constraintTop_toBottomOf="@+id/textView21"
+        android:layout_marginTop="18dp"
+        app:layout_constraintTop_toBottomOf="@+id/textEstudio"
         android:layout_marginEnd="16dp" />
 
     <ListView
         android:layout_width="0dp"
-        android:layout_height="120dp"
+        android:layout_height="150dp"
+        android:layout_marginBottom="0dp"
+        android:layout_marginTop="0dp"
         app:layout_constraintBottom_toTopOf="@+id/button2"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView22" />
+
+    <TextView
+        android:id="@+id/textCorreoPrestador"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Correo."
+        android:textSize="18sp"
+        android:layout_marginRight="8dp"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginTop="2dp"
+        app:layout_constraintTop_toBottomOf="@+id/textTelefonoPrestador" />
 </android.support.constraint.ConstraintLayout>

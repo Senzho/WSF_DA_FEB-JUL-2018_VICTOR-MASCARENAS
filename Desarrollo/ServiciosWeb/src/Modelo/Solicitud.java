@@ -1,3 +1,8 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package Modelo;
 
 import java.io.Serializable;
@@ -19,6 +24,10 @@ import javax.persistence.TemporalType;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 
+/**
+ *
+ * @author Victor Javier
+ */
 @Entity
 @Table(name = "solicitud")
 @XmlRootElement
@@ -31,6 +40,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     , @NamedQuery(name = "Solicitud.findByEstrellas", query = "SELECT s FROM Solicitud s WHERE s.estrellas = :estrellas")
     , @NamedQuery(name = "Solicitud.findByEstado", query = "SELECT s FROM Solicitud s WHERE s.estado = :estado")})
 public class Solicitud implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -75,69 +85,90 @@ public class Solicitud implements Serializable {
     public Integer getIdSolicitud() {
         return idSolicitud;
     }
+
     public void setIdSolicitud(Integer idSolicitud) {
         this.idSolicitud = idSolicitud;
     }
+
     public Date getFechaRealizacion() {
         return fechaRealizacion;
     }
+
     public void setFechaRealizacion(Date fechaRealizacion) {
         this.fechaRealizacion = fechaRealizacion;
     }
+
     public Date getFecha() {
         return fecha;
     }
+
     public void setFecha(Date fecha) {
         this.fecha = fecha;
     }
+
     public Date getFechaInicial() {
         return fechaInicial;
     }
+
     public void setFechaInicial(Date fechaInicial) {
         this.fechaInicial = fechaInicial;
     }
+
     public Integer getEstrellas() {
         return estrellas;
     }
+
     public void setEstrellas(Integer estrellas) {
         this.estrellas = estrellas;
     }
+
     public Integer getEstado() {
         return estado;
     }
+
     public void setEstado(Integer estado) {
         this.estado = estado;
     }
+
     public String getComentario() {
         return comentario;
     }
+
     public void setComentario(String comentario) {
         this.comentario = comentario;
     }
+
     public String getRespuesta() {
         return respuesta;
     }
+
     public void setRespuesta(String respuesta) {
         this.respuesta = respuesta;
     }
+
     public Solicitante getIdSolicitante() {
         return idSolicitante;
     }
+
     public void setIdSolicitante(Solicitante idSolicitante) {
         this.idSolicitante = idSolicitante;
     }
+
     public Prestadorservicios getIdPrestador() {
         return idPrestador;
     }
+
     public void setIdPrestador(Prestadorservicios idPrestador) {
         this.idPrestador = idPrestador;
     }
+
     @Override
     public int hashCode() {
         int hash = 0;
         hash += (idSolicitud != null ? idSolicitud.hashCode() : 0);
         return hash;
     }
+
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
@@ -150,8 +181,10 @@ public class Solicitud implements Serializable {
         }
         return true;
     }
+
     @Override
     public String toString() {
         return "Modelo.Solicitud[ idSolicitud=" + idSolicitud + " ]";
     }
+    
 }

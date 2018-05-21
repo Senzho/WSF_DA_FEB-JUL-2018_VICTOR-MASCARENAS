@@ -1,6 +1,6 @@
 package Servicios;
 
-import Modelo.Usuario;
+import Modelo.Prestadorservicios;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -16,25 +16,25 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 @Stateless
-@Path("SWUsuario")
-public class UsuarioFacadeREST extends AbstractFacade<Usuario> {
+@Path("SWPrestador")
+public class PrestadorserviciosFacadeREST extends AbstractFacade<Prestadorservicios> {
     @PersistenceContext(unitName = "ServiciosWorkbookPU")
     private EntityManager em;
 
-    public UsuarioFacadeREST() {
-        super(Usuario.class);
+    public PrestadorserviciosFacadeREST() {
+        super(Prestadorservicios.class);
     }
 
     @POST
     @Override
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public void create(Usuario entity) {
+    public void create(Prestadorservicios entity) {
         super.create(entity);
     }
     @PUT
     @Path("{id}")
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public void edit(@PathParam("id") Integer id, Usuario entity) {
+    public void edit(@PathParam("id") Integer id, Prestadorservicios entity) {
         super.edit(entity);
     }
     @DELETE
@@ -45,37 +45,19 @@ public class UsuarioFacadeREST extends AbstractFacade<Usuario> {
     @GET
     @Path("{id}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public Usuario find(@PathParam("id") Integer id) {
+    public Prestadorservicios find(@PathParam("id") Integer id) {
         return super.find(id);
     }
     @GET
-    @Path("{nombreUsuario}/{contrasena}")
-    @Consumes({MediaType.APPLICATION_JSON})
-    @Produces({MediaType.APPLICATION_JSON})
-    public Usuario usuarioExistente(@PathParam("nombreUsuario") String nombreUsuario, @PathParam("contrasena") String contrasena){
-        Usuario usuario;
-        try{
-            usuario = (Usuario) this.getEntityManager().createNamedQuery("Usuario.findByUsuario&Contrasena")
-                    .setParameter("nombreUsuario", nombreUsuario)
-                    .setParameter("contrasena", contrasena)
-                    .getSingleResult();
-        }catch(Exception excepcion){
-            usuario = new Usuario();
-            usuario.setNombreUsuario(nombreUsuario);
-            usuario.setContrasena(contrasena);
-        }
-        return usuario;
-    }
-    @GET
     @Override
-    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public List<Usuario> findAll() {
+    @Produces({MediaType.APPLICATION_JSON})
+    public List<Prestadorservicios> findAll() {
         return super.findAll();
     }
     @GET
     @Path("{from}/{to}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public List<Usuario> findRange(@PathParam("from") Integer from, @PathParam("to") Integer to) {
+    public List<Prestadorservicios> findRange(@PathParam("from") Integer from, @PathParam("to") Integer to) {
         return super.findRange(new int[]{from, to});
     }
     @GET
