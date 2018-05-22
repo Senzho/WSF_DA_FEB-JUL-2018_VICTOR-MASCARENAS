@@ -1,6 +1,7 @@
 package Servicios;
 
-import Modelo.Solicitante;
+import Modelo.Solicitud;
+import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -16,25 +17,25 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 @Stateless
-@Path("SWSolicitante")
-public class SolicitanteFacadeREST extends AbstractFacade<Solicitante> {
+@Path("SWSolicitud")
+public class SolicitudFacadeREST extends AbstractFacade<Solicitud> {
     @PersistenceContext(unitName = "ServiciosWorkbookPU")
     private EntityManager em;
 
-    public SolicitanteFacadeREST() {
-        super(Solicitante.class);
+    public SolicitudFacadeREST() {
+        super(Solicitud.class);
     }
 
     @POST
     @Override
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public void create(Solicitante entity) {
+    public void create(Solicitud entity) {
         super.create(entity);
     }
     @PUT
     @Path("{id}")
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public void edit(@PathParam("id") Integer id, Solicitante entity) {
+    public void edit(@PathParam("id") Integer id, Solicitud entity) {
         super.edit(entity);
     }
     @DELETE
@@ -44,43 +45,47 @@ public class SolicitanteFacadeREST extends AbstractFacade<Solicitante> {
     }
     @GET
     @Path("{id}")
-    @Produces({MediaType.APPLICATION_JSON})
-    public Solicitante find(@PathParam("id") Integer id) {
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    public Solicitud find(@PathParam("id") Integer id) {
         return super.find(id);
     }
     @GET
     @Override
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public List<Solicitante> findAll() {
+    public List<Solicitud> findAll() {
         return super.findAll();
     }
     @GET
     @Path("{from}/{to}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public List<Solicitante> findRange(@PathParam("from") Integer from, @PathParam("to") Integer to) {
+    public List<Solicitud> findRange(@PathParam("from") Integer from, @PathParam("to") Integer to) {
         return super.findRange(new int[]{from, to});
-    }
-    @GET
-    @Path("/usuario/{idUsuario}")
-    @Consumes({MediaType.APPLICATION_JSON})
-    @Produces({MediaType.APPLICATION_JSON})
-    public Solicitante obtenerSolicitanteUsuario(@PathParam("idUsuario") Integer idUsuario){
-        Solicitante solicitante;
-        try{
-            solicitante = (Solicitante) this.getEntityManager().createNamedQuery("Solicitante.findByIdUsuario")
-                    .setParameter("idUsuario", idUsuario)
-                    .getSingleResult();
-        }catch(Exception excepcion){
-            solicitante = new Solicitante();
-            solicitante.setIdSolicitante(0);
-        } 
-        return solicitante;
     }
     @GET
     @Path("count")
     @Produces(MediaType.TEXT_PLAIN)
     public String countREST() {
         return String.valueOf(super.count());
+    }
+    @GET
+    @Path("/puntuadas/{idPrestador}")
+    @Consumes({MediaType.APPLICATION_JSON})
+    @Produces({MediaType.APPLICATION_JSON})
+    public List<Solicitud> obtenerSolicitudes(@PathParam("idPrestador") Integer idPrestador){
+        List<Solicitud> solicitudes = new ArrayList();
+        try{
+            List<Solicitud> solicitudesTodas = this.getEntityManager().createNamedQuery("Solicitud.findByIdPrestador")
+                    .setParameter("idPrestador", idPrestador)
+                    .getResultList();
+            for (Solicitud solicitud : solicitudesTodas){
+                if (solicitud.getEstrellas() != -1){
+                    solicitudes.add(solicitud);
+                }
+            }
+        }catch(Exception excepcion){
+            excepcion.printStackTrace();
+        }
+        return solicitudes;
     }
     @Override
     protected EntityManager getEntityManager() {

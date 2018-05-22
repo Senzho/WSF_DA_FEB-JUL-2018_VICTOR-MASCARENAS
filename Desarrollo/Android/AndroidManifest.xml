@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.victorjavier.workbook">
+
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
@@ -24,7 +25,8 @@
         <activity android:name=".Solicitante.PuntuarTrabajadorActivity" />
         <activity android:name=".PrestadorServicios.ConsultarPerfilPrestadorActivity" />
         <activity android:name=".PrestadorServicios.ConsultarSolicitudesActivity" />
-        <activity android:name=".PrestadorServicios.ResponderSolicitudActivity"></activity>
+        <activity android:name=".PrestadorServicios.ResponderSolicitudActivity" />
+        <activity android:name=".Solicitante.ConsultarPuntuacionesActivity" />
     </application>
 
 </manifest>

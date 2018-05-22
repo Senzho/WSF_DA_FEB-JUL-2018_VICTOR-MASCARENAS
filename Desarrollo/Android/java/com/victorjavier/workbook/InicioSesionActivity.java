@@ -10,7 +10,7 @@ import com.victorjavier.workbook.Entidades.Solicitante;
 import com.victorjavier.workbook.Entidades.Usuario;
 import com.victorjavier.workbook.Solicitante.ConsultarPerfilSolicitanteActivity;
 import com.victorjavier.workbook.Solicitante.EscuchadorSolicitante;
-import com.victorjavier.workbook.Solicitante.ObtenerSolicitanteTask;
+import com.victorjavier.workbook.Solicitante.Tasks.ObtenerSolicitanteSesionTask;
 
 public class InicioSesionActivity extends AppCompatActivity implements EscuchadorInicioSesion, EscuchadorSolicitante {
     private TextView textUsuario;
@@ -42,7 +42,7 @@ public class InicioSesionActivity extends AppCompatActivity implements Escuchado
     @Override
     public void usuarioExistente(boolean existe, Usuario usuario) {
         if (existe){
-            new ObtenerSolicitanteTask(this, usuario.getIdUsuario()).execute();
+            new ObtenerSolicitanteSesionTask(this, usuario.getIdUsuario()).execute();
         }else{
             Toast.makeText(this, "Usuario o contraseña incorrectos", Toast.LENGTH_SHORT).show();
         }

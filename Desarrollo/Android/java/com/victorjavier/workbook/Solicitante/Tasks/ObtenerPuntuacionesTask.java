@@ -1,14 +1,12 @@
-package com.victorjavier.workbook.Solicitante;
+package com.victorjavier.workbook.Solicitante.Tasks;
 
 import android.os.AsyncTask;
 import android.widget.ListView;
 
-import com.victorjavier.workbook.Entidades.Prestador;
+import com.victorjavier.workbook.Entidades.Solicitud;
 
 import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -17,20 +15,21 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.List;
 
-public class BuscarPrestadoresTask extends AsyncTask<Void, Void, Boolean> {
-    private List<Prestador> prestadores;
+public class ObtenerPuntuacionesTask extends AsyncTask<Void, Void, Boolean> {
+    private List<Solicitud> solicitudes;
     private ListView lista;
+    private int idPrestador;
 
-    public BuscarPrestadoresTask(List<Prestador> prestadores, ListView lista){
-        this.prestadores = prestadores;
+    public ObtenerPuntuacionesTask(List<Solicitud> solicitudes, int idPrestador, ListView lista){
+        this.solicitudes= solicitudes;
+        this.idPrestador = idPrestador;
         this.lista = lista;
     }
-
     @Override
     protected Boolean doInBackground(Void... voids) {
-        boolean encontrados = true;
+        boolean obtenidas = true;
         try{
-            URL url = new URL("http://192.168.43.126:8080/ServiciosWorkbook/webresources/SWPrestador");
+            URL url = new URL("http://192.168.43.126:8080/ServiciosWorkbook/webresources/SWSolicitud/puntuadas/" + this.idPrestador);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestProperty("Content-Type", "application/json");
             connection.setRequestProperty("Accept", "application/json");
@@ -43,29 +42,29 @@ public class BuscarPrestadoresTask extends AsyncTask<Void, Void, Boolean> {
             }
             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
             String cadena = bufferedReader.readLine();
-            try{
+            try {
                 JSONArray responseJson = new JSONArray(cadena);
-                for (int i = 0; i < responseJson.length(); i ++){
+                for (int i = 0; i < responseJson.length(); i ++) {
                     try{
-                        JSONObject jsonPrestador = responseJson.getJSONObject(i);
-                        this.prestadores.add(new Prestador(jsonPrestador));
-                    }catch (JSONException exception){
-                        System.err.println(exception);
+                        Solicitud solicitud = new Solicitud(responseJson.getJSONObject(i));
+                        this.solicitudes.add(solicitud);
+                    }catch(JSONException excepcion){
+                        excepcion.printStackTrace();
                     }
                 }
-            }catch(JSONException exception){
-                encontrados = false;
-                exception.printStackTrace();
+            } catch (JSONException excepcion) {
+                obtenidas = false;
+                excepcion.printStackTrace();
             }
         }catch(IOException excepcion){
-            encontrados = false;
+            obtenidas = false;
             excepcion.printStackTrace();
         }
-        return encontrados;
+        return obtenidas;
     }
     @Override
-    protected void onPostExecute(final Boolean success){
-        if (success){
+    protected void onPostExecute(final Boolean success) {
+        if (success) {
             this.lista.invalidateViews();
         }else{
             System.out.println("Error al conectar...");

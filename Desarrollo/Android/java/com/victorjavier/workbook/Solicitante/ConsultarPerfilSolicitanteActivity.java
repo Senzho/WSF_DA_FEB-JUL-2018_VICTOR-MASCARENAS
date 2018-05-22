@@ -65,6 +65,6 @@ public class ConsultarPerfilSolicitanteActivity extends AppCompatActivity {
         this.textDireccionSolicitante.setText(this.solicitante.getDireccionSolicitante());
         this.textCorreoSolicitante.setText(this.solicitante.getCorreoSolicitante());
         this.textGeneroSolicitante.setText(this.solicitante.getGenero()==1?"Masculino.":"Femenino.");
-        this.textEdadSolicitante.setText(this.calcularEdad() + "años.");
+        this.textEdadSolicitante.setText(this.calcularEdad() + " años.");
     }
 }

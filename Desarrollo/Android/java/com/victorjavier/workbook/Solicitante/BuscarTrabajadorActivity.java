@@ -10,6 +10,7 @@ import android.widget.ListView;
 import com.victorjavier.workbook.Entidades.Prestador;
 import com.victorjavier.workbook.R;
 import com.victorjavier.workbook.Solicitante.Adaptadores.AdaptadorTrabajadores;
+import com.victorjavier.workbook.Solicitante.Tasks.BuscarPrestadoresTask;
 
 import java.util.ArrayList;
 import java.util.List;

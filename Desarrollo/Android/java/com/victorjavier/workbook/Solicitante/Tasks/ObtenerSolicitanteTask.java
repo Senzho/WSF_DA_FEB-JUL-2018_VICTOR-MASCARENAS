@@ -1,6 +1,7 @@
-package com.victorjavier.workbook.Solicitante;
+package com.victorjavier.workbook.Solicitante.Tasks;
 
 import android.os.AsyncTask;
+import android.widget.TextView;
 
 import com.victorjavier.workbook.Entidades.Solicitante;
 
@@ -15,20 +16,20 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 public class ObtenerSolicitanteTask extends AsyncTask<Void, Void, Boolean> {
-    private EscuchadorSolicitante escuchador;
-    private int idUsuario;
+    private int idSolicitante;
+    private TextView textNombre;
     private Solicitante solicitante;
 
-    public ObtenerSolicitanteTask(EscuchadorSolicitante escuchador, int idUsuario){
-        this.escuchador = escuchador;
-        this.idUsuario = idUsuario;
+    public ObtenerSolicitanteTask(int idSolicitante, TextView textNombre){
+        this.idSolicitante = idSolicitante;
+        this.textNombre = textNombre;
     }
 
     @Override
     protected Boolean doInBackground(Void... voids) {
-        boolean obtenido = true;
+        boolean obtenido = false;
         try{
-            URL url = new URL("http://192.168.43.126:8080/ServiciosWorkbook/webresources/SWSolicitante/" + this.idUsuario);
+            URL url = new URL("http://192.168.43.126:8080/ServiciosWorkbook/webresources/SWSolicitante/" + this.idSolicitante);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestProperty("Content-Type", "application/json");
             connection.setRequestProperty("Accept", "application/json");
@@ -52,6 +53,8 @@ public class ObtenerSolicitanteTask extends AsyncTask<Void, Void, Boolean> {
     }
     @Override
     protected void onPostExecute(final Boolean success){
-        this.escuchador.solicitanteObtenido(this.solicitante);
+        if (success){
+            this.textNombre.setText(this.solicitante.getNombreSolicitante());
+        }
     }
 }

@@ -7,10 +7,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.victorjavier.workbook.Entidades.Prestador;
 import com.victorjavier.workbook.R;
+import com.victorjavier.workbook.Solicitante.Tasks.ObtenerPromedioTask;
 
 import java.util.List;
 
@@ -34,8 +36,11 @@ public class AdaptadorTrabajadores extends ArrayAdapter{
         TextView textNombre = elemento.findViewById(R.id.textNombreTrabajador);
         TextView distancia = elemento.findViewById(R.id.textDistanciaPrestador);
         TextView textDescripcion = elemento.findViewById(R.id.textDescripcionPrestador);
+        TextView textEstrellas = elemento.findViewById(R.id.textEstrellasTrabajador);
+        ImageView imagen = elemento.findViewById(R.id.imagenEstrellaTrabajador);
         textNombre.setText(prestador.getNombrePrestador());
         textDescripcion.setText(prestador.getDescripcionPrestador());
+        new ObtenerPromedioTask(prestador.getIdPrestador(), textEstrellas, imagen).execute();
         return elemento;
     }
 }

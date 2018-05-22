@@ -1,11 +1,17 @@
 package com.victorjavier.workbook.Solicitante;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 import com.victorjavier.workbook.Dates;
 import com.victorjavier.workbook.Entidades.Prestador;
 import com.victorjavier.workbook.R;
+import com.victorjavier.workbook.Solicitante.Tasks.ObtenerEstudioTask;
+import com.victorjavier.workbook.Solicitante.Tasks.ObtenerPromedioTask;
+
 import java.util.Date;
 
 public class DatosTrabajadorActivity extends AppCompatActivity {
@@ -25,6 +31,7 @@ public class DatosTrabajadorActivity extends AppCompatActivity {
         this.textDireccion.setText(this.prestador.getDireccionPrestador());
         this.textCorreo.setText(this.prestador.getCorreoPrestador());
         this.textTelefono.setText(this.prestador.getTelefonoPrestador());
+        new ObtenerEstudioTask(this.prestador.getIdPrestador(), this.textEstudio).execute();
     }
     private int calcularEdad(){
         return Dates.getYear(new Date()) - Dates.getYear(this.prestador.getFechaNacimiento());
@@ -42,7 +49,16 @@ public class DatosTrabajadorActivity extends AppCompatActivity {
         this.textEstudio = (TextView) findViewById(R.id.textEstudio);
         this.textCorreo = (TextView) findViewById(R.id.textCorreoPrestador);
         this.textTelefono = (TextView) findViewById(R.id.textTelefonoPrestador);
+        TextView textEstrellas = (TextView) findViewById(R.id.textPuntuacionDatosTrabajador);
+        ImageView image = (ImageView) findViewById(R.id.imagenEstrellaDatosTrabajador);
         this.prestador = (Prestador) getIntent().getSerializableExtra("prestador");
+        new ObtenerPromedioTask(this.prestador.getIdPrestador(), textEstrellas, image).execute();
         this.cargarPrestador();
+    }
+
+    public void verPuntuaciones_onClick(View view){
+        Intent intento = new Intent(this, ConsultarPuntuacionesActivity.class);
+        intento.putExtra("idPrestador", this.prestador.getIdPrestador());
+        this.startActivity(intento);
     }
 }

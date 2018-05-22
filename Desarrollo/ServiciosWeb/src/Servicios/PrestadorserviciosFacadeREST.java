@@ -1,6 +1,7 @@
 package Servicios;
 
 import Modelo.Prestadorservicios;
+import Modelo.Solicitud;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -66,8 +67,49 @@ public class PrestadorserviciosFacadeREST extends AbstractFacade<Prestadorservic
     public String countREST() {
         return String.valueOf(super.count());
     }
+    @GET
+    @Path("/promedioPuntuaciones/{idPrestador}")
+    @Produces({MediaType.APPLICATION_JSON})
+    public String obtenerPromedioPuntuaciones(@PathParam("idPrestador") Integer idPrestador){
+        float promedio;
+        try{
+            List<Solicitud> solicitudes = this.getEntityManager().createNamedQuery("Solicitud.findByIdPrestador")
+                    .setParameter("idPrestador", idPrestador)
+                    .getResultList();
+            float suma = 0;
+            int validas = 0;
+            for (Solicitud solicitud : solicitudes){
+                if (solicitud.getEstrellas() > -1){
+                    suma = suma + solicitud.getEstrellas();
+                    validas ++;
+                }
+            }
+            if (validas > 0){
+                promedio = suma / validas;
+            }else{
+                promedio = -1;
+            }
+        }catch(Exception excepcion){
+            promedio = -1;
+        }
+        return PrestadorserviciosFacadeREST.promedioString(promedio);
+    }
     @Override
     protected EntityManager getEntityManager() {
         return em;
+    }
+    
+    public static String promedioString(float valor){
+        String promedio = String.valueOf(valor);
+        if (promedio.startsWith("-")){
+            promedio = "-1";
+        }else{
+            if (Integer.parseInt(promedio.substring(2, 3)) > 0){
+                promedio = promedio.substring(0, 3);
+            }else{
+                promedio = promedio.substring(0, 1);
+            }
+        } 
+        return promedio;
     }
 }
