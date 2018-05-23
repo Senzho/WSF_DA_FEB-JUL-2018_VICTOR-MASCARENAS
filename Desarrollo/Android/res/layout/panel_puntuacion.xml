@@ -6,7 +6,7 @@
     android:layout_height="wrap_content">
 
     <ImageView
-        android:id="@+id/imageView5"
+        android:id="@+id/imagenSolicitantePuntuacion"
         android:layout_width="60dp"
         android:layout_height="60dp"
         android:layout_marginBottom="0dp"
@@ -25,7 +25,7 @@
         android:layout_marginTop="2dp"
         android:text="Nombre usuario."
         android:textSize="20sp"
-        app:layout_constraintLeft_toRightOf="@+id/imageView5"
+        app:layout_constraintLeft_toRightOf="@+id/imagenSolicitantePuntuacion"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
@@ -36,7 +36,7 @@
         android:layout_marginTop="0dp"
         android:text="Comentario."
         android:textSize="18sp"
-        app:layout_constraintLeft_toRightOf="@+id/imageView5"
+        app:layout_constraintLeft_toRightOf="@+id/imagenSolicitantePuntuacion"
         app:layout_constraintTop_toBottomOf="@+id/textNombreSolicituantePuntuacion" />
 
     <ImageView

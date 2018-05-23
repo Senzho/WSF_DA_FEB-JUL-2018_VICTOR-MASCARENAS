@@ -3,6 +3,7 @@ package com.victorjavier.workbook.Solicitante;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -11,6 +12,8 @@ import com.victorjavier.workbook.Dates;
 import com.victorjavier.workbook.Entidades.Prestador;
 import com.victorjavier.workbook.Entidades.Solicitante;
 import com.victorjavier.workbook.Entidades.Solicitud;
+import com.victorjavier.workbook.FotoUsuario;
+import com.victorjavier.workbook.ObtenerFotoTask;
 import com.victorjavier.workbook.R;
 import com.victorjavier.workbook.Solicitante.Tasks.EscuchadorSolicitud;
 import com.victorjavier.workbook.Solicitante.Tasks.GuardarSolicitudTask;
@@ -20,12 +23,14 @@ public class EnviarPeticionActivity extends AppCompatActivity implements Escucha
     private TextView textCategoria;
     private TextView textFecha;
     private TextView textDescripcion;
+    private ImageView imagen;
     private Solicitante solicitante;
     private Prestador prestador;
 
     private void cargarPrestador(){
         this.textNombre.setText(this.prestador.getNombrePrestador());
         this.textCategoria.setText(Categorias.categorias[this.prestador.getCategoría()]);
+        new ObtenerFotoTask(FotoUsuario.PRESTADOR, this.prestador.getIdPrestador(), this.imagen).execute();
     }
 
     @Override
@@ -36,6 +41,7 @@ public class EnviarPeticionActivity extends AppCompatActivity implements Escucha
         this.textCategoria = (TextView) findViewById(R.id.textCategoriaPrestadorPeticion);
         this.textFecha = (TextView) findViewById(R.id.textFechaPeticion);
         this.textDescripcion = (TextView) findViewById(R.id.textDescripcionPeticion);
+        this.imagen = (ImageView) findViewById(R.id.imagenPrestadorPeticion);
         this.prestador = (Prestador) getIntent().getSerializableExtra("prestador");
         this.solicitante = (Solicitante) getIntent().getSerializableExtra("solicitante");
         this.cargarPrestador();

@@ -18,6 +18,7 @@ public class Solicitud {
     private String comentario;
     private String respuesta;
     private Solicitante solicitante;
+    private Prestador prestador;
 
     public Solicitud(){
 
@@ -30,6 +31,7 @@ public class Solicitud {
         this.estado = json.getInt("estado");
         this.descripcion = json.getString("descripcion");
         this.solicitante = new Solicitante(json.getJSONObject("idSolicitante"));
+        this.prestador = new Prestador(json.getJSONObject("idPrestador"));
         try{
             this.estrellas = json.getInt("estrellas");
             this.comentario = json.getString("comentario");
@@ -98,5 +100,11 @@ public class Solicitud {
     }
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
+    }
+    public Prestador getPrestador(){
+        return this.prestador;
+    }
+    public void setPrestador(Prestador prestador){
+        this.prestador = prestador;
     }
 }

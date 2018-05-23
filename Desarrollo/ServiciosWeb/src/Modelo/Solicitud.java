@@ -40,6 +40,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     , @NamedQuery(name = "Solicitud.findByEstrellas", query = "SELECT s FROM Solicitud s WHERE s.estrellas = :estrellas")
     , @NamedQuery(name = "Solicitud.findByEstado", query = "SELECT s FROM Solicitud s WHERE s.estado = :estado")
     , @NamedQuery(name = "Solicitud.findByIdPrestador", query = "SELECT s FROM Solicitud s WHERE s.idPrestador.idPrestador = :idPrestador")
+    , @NamedQuery(name = "Solicitud.findTerminadasByIdSolicitante", query = "SELECT s FROM Solicitud s WHERE s.idSolicitante.idSolicitante = :idSolicitante AND s.estado = 3")
 })
 public class Solicitud implements Serializable {
 

@@ -7,9 +7,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.victorjavier.workbook.Entidades.Solicitud;
+import com.victorjavier.workbook.FotoUsuario;
+import com.victorjavier.workbook.ObtenerFotoTask;
 import com.victorjavier.workbook.R;
 
 import java.util.List;
@@ -34,6 +37,8 @@ public class AdaptadorPuntuaciones extends ArrayAdapter{
         TextView textNombre = elemento.findViewById(R.id.textNombreSolicituantePuntuacion);
         TextView textComentario = elemento.findViewById(R.id.textComentarioSolicitantePuntuacion);
         TextView textEstrellas = elemento.findViewById(R.id.textEstrellasPuntuacion);
+        ImageView imagen = elemento.findViewById(R.id.imagenSolicitantePuntuacion);
+        new ObtenerFotoTask(FotoUsuario.SOLICITANTE, solicitud.getSolicitante().getIdSolicitante(), imagen).execute();
         textComentario.setText(solicitud.getComentario());
         textEstrellas.setText(solicitud.getEstrellas() + "");
         textNombre.setText(solicitud.getSolicitante().getNombreSolicitante());

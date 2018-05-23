@@ -1,6 +1,7 @@
 package com.victorjavier.workbook.Solicitante;
 
 import android.content.Intent;
+import android.support.v4.app.SupportActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -9,6 +10,8 @@ import android.widget.TextView;
 import com.victorjavier.workbook.Dates;
 import com.victorjavier.workbook.Entidades.Prestador;
 import com.victorjavier.workbook.Entidades.Solicitante;
+import com.victorjavier.workbook.FotoUsuario;
+import com.victorjavier.workbook.ObtenerFotoTask;
 import com.victorjavier.workbook.R;
 import com.victorjavier.workbook.Solicitante.Tasks.ObtenerEstudioTask;
 import com.victorjavier.workbook.Solicitante.Tasks.ObtenerPromedioTask;
@@ -24,15 +27,18 @@ public class DatosTrabajadorActivity extends AppCompatActivity {
     private TextView textEstudio;
     private TextView textCorreo;
     private TextView textTelefono;
+    private ImageView imagen;
     private Prestador prestador;
     private Solicitante solicitante;
 
     private void cargarPrestador(){
+        getSupportActionBar().setTitle(this.prestador.getNombrePrestador());
         this.textEdad.setText(this.calcularEdad() + " años.");
         this.textDescripcion.setText(this.prestador.getDescripcionPrestador());
         this.textDireccion.setText(this.prestador.getDireccionPrestador());
         this.textCorreo.setText(this.prestador.getCorreoPrestador());
         this.textTelefono.setText(this.prestador.getTelefonoPrestador());
+        new ObtenerFotoTask(FotoUsuario.PRESTADOR, this.prestador.getIdPrestador(), this.imagen).execute();
         new ObtenerEstudioTask(this.prestador.getIdPrestador(), this.textEstudio).execute();
     }
     private int calcularEdad(){
@@ -51,6 +57,7 @@ public class DatosTrabajadorActivity extends AppCompatActivity {
         this.textEstudio = (TextView) findViewById(R.id.textEstudio);
         this.textCorreo = (TextView) findViewById(R.id.textCorreoPrestador);
         this.textTelefono = (TextView) findViewById(R.id.textTelefonoPrestador);
+        this.imagen = (ImageView) findViewById(R.id.imagenPrestadorDatos);
         TextView textEstrellas = (TextView) findViewById(R.id.textPuntuacionDatosTrabajador);
         ImageView image = (ImageView) findViewById(R.id.imagenEstrellaDatosTrabajador);
         this.solicitante = (Solicitante) getIntent().getSerializableExtra("solicitante");

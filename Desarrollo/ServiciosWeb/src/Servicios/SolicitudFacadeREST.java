@@ -117,6 +117,21 @@ public class SolicitudFacadeREST extends AbstractFacade<Solicitud> {
         }
         return solicitudes;
     }
+    @GET
+    @Path("/terminadas/{idSolicitante}")
+    @Consumes({MediaType.APPLICATION_JSON})
+    @Produces({MediaType.APPLICATION_JSON})
+    public List<Solicitud> obtenerSolicitudesTerminadas(@PathParam("idSolicitante") Integer idSolicitante){
+        List<Solicitud> solicitudes = new ArrayList();
+        try{
+            solicitudes = this.getEntityManager().createNamedQuery("Solicitud.findTerminadasByIdSolicitante")
+                    .setParameter("idSolicitante", idSolicitante)
+                    .getResultList();
+        }catch(Exception excepcion){
+            excepcion.printStackTrace();
+        }
+        return solicitudes;
+    }
     @Override
     protected EntityManager getEntityManager() {
         return em;

@@ -6,11 +6,21 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 import com.victorjavier.workbook.Dates;
 import com.victorjavier.workbook.Entidades.Solicitante;
+import com.victorjavier.workbook.Entidades.Solicitud;
+import com.victorjavier.workbook.FotoUsuario;
+import com.victorjavier.workbook.ObtenerFotoTask;
 import com.victorjavier.workbook.R;
+import com.victorjavier.workbook.Solicitante.Adaptadores.AdaptadorPeticiones;
+import com.victorjavier.workbook.Solicitante.Tasks.ObtenerPeticionesTerminadasTask;
+
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class ConsultarPerfilSolicitanteActivity extends AppCompatActivity {
     private TextView textNombreSolicitante;
@@ -20,10 +30,18 @@ public class ConsultarPerfilSolicitanteActivity extends AppCompatActivity {
     private TextView textEdadSolicitante;
     private TextView textCiudadSolicitante;
     private TextView textDireccionSolicitante;
+    private ImageView imagenUsuario;
     private Solicitante solicitante;
+    private List<Solicitud> solicitudes;
+    private ListView lista;
 
     private int calcularEdad(){
         return Dates.getYear(new Date()) - Dates.getYear(this.solicitante.getFechaNacimiento());
+    }
+    private void cargarSolicitudes(){
+        this.solicitudes.clear();
+        new ObtenerFotoTask(FotoUsuario.SOLICITANTE, this.solicitante.getIdSolicitante(), this.imagenUsuario).execute();
+        new ObtenerPeticionesTerminadasTask(this.solicitudes, this.solicitante.getIdSolicitante(), this.lista).execute();
     }
 
     @Override
@@ -37,8 +55,14 @@ public class ConsultarPerfilSolicitanteActivity extends AppCompatActivity {
         this.textGeneroSolicitante = (TextView) findViewById(R.id.textGeneroSolicitante);
         this.textTelefonoSolicitante = (TextView) findViewById(R.id.textTelefonoSolicitante);
         this.textCorreoSolicitante = (TextView) findViewById(R.id.textCorreo);
+        this.lista = (ListView) findViewById(R.id.listaPeticionesTerminadas);
+        this.imagenUsuario = (ImageView) findViewById(R.id.imagenSolicitantePerfil);
         this.solicitante = (Solicitante) getIntent().getSerializableExtra("solicitante");
         this.cragarSolicitante();
+        this.solicitudes = new ArrayList();
+        this.cargarSolicitudes();
+        AdaptadorPeticiones adaptador = new AdaptadorPeticiones(this, R.layout.panel_peticion_terminada, this.solicitudes);
+        this.lista.setAdapter(adaptador);
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu){

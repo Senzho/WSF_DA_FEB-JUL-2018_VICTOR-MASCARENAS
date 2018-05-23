@@ -7,7 +7,7 @@
     tools:context="com.victorjavier.workbook.Solicitante.ConsultarPerfilSolicitanteActivity">
 
     <ImageView
-        android:id="@+id/imageView"
+        android:id="@+id/imagenSolicitantePerfil"
         android:layout_width="114dp"
         android:layout_height="114dp"
         app:srcCompat="@mipmap/person"
@@ -28,7 +28,7 @@
         android:elevation="1dp"
         android:text="Nombre de solicitante."
         android:textSize="20sp"
-        app:layout_constraintLeft_toRightOf="@+id/imageView"
+        app:layout_constraintLeft_toRightOf="@+id/imagenSolicitantePerfil"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
@@ -40,7 +40,7 @@
         android:layout_marginTop="2dp"
         android:text="Género"
         android:textSize="18sp"
-        app:layout_constraintLeft_toRightOf="@+id/imageView"
+        app:layout_constraintLeft_toRightOf="@+id/imagenSolicitantePerfil"
         app:layout_constraintTop_toBottomOf="@+id/textNombreSolicitante" />
 
     <TextView
@@ -65,7 +65,7 @@
         android:text="Ciudad."
         android:textSize="18sp"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView" />
+        app:layout_constraintTop_toBottomOf="@+id/imagenSolicitantePerfil" />
 
     <TextView
         android:id="@+id/textDireccionSolicitante"
@@ -94,6 +94,7 @@
         android:layout_marginStart="8dp" />
 
     <ListView
+        android:id="@+id/listaPeticionesTerminadas"
         android:layout_width="0dp"
         android:layout_height="250dp"
         android:layout_marginBottom="0dp"
@@ -113,7 +114,7 @@
         android:layout_marginTop="2dp"
         android:text="Teléfono."
         android:textSize="18sp"
-        app:layout_constraintLeft_toRightOf="@+id/imageView"
+        app:layout_constraintLeft_toRightOf="@+id/imagenSolicitantePerfil"
         app:layout_constraintTop_toBottomOf="@+id/textGeneroSolicitante" />
 
     <TextView
@@ -124,7 +125,7 @@
         android:layout_marginTop="2dp"
         android:text="Correo."
         android:textSize="18sp"
-        app:layout_constraintLeft_toRightOf="@+id/imageView"
+        app:layout_constraintLeft_toRightOf="@+id/imagenSolicitantePerfil"
         app:layout_constraintTop_toBottomOf="@+id/textTelefonoSolicitante" />
 
 </android.support.constraint.ConstraintLayout>
