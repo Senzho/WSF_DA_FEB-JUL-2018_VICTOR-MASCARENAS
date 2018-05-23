@@ -70,6 +70,10 @@ public class Solicitud implements Serializable {
     @Size(max = 65535)
     @Column(name = "respuesta")
     private String respuesta;
+    @Lob
+    @Size(max = 65535)
+    @Column(name = "descripcion")
+    private String descripcion;
     @JoinColumn(name = "idSolicitante", referencedColumnName = "idSolicitante")
     @ManyToOne
     private Solicitante idSolicitante;
@@ -146,6 +150,14 @@ public class Solicitud implements Serializable {
 
     public void setRespuesta(String respuesta) {
         this.respuesta = respuesta;
+    }
+
+    public String getDescripcion() {
+        return descripcion;
+    }
+
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
     }
 
     public Solicitante getIdSolicitante() {

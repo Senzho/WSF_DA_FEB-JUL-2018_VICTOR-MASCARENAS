@@ -11,7 +11,6 @@ import android.widget.TextView;
 
 import com.victorjavier.workbook.Entidades.Solicitud;
 import com.victorjavier.workbook.R;
-import com.victorjavier.workbook.Solicitante.Tasks.ObtenerSolicitanteTask;
 
 import java.util.List;
 
@@ -37,7 +36,7 @@ public class AdaptadorPuntuaciones extends ArrayAdapter{
         TextView textEstrellas = elemento.findViewById(R.id.textEstrellasPuntuacion);
         textComentario.setText(solicitud.getComentario());
         textEstrellas.setText(solicitud.getEstrellas() + "");
-        new ObtenerSolicitanteTask(solicitud.getIdSolicitante(), textNombre).execute();
+        textNombre.setText(solicitud.getSolicitante().getNombreSolicitante());
         return elemento;
     }
 }

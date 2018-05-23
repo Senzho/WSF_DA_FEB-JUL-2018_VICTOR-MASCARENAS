@@ -51,6 +51,7 @@ public class ConsultarPerfilSolicitanteActivity extends AppCompatActivity {
         switch (item.getItemId()){
             case R.id.buscarTrabajadores:
                 Intent intento = new Intent(this, BuscarTrabajadorActivity.class);
+                intento.putExtra("solicitante", this.solicitante);
                 this.startActivity(intento);
                 break;
             default:

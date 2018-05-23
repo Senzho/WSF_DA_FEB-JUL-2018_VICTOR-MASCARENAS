@@ -13,10 +13,11 @@ public class Solicitud {
     private Date fecha;
     private Date fechaInicial;
     private int estrellas;
-    private int estado;
+    private int estado;//0: en espera; 1: aceptada; 2: cancelada; 3: terminada
+    private String descripcion;
     private String comentario;
     private String respuesta;
-    private int idSolicitante;
+    private Solicitante solicitante;
 
     public Solicitud(){
 
@@ -27,7 +28,8 @@ public class Solicitud {
         this.fecha = Dates.toDate(json.getString("fecha"));
         this.fechaInicial = Dates.toDate(json.getString("fechaInicial"));
         this.estado = json.getInt("estado");
-        this.idSolicitante = json.getJSONObject("idSolicitante").getInt("idSolicitante");
+        this.descripcion = json.getString("descripcion");
+        this.solicitante = new Solicitante(json.getJSONObject("idSolicitante"));
         try{
             this.estrellas = json.getInt("estrellas");
             this.comentario = json.getString("comentario");
@@ -85,10 +87,16 @@ public class Solicitud {
     public void setRespuesta(String respuesta) {
         this.respuesta = respuesta;
     }
-    public int getIdSolicitante() {
-        return idSolicitante;
+    public Solicitante getSolicitante() {
+        return this.solicitante;
     }
-    public void setIdSolicitante(int idSolicitante) {
-        this.idSolicitante = idSolicitante;
+    public void setSolicitante(Solicitante solicitante) {
+        this.solicitante = solicitante;
+    }
+    public String getDescripcion() {
+        return descripcion;
+    }
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
     }
 }

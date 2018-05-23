@@ -146,6 +146,7 @@
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
+        android:onClick="enviarPeticion_onClick"
         android:text="Enviar petición"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"

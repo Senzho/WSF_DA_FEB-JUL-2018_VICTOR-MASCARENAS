@@ -1,4 +1,4 @@
-package com.victorjavier.workbook;
+package modelo;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -30,17 +30,6 @@ public class Dates {
             finalDate = new Date();
         }
         return finalDate;
-    }
-    public static boolean isDate(String date){
-        boolean is;
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        try {
-            simpleDateFormat.parse(date);
-            is = true;
-        } catch (ParseException exception) {
-            is = false;
-        }
-        return is;
     }
     /**
      * 

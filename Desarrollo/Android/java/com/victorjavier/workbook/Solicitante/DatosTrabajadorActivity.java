@@ -8,6 +8,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import com.victorjavier.workbook.Dates;
 import com.victorjavier.workbook.Entidades.Prestador;
+import com.victorjavier.workbook.Entidades.Solicitante;
 import com.victorjavier.workbook.R;
 import com.victorjavier.workbook.Solicitante.Tasks.ObtenerEstudioTask;
 import com.victorjavier.workbook.Solicitante.Tasks.ObtenerPromedioTask;
@@ -24,6 +25,7 @@ public class DatosTrabajadorActivity extends AppCompatActivity {
     private TextView textCorreo;
     private TextView textTelefono;
     private Prestador prestador;
+    private Solicitante solicitante;
 
     private void cargarPrestador(){
         this.textEdad.setText(this.calcularEdad() + " años.");
@@ -51,6 +53,7 @@ public class DatosTrabajadorActivity extends AppCompatActivity {
         this.textTelefono = (TextView) findViewById(R.id.textTelefonoPrestador);
         TextView textEstrellas = (TextView) findViewById(R.id.textPuntuacionDatosTrabajador);
         ImageView image = (ImageView) findViewById(R.id.imagenEstrellaDatosTrabajador);
+        this.solicitante = (Solicitante) getIntent().getSerializableExtra("solicitante");
         this.prestador = (Prestador) getIntent().getSerializableExtra("prestador");
         new ObtenerPromedioTask(this.prestador.getIdPrestador(), textEstrellas, image).execute();
         this.cargarPrestador();
@@ -59,6 +62,12 @@ public class DatosTrabajadorActivity extends AppCompatActivity {
     public void verPuntuaciones_onClick(View view){
         Intent intento = new Intent(this, ConsultarPuntuacionesActivity.class);
         intento.putExtra("idPrestador", this.prestador.getIdPrestador());
+        this.startActivity(intento);
+    }
+    public void enviarPeticion_onClick(View view){
+        Intent intento = new Intent(this, EnviarPeticionActivity.class);
+        intento.putExtra("solicitante", this.solicitante);
+        intento.putExtra("prestador", this.prestador);
         this.startActivity(intento);
     }
 }
