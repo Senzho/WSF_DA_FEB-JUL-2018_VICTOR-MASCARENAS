@@ -6,9 +6,13 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import com.victorjavier.workbook.Dates;
 import com.victorjavier.workbook.Entidades.Solicitante;
 import com.victorjavier.workbook.Entidades.Solicitud;
@@ -63,6 +67,19 @@ public class ConsultarPerfilSolicitanteActivity extends AppCompatActivity {
         this.cargarSolicitudes();
         AdaptadorPeticiones adaptador = new AdaptadorPeticiones(this, R.layout.panel_peticion_terminada, this.solicitudes);
         this.lista.setAdapter(adaptador);
+        this.lista.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Solicitud solicitud = ConsultarPerfilSolicitanteActivity.this.solicitudes.get(i);
+                if(solicitud.getEstrellas() == -1){
+                    Intent intento = new Intent(ConsultarPerfilSolicitanteActivity.this, PuntuarTrabajadorActivity.class);
+                    intento.putExtra("solicitud", solicitud);
+                    ConsultarPerfilSolicitanteActivity.this.startActivity(intento);
+                }else{
+                    Toast.makeText(ConsultarPerfilSolicitanteActivity.this, "Ya puntuaste este trabajo", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu){

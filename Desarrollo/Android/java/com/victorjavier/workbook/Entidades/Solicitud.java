@@ -5,9 +5,10 @@ import com.victorjavier.workbook.Dates;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class Solicitud {
+public class Solicitud implements Serializable{
     private int idSolicitud;
     private Date fechaRealizacion;
     private Date fecha;

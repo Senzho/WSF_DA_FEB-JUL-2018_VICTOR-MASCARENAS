@@ -2,14 +2,87 @@ package com.victorjavier.workbook.Solicitante;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.ImageView;
+import android.widget.Spinner;
+import android.widget.TextView;
+import android.widget.Toast;
 
+import com.victorjavier.workbook.Dates;
+import com.victorjavier.workbook.Entidades.Solicitud;
+import com.victorjavier.workbook.FotoUsuario;
+import com.victorjavier.workbook.ObtenerFotoTask;
 import com.victorjavier.workbook.R;
+import com.victorjavier.workbook.Solicitante.Tasks.EscuchadorSolicitud;
+import com.victorjavier.workbook.Solicitante.Tasks.PuntuarTrabajadorTask;
 
-public class PuntuarTrabajadorActivity extends AppCompatActivity {
+import java.util.Date;
+
+public class PuntuarTrabajadorActivity extends AppCompatActivity implements EscuchadorSolicitud{
+    private TextView textNombrePrestador;
+    private TextView textEdadPrestador;
+    private TextView textCiudadPrestador;
+    private TextView textDescripcion;
+    private TextView textFecha;
+    private TextView textComentario;
+    private ImageView imagenEstrellas;
+    private Spinner spinnerEstrellas;
+    private Solicitud solicitud;
+
+    private void cargarSolicitud(){
+        this.textNombrePrestador.setText(this.solicitud.getPrestador().getNombrePrestador());
+        this.textEdadPrestador.setText(this.calcularEdad() + " años.");
+        this.textDescripcion.setText(this.solicitud.getDescripcion());
+        this.textFecha.setText(Dates.getSentence(this.solicitud.getFechaRealizacion()));
+        ImageView imagen = (ImageView) findViewById(R.id.imagenPrestadorPuntuar);
+        new ObtenerFotoTask(FotoUsuario.PRESTADOR, this.solicitud.getPrestador().getIdPrestador(), imagen).execute();
+    }
+    private int calcularEdad(){
+        return Dates.getYear(new Date()) - Dates.getYear(this.solicitud.getPrestador().getFechaNacimiento());
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_puntuar_trabajador);
+        this.textCiudadPrestador = (TextView) findViewById(R.id.textCiudadPrestadorPuntuar);
+        this.textComentario = (TextView) findViewById(R.id.textComentarioPuntuar);
+        this.textDescripcion = (TextView) findViewById(R.id.textDescripcionSolicitudPuntuar);
+        this.textEdadPrestador = (TextView) findViewById(R.id.textEdadPrestadorPuntuar);
+        this.textFecha = (TextView) findViewById(R.id.textFechaPuntuar);
+        this.textNombrePrestador = (TextView) findViewById(R.id.textNombrePrestadorPuntuar);
+        this.spinnerEstrellas = (Spinner) findViewById(R.id.spinnerPuntuar);
+        this.imagenEstrellas = (ImageView) findViewById(R.id.imagenEstrellaPuntuar);
+        this.solicitud = (Solicitud) getIntent().getSerializableExtra("solicitud");
+        this.cargarSolicitud();
+        String[] estrellas = {"0", "1", "2", "3", "4", "5"};
+        this.spinnerEstrellas.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, estrellas));
+    }
+
+    public void botonCancelar_onClick(View view){
+        this.finish();
+    }
+    public void botonPuntuar_onClick(View view){
+        String comentario = this.textComentario.getText().toString().trim();
+        if (comentario.length() == 0){
+            Toast.makeText(this, "Ingresa tu comentario", Toast.LENGTH_SHORT).show();
+        }else{
+            new PuntuarTrabajadorTask(this.solicitud.getIdSolicitud(), Integer.parseInt(this.spinnerEstrellas.getSelectedItem().toString()), comentario, this).execute();
+        }
+    }
+
+    @Override
+    public void solicitudEnviada(boolean enviada) {
+
+    }
+    @Override
+    public void solicitudPuntuada(boolean puntuada) {
+        if (puntuada){
+            Toast.makeText(this, "Publicado", Toast.LENGTH_SHORT).show();
+            this.finish();
+        }else{
+            Toast.makeText(this, "No se pudo publicar, intente más tarde", Toast.LENGTH_SHORT).show();
+        }
     }
 }

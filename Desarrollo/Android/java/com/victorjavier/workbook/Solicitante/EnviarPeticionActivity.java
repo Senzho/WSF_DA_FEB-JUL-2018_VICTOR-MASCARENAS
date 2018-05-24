@@ -76,4 +76,8 @@ public class EnviarPeticionActivity extends AppCompatActivity implements Escucha
             Toast.makeText(this, "La solicitud no pudo enviarse, intente de nuevo más tarde", Toast.LENGTH_SHORT).show();
         }
     }
+    @Override
+    public void solicitudPuntuada(boolean piuntuada){
+
+    }
 }

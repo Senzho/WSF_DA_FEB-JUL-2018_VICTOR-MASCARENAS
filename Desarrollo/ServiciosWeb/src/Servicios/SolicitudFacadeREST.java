@@ -21,7 +21,6 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import modelo.Dates;
 
 @Stateless
 @Path("SWSolicitud")
@@ -63,10 +62,23 @@ public class SolicitudFacadeREST extends AbstractFacade<Solicitud> {
         return response;
     }
     @PUT
-    @Path("{id}")
-    @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public void edit(@PathParam("id") Integer id, Solicitud entity) {
-        super.edit(entity);
+    @Path("/puntuar/{id}/{estrellas}/{comentario}")
+    @Consumes({MediaType.APPLICATION_JSON})
+    @Produces({MediaType.APPLICATION_JSON})
+    public Response edit(@PathParam("id") Integer id, @PathParam("estrellas") Integer estrellas, @PathParam("comentario") String comentario) {
+        Response response;
+        try{
+            Solicitud solicitud = (Solicitud) this.getEntityManager().createNamedQuery("Solicitud.findByIdSolicitud")
+                    .setParameter("idSolicitud", id)
+                    .getSingleResult();
+            solicitud.setEstrellas(estrellas);
+            solicitud.setComentario(comentario);
+            super.edit(solicitud);
+            response = Response.status(200).entity("ok").build();
+        }catch(Exception excepcion){
+            response = Response.status(200).entity("err").build();
+        }
+        return response;
     }
     @DELETE
     @Path("{id}")
