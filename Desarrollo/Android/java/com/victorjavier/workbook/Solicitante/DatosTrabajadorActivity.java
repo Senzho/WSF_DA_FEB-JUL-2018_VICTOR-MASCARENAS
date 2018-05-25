@@ -8,17 +8,22 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import com.victorjavier.workbook.Dates;
+import com.victorjavier.workbook.Entidades.Posicion;
 import com.victorjavier.workbook.Entidades.Prestador;
 import com.victorjavier.workbook.Entidades.Solicitante;
 import com.victorjavier.workbook.FotoUsuario;
+import com.victorjavier.workbook.MapaActivity;
 import com.victorjavier.workbook.ObtenerFotoTask;
 import com.victorjavier.workbook.R;
+import com.victorjavier.workbook.Solicitante.Tasks.EscuchadorPosicion;
+import com.victorjavier.workbook.Solicitante.Tasks.ObtenerDistanciaTask;
 import com.victorjavier.workbook.Solicitante.Tasks.ObtenerEstudioTask;
+import com.victorjavier.workbook.Solicitante.Tasks.ObtenerPosicionTask;
 import com.victorjavier.workbook.Solicitante.Tasks.ObtenerPromedioTask;
 
 import java.util.Date;
 
-public class DatosTrabajadorActivity extends AppCompatActivity {
+public class DatosTrabajadorActivity extends AppCompatActivity implements EscuchadorPosicion{
     private TextView textDistancia;
     private TextView textEdad;
     private TextView textCiudad;
@@ -28,8 +33,11 @@ public class DatosTrabajadorActivity extends AppCompatActivity {
     private TextView textCorreo;
     private TextView textTelefono;
     private ImageView imagen;
+    private ImageView imagenMundo;
     private Prestador prestador;
     private Solicitante solicitante;
+    private Posicion posicionPrestador;
+    private Posicion posicionSolicitante;
 
     private void cargarPrestador(){
         getSupportActionBar().setTitle(this.prestador.getNombrePrestador());
@@ -38,6 +46,8 @@ public class DatosTrabajadorActivity extends AppCompatActivity {
         this.textDireccion.setText(this.prestador.getDireccionPrestador());
         this.textCorreo.setText(this.prestador.getCorreoPrestador());
         this.textTelefono.setText(this.prestador.getTelefonoPrestador());
+        new ObtenerPosicionTask(this.prestador.getIdPrestador(), "prestador", this).execute();
+        new ObtenerPosicionTask(this.solicitante.getIdSolicitante(), "solicitante", this).execute();
         new ObtenerFotoTask(FotoUsuario.PRESTADOR, this.prestador.getIdPrestador(), this.imagen).execute();
         new ObtenerEstudioTask(this.prestador.getIdPrestador(), this.textEstudio).execute();
     }
@@ -58,6 +68,8 @@ public class DatosTrabajadorActivity extends AppCompatActivity {
         this.textCorreo = (TextView) findViewById(R.id.textCorreoPrestador);
         this.textTelefono = (TextView) findViewById(R.id.textTelefonoPrestador);
         this.imagen = (ImageView) findViewById(R.id.imagenPrestadorDatos);
+        this.imagenMundo = (ImageView) findViewById(R.id.imagenMundoDatos);
+        this.imagenMundo.setEnabled(false);
         TextView textEstrellas = (TextView) findViewById(R.id.textPuntuacionDatosTrabajador);
         ImageView image = (ImageView) findViewById(R.id.imagenEstrellaDatosTrabajador);
         this.solicitante = (Solicitante) getIntent().getSerializableExtra("solicitante");
@@ -76,5 +88,24 @@ public class DatosTrabajadorActivity extends AppCompatActivity {
         intento.putExtra("solicitante", this.solicitante);
         intento.putExtra("prestador", this.prestador);
         this.startActivity(intento);
+    }
+    public void mundo_onClick(View view){
+        Intent intento = new Intent(this, MapaActivity.class);
+        intento.putExtra("posicionPrestador", this.posicionPrestador);
+        intento.putExtra("posicionSolicitante", this.posicionSolicitante);
+        intento.putExtra("nombrePrestador", this.prestador.getNombrePrestador());
+        intento.putExtra("nombreSolicitante", this.solicitante.getNombreSolicitante());
+        this.startActivity(intento);
+    }
+
+    @Override
+    public void posicionObtenida(Posicion posicion, String usuario) {
+        if (usuario.equals("prestador")){
+            this.posicionPrestador = posicion;
+        }else{
+            this.posicionSolicitante = posicion;
+            this.imagenMundo.setEnabled(true);
+            new ObtenerDistanciaTask(this.posicionPrestador, this.posicionSolicitante, this.textDistancia).execute();
+        }
     }
 }

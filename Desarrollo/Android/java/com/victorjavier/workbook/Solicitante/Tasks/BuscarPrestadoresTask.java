@@ -30,7 +30,7 @@ public class BuscarPrestadoresTask extends AsyncTask<Void, Void, Boolean> {
     protected Boolean doInBackground(Void... voids) {
         boolean encontrados = true;
         try{
-            URL url = new URL("http://192.168.43.126:8080/ServiciosWorkbook/webresources/SWPrestador");
+            URL url = new URL("http://192.168.44.139:8080/ServiciosWorkbook/webresources/SWPrestador");
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestProperty("Content-Type", "application/json");
             connection.setRequestProperty("Accept", "application/json");

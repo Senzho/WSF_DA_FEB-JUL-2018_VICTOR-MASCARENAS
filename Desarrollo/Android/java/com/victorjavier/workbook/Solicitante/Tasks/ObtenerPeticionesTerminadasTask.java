@@ -31,7 +31,7 @@ public class ObtenerPeticionesTerminadasTask extends AsyncTask<Void, Void, Boole
     protected Boolean doInBackground(Void... voids) {
         boolean obtenidas = true;
         try{
-            URL url = new URL("http://192.168.43.126:8080/ServiciosWorkbook/webresources/SWSolicitud/terminadas/" + this.idSolicitante);
+            URL url = new URL("http://192.168.44.139:8080/ServiciosWorkbook/webresources/SWSolicitud/terminadas/" + this.idSolicitante);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestProperty("Content-Type", "application/json");
             connection.setRequestProperty("Accept", "application/json");

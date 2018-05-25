@@ -1,10 +1,9 @@
 package Servicios;
 
+import Modelo.Dates;
 import Modelo.Prestadorservicios;
 import Modelo.Solicitante;
 import Modelo.Solicitud;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -40,7 +39,7 @@ public class SolicitudFacadeREST extends AbstractFacade<Solicitud> {
         Response response;
         Solicitud solicitud = new Solicitud();
         solicitud.setFecha(new Date());
-        solicitud.setFechaInicial(SolicitudFacadeREST.toDate(fecha));
+        solicitud.setFechaInicial(Dates.toDate(fecha));
         solicitud.setDescripcion(descripcion);
         solicitud.setEstado(0);
         solicitud.setEstrellas(-1);
@@ -147,16 +146,5 @@ public class SolicitudFacadeREST extends AbstractFacade<Solicitud> {
     @Override
     protected EntityManager getEntityManager() {
         return em;
-    }
-    
-    public static Date toDate(String date){
-        Date finalDate;
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        try {
-            finalDate = simpleDateFormat.parse(date);
-        } catch (ParseException exception) {
-            finalDate = new Date();
-        }
-        return finalDate;
     }
 }

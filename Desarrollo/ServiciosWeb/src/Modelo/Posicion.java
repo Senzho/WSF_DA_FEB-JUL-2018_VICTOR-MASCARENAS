@@ -30,7 +30,10 @@ import javax.xml.bind.annotation.XmlRootElement;
     , @NamedQuery(name = "Posicion.findByTipo", query = "SELECT p FROM Posicion p WHERE p.tipo = :tipo")
     , @NamedQuery(name = "Posicion.findByIdTipo", query = "SELECT p FROM Posicion p WHERE p.idTipo = :idTipo")
     , @NamedQuery(name = "Posicion.findByLongitud", query = "SELECT p FROM Posicion p WHERE p.longitud = :longitud")
-    , @NamedQuery(name = "Posicion.findByLatitud", query = "SELECT p FROM Posicion p WHERE p.latitud = :latitud")})
+    , @NamedQuery(name = "Posicion.findByLatitud", query = "SELECT p FROM Posicion p WHERE p.latitud = :latitud")
+    , @NamedQuery(name = "Posicion.findBySolicitante", query = "SELECT p FROM Posicion p WHERE p.tipo = 0 AND p.idTipo = :idSolicitante")
+    , @NamedQuery(name = "Posicion.findByPrestador", query = "SELECT p FROM Posicion p WHERE p.tipo = 1 AND p.idTipo = :idPrestador")
+})
 public class Posicion implements Serializable {
 
     private static final long serialVersionUID = 1L;

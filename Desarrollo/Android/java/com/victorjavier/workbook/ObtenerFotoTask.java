@@ -23,7 +23,7 @@ public class ObtenerFotoTask extends AsyncTask<Void, Void, Boolean> {
     protected Boolean doInBackground(Void... voids) {
         boolean exito = true;
         try{
-            String link = "http://192.168.43.126:8080/ServiciosWorkbook/Fotos/";
+            String link = "http://192.168.44.139:8080/ServiciosWorkbook/Fotos/";
             String tipoUsuario;
             if(this.usuario.equals(FotoUsuario.PRESTADOR)){
                 tipoUsuario = "Prestadores";

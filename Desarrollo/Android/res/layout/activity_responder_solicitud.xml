@@ -7,6 +7,17 @@
     tools:context="com.victorjavier.workbook.PrestadorServicios.ResponderSolicitudActivity">
 
     <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginStart="8dp"
+        app:srcCompat="@mipmap/globe"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="2dp"
+        app:layout_constraintLeft_toRightOf="@+id/textView54"
+        android:layout_marginLeft="8dp" />
+
+    <ImageView
         android:id="@+id/imageView19"
         android:layout_width="90dp"
         android:layout_height="90dp"
@@ -24,7 +35,7 @@
         android:layout_marginLeft="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:text="Nombre solicitante."
+        android:text="Distancia."
         android:textSize="18sp"
         app:layout_constraintLeft_toRightOf="@+id/imageView19"
         app:layout_constraintTop_toTopOf="parent" />

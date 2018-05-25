@@ -29,7 +29,7 @@ public class ObtenerSolicitanteSesionTask extends AsyncTask<Void, Void, Boolean>
     protected Boolean doInBackground(Void... voids) {
         boolean obtenido = false;
         try{
-            URL url = new URL("http://192.168.43.126:8080/ServiciosWorkbook/webresources/SWSolicitante/usuario/" + this.idUsuario);
+            URL url = new URL("http://192.168.44.139:8080/ServiciosWorkbook/webresources/SWSolicitante/usuario/" + this.idUsuario);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestProperty("Content-Type", "application/json");
             connection.setRequestProperty("Accept", "application/json");
