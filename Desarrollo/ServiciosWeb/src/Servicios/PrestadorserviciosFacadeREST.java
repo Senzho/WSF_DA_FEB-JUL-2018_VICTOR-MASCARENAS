@@ -68,6 +68,22 @@ public class PrestadorserviciosFacadeREST extends AbstractFacade<Prestadorservic
         return String.valueOf(super.count());
     }
     @GET
+    @Path("/usuario/{idUsuario}")
+    @Consumes({MediaType.APPLICATION_JSON})
+    @Produces({MediaType.APPLICATION_JSON})
+    public Prestadorservicios obtenerSolicitanteUsuario(@PathParam("idUsuario") Integer idUsuario){
+        Prestadorservicios prestador;
+        try{
+            prestador = (Prestadorservicios) this.getEntityManager().createNamedQuery("Prestadorservicios.findByIdUsuario")
+                    .setParameter("idUsuario", idUsuario)
+                    .getSingleResult();
+        }catch(Exception excepcion){
+            prestador = new Prestadorservicios();
+            prestador.setIdPrestador(0);
+        } 
+        return prestador;
+    }
+    @GET
     @Path("/promedioPuntuaciones/{idPrestador}")
     @Produces({MediaType.APPLICATION_JSON})
     public String obtenerPromedioPuntuaciones(@PathParam("idPrestador") Integer idPrestador){

@@ -9,17 +9,15 @@
         android:id="@+id/imagenSolicitantePuntuacion"
         android:layout_width="60dp"
         android:layout_height="60dp"
-        android:layout_marginBottom="0dp"
         android:layout_marginLeft="0dp"
         android:layout_marginTop="0dp"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@mipmap/person" />
 
     <TextView
         android:id="@+id/textNombreSolicituantePuntuacion"
-        android:layout_width="wrap_content"
+        android:layout_width="240dp"
         android:layout_height="wrap_content"
         android:layout_marginLeft="8dp"
         android:layout_marginTop="2dp"

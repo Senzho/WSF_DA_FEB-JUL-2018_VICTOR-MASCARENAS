@@ -1,4 +1,4 @@
-package com.victorjavier.workbook.Solicitante.Tasks;
+package com.victorjavier.workbook.PrestadorServicios.Tasks;
 
 import android.os.AsyncTask;
 import android.widget.ListView;
@@ -16,14 +16,14 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.List;
 
-public class ObtenerPeticionesTerminadasTask extends AsyncTask<Void, Void, Boolean> {
+public class ObtenerSolicitudesTerminadasTask extends AsyncTask<Void, Void, Boolean> {
     private List<Solicitud> solicitudes;
-    private int idSolicitante;
+    private int idPrestador;
     private ListView lista;
 
-    public ObtenerPeticionesTerminadasTask(List<Solicitud> solicitudes, int idSolicitante, ListView lista){
+    public ObtenerSolicitudesTerminadasTask(List<Solicitud> solicitudes, int idPrestador, ListView lista){
         this.solicitudes = solicitudes;
-        this.idSolicitante = idSolicitante;
+        this.idPrestador = idPrestador;
         this.lista = lista;
     }
 
@@ -31,7 +31,7 @@ public class ObtenerPeticionesTerminadasTask extends AsyncTask<Void, Void, Boole
     protected Boolean doInBackground(Void... voids) {
         boolean obtenidas = true;
         try{
-            URL url = new URL("http://192.168.44.139:8080/ServiciosWorkbook/webresources/SWSolicitud/terminadas/solicitante/" + this.idSolicitante);
+            URL url = new URL("http://192.168.44.139:8080/ServiciosWorkbook/webresources/SWSolicitud/terminadas/prestador/" + this.idPrestador);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestProperty("Content-Type", "application/json");
             connection.setRequestProperty("Accept", "application/json");

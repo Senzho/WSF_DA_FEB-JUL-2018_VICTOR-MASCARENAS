@@ -129,7 +129,7 @@ public class SolicitudFacadeREST extends AbstractFacade<Solicitud> {
         return solicitudes;
     }
     @GET
-    @Path("/terminadas/{idSolicitante}")
+    @Path("/terminadas/solicitante/{idSolicitante}")
     @Consumes({MediaType.APPLICATION_JSON})
     @Produces({MediaType.APPLICATION_JSON})
     public List<Solicitud> obtenerSolicitudesTerminadas(@PathParam("idSolicitante") Integer idSolicitante){
@@ -137,6 +137,21 @@ public class SolicitudFacadeREST extends AbstractFacade<Solicitud> {
         try{
             solicitudes = this.getEntityManager().createNamedQuery("Solicitud.findTerminadasByIdSolicitante")
                     .setParameter("idSolicitante", idSolicitante)
+                    .getResultList();
+        }catch(Exception excepcion){
+            excepcion.printStackTrace();
+        }
+        return solicitudes;
+    }
+    @GET
+    @Path("/terminadas/prestador/{idPrestador}")
+    @Consumes({MediaType.APPLICATION_JSON})
+    @Produces({MediaType.APPLICATION_JSON})
+    public List<Solicitud> obtenerSolicitudesTerminadasPrestador(@PathParam("idPrestador") Integer idPrestador){
+        List<Solicitud> solicitudes = new ArrayList();
+        try{
+            solicitudes = this.getEntityManager().createNamedQuery("Solicitud.findTerminadasByIdPrestador")
+                    .setParameter("idPrestador", idPrestador)
                     .getResultList();
         }catch(Exception excepcion){
             excepcion.printStackTrace();

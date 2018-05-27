@@ -62,10 +62,10 @@
         android:layout_height="30dp"
         android:layout_marginEnd="10dp"
         android:layout_marginRight="10dp"
-        android:layout_marginTop="0dp"
         app:layout_constraintRight_toLeftOf="@+id/textEstrellasTrabajador"
-        app:layout_constraintTop_toBottomOf="@+id/textNombreTrabajador"
-        app:srcCompat="@mipmap/star_fill" />
+        app:srcCompat="@mipmap/star_fill"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="34dp" />
 
     <TextView
         android:id="@+id/textEstrellasTrabajador"

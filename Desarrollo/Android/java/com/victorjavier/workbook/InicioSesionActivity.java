@@ -6,13 +6,18 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.victorjavier.workbook.Entidades.Prestador;
 import com.victorjavier.workbook.Entidades.Solicitante;
 import com.victorjavier.workbook.Entidades.Usuario;
+import com.victorjavier.workbook.PrestadorServicios.ConsultarPerfilPrestadorActivity;
+import com.victorjavier.workbook.PrestadorServicios.EscuchadorPrestador;
+import com.victorjavier.workbook.PrestadorServicios.Tasks.ObtenerPrestadorSesionTask;
 import com.victorjavier.workbook.Solicitante.ConsultarPerfilSolicitanteActivity;
 import com.victorjavier.workbook.Solicitante.EscuchadorSolicitante;
 import com.victorjavier.workbook.Solicitante.Tasks.ObtenerSolicitanteSesionTask;
 
-public class InicioSesionActivity extends AppCompatActivity implements EscuchadorInicioSesion, EscuchadorSolicitante {
+public class InicioSesionActivity extends AppCompatActivity implements EscuchadorInicioSesion, EscuchadorSolicitante, EscuchadorPrestador {
     private TextView textUsuario;
     private TextView textContrasena;
 
@@ -43,6 +48,7 @@ public class InicioSesionActivity extends AppCompatActivity implements Escuchado
     public void usuarioExistente(boolean existe, Usuario usuario) {
         if (existe){
             new ObtenerSolicitanteSesionTask(this, usuario.getIdUsuario()).execute();
+            new ObtenerPrestadorSesionTask(usuario.getIdUsuario(), this).execute();
         }else{
             Toast.makeText(this, "Usuario o contraseña incorrectos", Toast.LENGTH_SHORT).show();
         }
@@ -53,6 +59,16 @@ public class InicioSesionActivity extends AppCompatActivity implements Escuchado
         if (solicitante != null){
             Intent intento = new Intent(this, ConsultarPerfilSolicitanteActivity.class);
             intento.putExtra("solicitante", solicitante);
+            this.startActivity(intento);
+        }else{
+            Toast.makeText(this, "No se pudo obtener el usuario, intente más tarde", Toast.LENGTH_SHORT).show();
+        }
+    }
+    @Override
+    public void prestadorObtenido(Prestador prestador) {
+        if (prestador != null) {
+            Intent intento = new Intent(this, ConsultarPerfilPrestadorActivity.class);
+            intento.putExtra("prestador", prestador);
             this.startActivity(intento);
         }else{
             Toast.makeText(this, "No se pudo obtener el usuario, intente más tarde", Toast.LENGTH_SHORT).show();

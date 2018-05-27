@@ -42,7 +42,9 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "Prestadorservicios.findByCorreoPrestador", query = "SELECT p FROM Prestadorservicios p WHERE p.correoPrestador = :correoPrestador")
     , @NamedQuery(name = "Prestadorservicios.findByCategoria", query = "SELECT p FROM Prestadorservicios p WHERE p.categoria = :categoria")
     , @NamedQuery(name = "Prestadorservicios.findByFechaNacimiento", query = "SELECT p FROM Prestadorservicios p WHERE p.fechaNacimiento = :fechaNacimiento")
-    , @NamedQuery(name = "Prestadorservicios.findByGeneroPrestador", query = "SELECT p FROM Prestadorservicios p WHERE p.generoPrestador = :generoPrestador")})
+    , @NamedQuery(name = "Prestadorservicios.findByGeneroPrestador", query = "SELECT p FROM Prestadorservicios p WHERE p.generoPrestador = :generoPrestador")
+    , @NamedQuery(name = "Prestadorservicios.findByIdUsuario", query = "SELECT p FROM Prestadorservicios p WHERE p.idUsuario.idUsuario = :idUsuario")
+})
 public class Prestadorservicios implements Serializable {
 
     private static final long serialVersionUID = 1L;
