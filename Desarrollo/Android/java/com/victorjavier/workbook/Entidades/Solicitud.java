@@ -26,7 +26,6 @@ public class Solicitud implements Serializable{
     }
     public Solicitud(JSONObject json) throws JSONException{
         this.idSolicitud = json.getInt("idSolicitud");
-        this.fechaRealizacion = Dates.toDate(json.getString("fechaRealizacion"));
         this.fecha = Dates.toDate(json.getString("fecha"));
         this.fechaInicial = Dates.toDate(json.getString("fechaInicial"));
         this.estado = json.getInt("estado");
@@ -34,6 +33,7 @@ public class Solicitud implements Serializable{
         this.solicitante = new Solicitante(json.getJSONObject("idSolicitante"));
         this.prestador = new Prestador(json.getJSONObject("idPrestador"));
         try{
+            this.fechaRealizacion = Dates.toDate(json.getString("fechaRealizacion"));
             this.estrellas = json.getInt("estrellas");
             this.comentario = json.getString("comentario");
             this.respuesta = json.getString("respuesta");

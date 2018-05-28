@@ -79,6 +79,25 @@ public class SolicitudFacadeREST extends AbstractFacade<Solicitud> {
         }
         return response;
     }
+    @PUT
+    @Path("/aceptar/{idSolicitud}/{respuesta}")
+    @Consumes({MediaType.APPLICATION_JSON})
+    @Produces({MediaType.APPLICATION_JSON})
+    public Response aceptar(@PathParam("idSolicitud") Integer idSolicitud, @PathParam("respuesta") String respuesta) {
+        Response response;
+        try{
+            Solicitud solicitud = (Solicitud) this.getEntityManager().createNamedQuery("Solicitud.findByIdSolicitud")
+                    .setParameter("idSolicitud", idSolicitud)
+                    .getSingleResult();
+            solicitud.setRespuesta(respuesta);
+            solicitud.setEstado(1);
+            super.edit(solicitud);
+            response = Response.status(200).entity("ok").build();
+        }catch(Exception excepcion){
+            response = Response.status(200).entity("err").build();
+        }
+        return response;
+    }
     @DELETE
     @Path("{id}")
     public void remove(@PathParam("id") Integer id) {
@@ -151,6 +170,21 @@ public class SolicitudFacadeREST extends AbstractFacade<Solicitud> {
         List<Solicitud> solicitudes = new ArrayList();
         try{
             solicitudes = this.getEntityManager().createNamedQuery("Solicitud.findTerminadasByIdPrestador")
+                    .setParameter("idPrestador", idPrestador)
+                    .getResultList();
+        }catch(Exception excepcion){
+            excepcion.printStackTrace();
+        }
+        return solicitudes;
+    }
+    @GET
+    @Path("/pendientes/{idPrestador}")
+    @Consumes({MediaType.APPLICATION_JSON})
+    @Produces({MediaType.APPLICATION_JSON})
+    public List<Solicitud> obtenerSolicitudesPendientes(@PathParam("idPrestador") Integer idPrestador){
+        List<Solicitud> solicitudes = new ArrayList();
+        try{
+            solicitudes = this.getEntityManager().createNamedQuery("Solicitud.findPendientesByIdPrestador")
                     .setParameter("idPrestador", idPrestador)
                     .getResultList();
         }catch(Exception excepcion){

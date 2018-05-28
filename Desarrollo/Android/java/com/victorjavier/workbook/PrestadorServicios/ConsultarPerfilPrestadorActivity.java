@@ -3,6 +3,9 @@ package com.victorjavier.workbook.PrestadorServicios;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -26,6 +29,7 @@ public class ConsultarPerfilPrestadorActivity extends AppCompatActivity {
     private TextView textDireccion;
     private TextView textCategoria;
     private TextView textEstudios;
+    private TextView textGenero;
     private Prestador prestador;
 
     private void cargarPrestador(){
@@ -36,6 +40,7 @@ public class ConsultarPerfilPrestadorActivity extends AppCompatActivity {
         this.textDireccion.setText(this.prestador.getDireccionPrestador());
         this.textEdad.setText(this.calcularEdad() + " años.");
         this.textCategoria.setText(Categorias.categorias[this.prestador.getCategoría()]);
+        this.textGenero.setText(this.prestador.getGeneroPrestador()==0?"Femenino":"Masculino");
         ImageView imagen = (ImageView) findViewById(R.id.imagenPrestadorPerfil);
         new ObtenerFotoTask(FotoUsuario.PRESTADOR, this.prestador.getIdPrestador(), imagen).execute();
         new ObtenerEstudioTask(this.prestador.getIdPrestador(), this.textEstudios).execute();
@@ -56,8 +61,30 @@ public class ConsultarPerfilPrestadorActivity extends AppCompatActivity {
         this.textNombre = (TextView) findViewById(R.id.textNombrePrestadorPerfil);
         this.textTelefono = (TextView) findViewById(R.id.textTelefonoPrestadorPerfil);
         this.textCategoria = (TextView) findViewById(R.id.textCategoriaPerfil);
+        this.textGenero = (TextView) findViewById(R.id.textGeneroPrestadorPerfil);
         this.prestador = (Prestador) getIntent().getSerializableExtra("prestador");
         this.cargarPrestador();
+    }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu){
+        MenuInflater inflador = getMenuInflater();
+        inflador.inflate(R.menu.menu_prestador, menu);
+        return true;
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item){
+        switch (item.getItemId()){
+            case R.id.menuConsultarSolicitudes:
+                Intent intento = new Intent(this, ConsultarSolicitudesActivity.class);
+                intento.putExtra("prestador", this.prestador);
+                this.startActivity(intento);
+                break;
+            case R.id.menuEstablecerDisponibilidad:
+                break;
+            default:
+                break;
+        }
+        return true;
     }
 
     public void verTrabajos_onClick(View view){

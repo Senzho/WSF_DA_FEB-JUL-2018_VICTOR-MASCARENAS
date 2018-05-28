@@ -7,18 +7,19 @@
     tools:context="com.victorjavier.workbook.PrestadorServicios.ResponderSolicitudActivity">
 
     <ImageView
-        android:id="@+id/imageView"
+        android:id="@+id/imagenMapaResponder"
         android:layout_width="30dp"
         android:layout_height="30dp"
+        android:layout_marginLeft="8dp"
         android:layout_marginStart="8dp"
-        app:srcCompat="@mipmap/globe"
+        android:layout_marginTop="0dp"
+        android:onClick="imagenMapa_onClick"
+        app:layout_constraintLeft_toRightOf="@+id/textDistanciaResponder"
         app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="2dp"
-        app:layout_constraintLeft_toRightOf="@+id/textView54"
-        android:layout_marginLeft="8dp" />
+        app:srcCompat="@mipmap/globe" />
 
     <ImageView
-        android:id="@+id/imageView19"
+        android:id="@+id/imagenSolicitanteResponder"
         android:layout_width="90dp"
         android:layout_height="90dp"
         android:layout_marginLeft="8dp"
@@ -29,78 +30,80 @@
         android:layout_marginStart="8dp" />
 
     <TextView
-        android:id="@+id/textView54"
+        android:id="@+id/textDistanciaResponder"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="0dp"
         android:text="Distancia."
         android:textSize="18sp"
-        app:layout_constraintLeft_toRightOf="@+id/imageView19"
+        app:layout_constraintLeft_toRightOf="@+id/imagenSolicitanteResponder"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/textView55"
+        android:id="@+id/textEdadResponder"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
         android:text="Edad."
         android:textSize="18sp"
-        app:layout_constraintLeft_toRightOf="@+id/imageView19"
-        app:layout_constraintTop_toBottomOf="@+id/textView54" />
+        android:layout_marginRight="8dp"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="0dp" />
 
     <TextView
-        android:id="@+id/textView56"
+        android:id="@+id/textTelefonoResponder"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
         android:text="Teléfono."
         android:textSize="18sp"
-        app:layout_constraintLeft_toRightOf="@+id/imageView19"
-        app:layout_constraintTop_toBottomOf="@+id/textView55" />
+        app:layout_constraintLeft_toRightOf="@+id/imagenSolicitanteResponder"
+        android:layout_marginTop="0dp"
+        app:layout_constraintTop_toBottomOf="@+id/textCorreoResponder" />
 
     <TextView
-        android:id="@+id/textView57"
+        android:id="@+id/textDireccionResponder"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginLeft="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
         android:text="Dirección."
         android:textSize="18sp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView19" />
+        app:layout_constraintHorizontal_bias="0.0"
+        android:layout_marginTop="8dp"
+        app:layout_constraintTop_toBottomOf="@+id/textTelefonoResponder" />
 
     <TextView
-        android:id="@+id/textView58"
+        android:id="@+id/textFechaResponder"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="26dp"
+        android:layout_marginTop="2dp"
         android:text="Fecha."
         android:textSize="20sp"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView57" />
+        app:layout_constraintTop_toBottomOf="@+id/textDireccionResponder" />
 
     <TextView
-        android:id="@+id/textView59"
+        android:id="@+id/textDescripcionResponder"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginLeft="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="2dp"
         android:text="Descripción."
         android:textSize="18sp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView58" />
+        app:layout_constraintTop_toBottomOf="@+id/textFechaResponder"
+        app:layout_constraintHorizontal_bias="0.0" />
 
     <TextView
         android:id="@+id/textView60"
@@ -110,26 +113,26 @@
         android:textColor="@color/colorAccent"
         android:textSize="40sp"
         android:textStyle="bold"
-        android:layout_marginTop="26dp"
-        app:layout_constraintTop_toBottomOf="@+id/textView59"
+        android:layout_marginTop="8dp"
+        app:layout_constraintTop_toBottomOf="@+id/textDescripcionResponder"
         android:layout_marginLeft="8dp"
         app:layout_constraintLeft_toLeftOf="parent"
         android:layout_marginStart="8dp" />
 
     <EditText
-        android:id="@+id/editText4"
+        android:id="@+id/textRespuestaResponder"
         android:layout_width="0dp"
-        android:layout_height="100dp"
+        android:layout_height="140dp"
+        android:layout_marginEnd="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:ems="10"
         android:inputType="textMultiLine"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView60"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp" />
+        app:layout_constraintTop_toBottomOf="@+id/textView60" />
 
     <Button
         android:id="@+id/button9"
@@ -137,33 +140,35 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
+        android:onClick="botonEnviar_onClick"
         android:text="Enviar"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        android:layout_marginEnd="8dp" />
+        app:layout_constraintRight_toRightOf="parent" />
 
     <Button
         android:id="@+id/button10"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:onClick="botonCancelar_onClick"
         android:text="Cancelar"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_marginBottom="8dp"
-        app:layout_constraintRight_toLeftOf="@+id/button9"
-        android:layout_marginRight="8dp"
-        android:layout_marginEnd="8dp" />
+        app:layout_constraintRight_toLeftOf="@+id/button9" />
 
     <TextView
-        android:id="@+id/textView3"
+        android:id="@+id/textCorreoResponder"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Correo."
         android:textSize="18sp"
-        android:layout_marginTop="7dp"
-        app:layout_constraintTop_toBottomOf="@+id/textView55"
-        android:layout_marginRight="8dp"
-        app:layout_constraintRight_toRightOf="parent" />
+        app:layout_constraintLeft_toRightOf="@+id/imagenSolicitanteResponder"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="0dp"
+        app:layout_constraintTop_toBottomOf="@+id/textDistanciaResponder" />
 </android.support.constraint.ConstraintLayout>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/menuConsultarSolicitudes"
+        android:icon="@mipmap/repo"
+        android:title="Consultar solicitudes"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/menuEstablecerDisponibilidad"
+        android:icon="@mipmap/info"
+        android:title="Disponibilidad"
+        app:showAsAction="ifRoom" />
+</menu>

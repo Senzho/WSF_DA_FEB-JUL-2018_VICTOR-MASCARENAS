@@ -3,106 +3,106 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="120dp">
+    android:layout_height="wrap_content">
 
     <ImageView
-        android:id="@+id/imageView17"
+        android:id="@+id/imagenSolicitanteSolicitud"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:layout_marginLeft="0dp"
-        android:layout_marginTop="0dp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@mipmap/person" />
 
     <TextView
-        android:id="@+id/textView50"
-        android:layout_width="wrap_content"
+        android:id="@+id/textDescripcionSolicitud"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="0dp"
-        android:text="Nombre de solicitante."
-        android:textSize="20sp"
-        app:layout_constraintLeft_toRightOf="@+id/imageView17"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/textView51"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="0dp"
         android:text="Descripción solicitud."
         android:textSize="18sp"
-        app:layout_constraintLeft_toRightOf="@+id/imageView17"
-        app:layout_constraintTop_toBottomOf="@+id/textView50" />
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textFechaSolicitud" />
 
     <TextView
-        android:id="@+id/textView52"
+        android:id="@+id/textFechaSolicitud"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginRight="8dp"
-        android:layout_marginTop="0dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginStart="8dp"
         android:text="Fecha."
         android:textSize="18sp"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView50" />
+        app:layout_constraintLeft_toRightOf="@+id/imagenSolicitanteSolicitud"
+        app:layout_constraintTop_toBottomOf="@+id/textNombreSolicitanteSolicitud" />
 
     <Button
-        android:id="@+id/button6"
+        android:id="@+id/botonAceptarSolicitud"
         style="@style/Widget.AppCompat.Button.Colored"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
         android:layout_marginLeft="8dp"
+        android:layout_marginTop="8dp"
+        android:onClick="botonAceptar_onClick"
         android:text="Aceptar"
         android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent" />
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textDescripcionSolicitud" />
 
     <Button
-        android:id="@+id/button7"
+        android:id="@+id/botonDenegarSolicitud"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
         android:text="Denegar"
         android:textSize="20sp"
-        app:layout_constraintLeft_toRightOf="@+id/button6"
-        android:layout_marginLeft="8dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_marginBottom="8dp" />
+        app:layout_constraintLeft_toRightOf="@+id/botonTerminarSolicitud"
+        app:layout_constraintTop_toBottomOf="@+id/textDescripcionSolicitud" />
 
     <ImageView
         android:id="@+id/imageView18"
         android:layout_width="30dp"
         android:layout_height="30dp"
-        app:srcCompat="@mipmap/info"
-        android:layout_marginRight="100dp"
-        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginBottom="20dp"
+        android:layout_marginEnd="110dp"
+        android:layout_marginRight="110dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_marginBottom="16dp" />
+        app:layout_constraintRight_toRightOf="parent"
+        app:srcCompat="@mipmap/info" />
 
     <TextView
-        android:id="@+id/textView53"
+        android:id="@+id/textEstadoSolicitud"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="22dp"
-        android:layout_marginRight="15dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginEnd="6dp"
+        android:layout_marginRight="6dp"
         android:text="Estado."
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView52" />
+        app:layout_constraintRight_toRightOf="parent" />
 
     <Button
-        android:id="@+id/button8"
+        android:id="@+id/botonTerminarSolicitud"
         style="@style/Widget.AppCompat.Button.Colored"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
         android:layout_marginLeft="8dp"
+        android:layout_marginTop="8dp"
         android:text="Terminar"
         android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent" />
+        app:layout_constraintLeft_toLeftOf="@+id/botonAceptarSolicitud"
+        app:layout_constraintTop_toBottomOf="@+id/textDescripcionSolicitud" />
+
+    <TextView
+        android:id="@+id/textNombreSolicitanteSolicitud"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:text="Nombre solicitante."
+        android:textSize="20sp"
+        app:layout_constraintLeft_toRightOf="@+id/imagenSolicitanteSolicitud"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 </android.support.constraint.ConstraintLayout>
