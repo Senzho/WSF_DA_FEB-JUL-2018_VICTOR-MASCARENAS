@@ -98,6 +98,43 @@ public class SolicitudFacadeREST extends AbstractFacade<Solicitud> {
         }
         return response;
     }
+    @PUT
+    @Path("/denegar/{idSolicitud}")
+    @Consumes({MediaType.APPLICATION_JSON})
+    @Produces({MediaType.APPLICATION_JSON})
+    public Response denegar(@PathParam("idSolicitud") Integer idSolicitud) {
+        Response response;
+        try{
+            Solicitud solicitud = (Solicitud) this.getEntityManager().createNamedQuery("Solicitud.findByIdSolicitud")
+                    .setParameter("idSolicitud", idSolicitud)
+                    .getSingleResult();
+            solicitud.setEstado(2);
+            super.edit(solicitud);
+            response = Response.status(200).entity("ok").build();
+        }catch(Exception excepcion){
+            response = Response.status(200).entity("err").build();
+        }
+        return response;
+    }
+    @PUT
+    @Path("/terminar/{idSolicitud}")
+    @Consumes({MediaType.APPLICATION_JSON})
+    @Produces({MediaType.APPLICATION_JSON})
+    public Response terminar(@PathParam("idSolicitud") Integer idSolicitud) {
+        Response response;
+        try{
+            Solicitud solicitud = (Solicitud) this.getEntityManager().createNamedQuery("Solicitud.findByIdSolicitud")
+                    .setParameter("idSolicitud", idSolicitud)
+                    .getSingleResult();
+            solicitud.setEstado(3);
+            solicitud.setFechaRealizacion(new Date());
+            super.edit(solicitud);
+            response = Response.status(200).entity("ok").build();
+        }catch(Exception excepcion){
+            response = Response.status(200).entity("err").build();
+        }
+        return response;
+    }
     @DELETE
     @Path("{id}")
     public void remove(@PathParam("id") Integer id) {

@@ -33,6 +33,7 @@ public class ConsultarSolicitudesActivity extends AppCompatActivity {
         this.prestador = (Prestador) getIntent().getSerializableExtra("prestador");
         this.cargarSolicitudes();
         AdaptadorSolicitudesPendientes adaptador = new AdaptadorSolicitudesPendientes(this, R.layout.panel_solicitud, this.solicitudes);
+        adaptador.setListView(this.listaSolicitudes);
         this.listaSolicitudes.setAdapter(adaptador);
     }
 }
