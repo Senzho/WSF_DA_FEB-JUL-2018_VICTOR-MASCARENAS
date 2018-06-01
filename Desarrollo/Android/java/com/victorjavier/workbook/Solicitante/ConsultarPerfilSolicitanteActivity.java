@@ -38,6 +38,9 @@ public class ConsultarPerfilSolicitanteActivity extends AppCompatActivity {
     private Solicitante solicitante;
     private List<Solicitud> solicitudes;
     private ListView lista;
+    private AdaptadorPeticiones adaptador;
+
+    private static final int CODIGO_RESULTADO_PUNTUACION = 200;
 
     private int calcularEdad(){
         return Dates.getYear(new Date()) - Dates.getYear(this.solicitante.getFechaNacimiento());
@@ -65,8 +68,8 @@ public class ConsultarPerfilSolicitanteActivity extends AppCompatActivity {
         this.cragarSolicitante();
         this.solicitudes = new ArrayList();
         this.cargarSolicitudes();
-        AdaptadorPeticiones adaptador = new AdaptadorPeticiones(this, R.layout.panel_peticion_terminada, this.solicitudes);
-        this.lista.setAdapter(adaptador);
+        this.adaptador = new AdaptadorPeticiones(this, R.layout.panel_peticion_terminada, this.solicitudes);
+        this.lista.setAdapter(this.adaptador);
         this.lista.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
@@ -74,7 +77,7 @@ public class ConsultarPerfilSolicitanteActivity extends AppCompatActivity {
                 if(solicitud.getEstrellas() == -1){
                     Intent intento = new Intent(ConsultarPerfilSolicitanteActivity.this, PuntuarTrabajadorActivity.class);
                     intento.putExtra("solicitud", solicitud);
-                    ConsultarPerfilSolicitanteActivity.this.startActivity(intento);
+                    ConsultarPerfilSolicitanteActivity.this.startActivityForResult(intento, ConsultarPerfilSolicitanteActivity.CODIGO_RESULTADO_PUNTUACION);
                 }else{
                     Toast.makeText(ConsultarPerfilSolicitanteActivity.this, "Ya puntuaste este trabajo", Toast.LENGTH_SHORT).show();
                 }
@@ -99,6 +102,13 @@ public class ConsultarPerfilSolicitanteActivity extends AppCompatActivity {
                 break;
         }
         return true;
+    }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data){
+        if (requestCode == ConsultarPerfilSolicitanteActivity.CODIGO_RESULTADO_PUNTUACION){
+            this.cargarSolicitudes();
+            this.lista.invalidateViews();
+        }
     }
 
     public void cragarSolicitante(){

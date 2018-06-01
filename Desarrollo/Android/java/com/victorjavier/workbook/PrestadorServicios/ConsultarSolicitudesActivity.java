@@ -20,8 +20,10 @@ public class ConsultarSolicitudesActivity extends AppCompatActivity {
     private Prestador prestador;
     private List<Solicitud> solicitudes;
 
+    public static int CODIGO_ACEPTACION_SOLICITUD = 100;
+
     private void cargarSolicitudes(){
-        this.solicitudes = new ArrayList();
+        this.solicitudes.clear();
         new ObtenerSolicitudesPendientesTask(this.solicitudes, this.prestador.getIdPrestador(), this.listaSolicitudes).execute();
     }
 
@@ -31,9 +33,17 @@ public class ConsultarSolicitudesActivity extends AppCompatActivity {
         setContentView(R.layout.activity_consultar_solicitudes);
         this.listaSolicitudes = (ListView) findViewById(R.id.listaSolicitudesPrestador);
         this.prestador = (Prestador) getIntent().getSerializableExtra("prestador");
+        this.solicitudes = new ArrayList();
         this.cargarSolicitudes();
         AdaptadorSolicitudesPendientes adaptador = new AdaptadorSolicitudesPendientes(this, R.layout.panel_solicitud, this.solicitudes);
         adaptador.setListView(this.listaSolicitudes);
         this.listaSolicitudes.setAdapter(adaptador);
+    }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data){
+        if (requestCode == ConsultarSolicitudesActivity.CODIGO_ACEPTACION_SOLICITUD){
+            this.cargarSolicitudes();
+            this.listaSolicitudes.invalidateViews();
+        }
     }
 }

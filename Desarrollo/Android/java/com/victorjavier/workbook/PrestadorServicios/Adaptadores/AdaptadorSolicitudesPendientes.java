@@ -1,5 +1,6 @@
 package com.victorjavier.workbook.PrestadorServicios.Adaptadores;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -20,6 +21,7 @@ import com.victorjavier.workbook.Dates;
 import com.victorjavier.workbook.Entidades.Solicitud;
 import com.victorjavier.workbook.FotoUsuario;
 import com.victorjavier.workbook.ObtenerFotoTask;
+import com.victorjavier.workbook.PrestadorServicios.ConsultarSolicitudesActivity;
 import com.victorjavier.workbook.PrestadorServicios.EscuchadorCancelacion;
 import com.victorjavier.workbook.PrestadorServicios.EscuchadorTermino;
 import com.victorjavier.workbook.PrestadorServicios.ResponderSolicitudActivity;
@@ -90,7 +92,7 @@ public class AdaptadorSolicitudesPendientes extends ArrayAdapter implements Escu
             public void onClick(View view) {
                 Intent intento = new Intent(AdaptadorSolicitudesPendientes.this.contexto, ResponderSolicitudActivity.class);
                 intento.putExtra("solicitud", solicitud);
-                AdaptadorSolicitudesPendientes.this.contexto.startActivity(intento);
+                ((Activity) AdaptadorSolicitudesPendientes.this.contexto).startActivityForResult(intento, ConsultarSolicitudesActivity.CODIGO_ACEPTACION_SOLICITUD);
             }
         });
         denegar.setOnClickListener(new View.OnClickListener(){

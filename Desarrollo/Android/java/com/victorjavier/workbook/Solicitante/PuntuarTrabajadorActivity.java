@@ -29,6 +29,8 @@ public class PuntuarTrabajadorActivity extends AppCompatActivity implements Escu
     private ImageView imagenEstrellas;
     private Spinner spinnerEstrellas;
     private Solicitud solicitud;
+    private String comentarioUtilizado;
+    private int estrellasUtilizadas;
 
     private void cargarSolicitud(){
         this.textNombrePrestador.setText(this.solicitud.getPrestador().getNombrePrestador());
@@ -64,11 +66,12 @@ public class PuntuarTrabajadorActivity extends AppCompatActivity implements Escu
         this.finish();
     }
     public void botonPuntuar_onClick(View view){
-        String comentario = this.textComentario.getText().toString().trim();
-        if (comentario.length() == 0){
+        this.comentarioUtilizado = this.textComentario.getText().toString().trim();
+        if (this.comentarioUtilizado.length() == 0){
             Toast.makeText(this, "Ingresa tu comentario", Toast.LENGTH_SHORT).show();
         }else{
-            new PuntuarTrabajadorTask(this.solicitud.getIdSolicitud(), Integer.parseInt(this.spinnerEstrellas.getSelectedItem().toString()), comentario, this).execute();
+            this.estrellasUtilizadas = Integer.parseInt(this.spinnerEstrellas.getSelectedItem().toString());
+            new PuntuarTrabajadorTask(this.solicitud.getIdSolicitud(), this.estrellasUtilizadas, this.comentarioUtilizado, this).execute();
         }
     }
 
@@ -79,6 +82,8 @@ public class PuntuarTrabajadorActivity extends AppCompatActivity implements Escu
     @Override
     public void solicitudPuntuada(boolean puntuada) {
         if (puntuada){
+            this.solicitud.setComentario(this.comentarioUtilizado);
+            this.solicitud.setEstrellas(this.estrellasUtilizadas);
             Toast.makeText(this, "Publicado", Toast.LENGTH_SHORT).show();
             this.finish();
         }else{
