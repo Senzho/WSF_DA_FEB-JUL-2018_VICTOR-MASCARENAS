@@ -20,6 +20,7 @@ import com.victorjavier.workbook.Solicitante.Tasks.ObtenerSolicitanteSesionTask;
 public class InicioSesionActivity extends AppCompatActivity implements EscuchadorInicioSesion, EscuchadorSolicitante, EscuchadorPrestador {
     private TextView textUsuario;
     private TextView textContrasena;
+    private int usuariosEncontrados;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,6 +28,7 @@ public class InicioSesionActivity extends AppCompatActivity implements Escuchado
         setContentView(R.layout.activity_inicio_sesion);
         this.textUsuario = (TextView) findViewById(R.id.textUsuario);
         this.textContrasena = (TextView) findViewById(R.id.textContrasena);
+        this.usuariosEncontrados = 0;
     }
 
     public void iniciarSesion_onClick(View view){
@@ -56,22 +58,28 @@ public class InicioSesionActivity extends AppCompatActivity implements Escuchado
 
     @Override
     public void solicitanteObtenido(Solicitante solicitante) {
+        this.usuariosEncontrados ++;
         if (solicitante != null){
             Intent intento = new Intent(this, ConsultarPerfilSolicitanteActivity.class);
             intento.putExtra("solicitante", solicitante);
             this.startActivity(intento);
         }else{
-            Toast.makeText(this, "No se pudo obtener el usuario, intente más tarde", Toast.LENGTH_SHORT).show();
+            if (this.usuariosEncontrados == 2){
+                Toast.makeText(this, "No se pudo obtener el usuario, intente más tarde", Toast.LENGTH_SHORT).show();
+            }
         }
     }
     @Override
     public void prestadorObtenido(Prestador prestador) {
+        this.usuariosEncontrados ++;
         if (prestador != null) {
             Intent intento = new Intent(this, ConsultarPerfilPrestadorActivity.class);
             intento.putExtra("prestador", prestador);
             this.startActivity(intento);
         }else{
-            Toast.makeText(this, "No se pudo obtener el usuario, intente más tarde", Toast.LENGTH_SHORT).show();
+            if (this.usuariosEncontrados == 2){
+                Toast.makeText(this, "No se pudo obtener el usuario, intente más tarde", Toast.LENGTH_SHORT).show();
+            }
         }
     }
 }
