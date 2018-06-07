@@ -11,9 +11,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.victorjavier.workbook.Entidades.Prestador;
+import com.victorjavier.workbook.Entidades.Solicitante;
 import com.victorjavier.workbook.FotoUsuario;
 import com.victorjavier.workbook.ObtenerFotoTask;
 import com.victorjavier.workbook.R;
+import com.victorjavier.workbook.Solicitante.Tasks.ObtenerDistanciaParaResultadoTask;
+import com.victorjavier.workbook.Solicitante.Tasks.ObtenerDistanciaTask;
 import com.victorjavier.workbook.Solicitante.Tasks.ObtenerPromedioTask;
 
 import java.util.List;
@@ -22,12 +25,14 @@ public class AdaptadorTrabajadores extends ArrayAdapter{
     private List<Prestador> prestadores;
     private int layout;
     private Context contexto;
+    private Solicitante solicitante;
 
-    public AdaptadorTrabajadores(@NonNull Context contexto, int resource, @NonNull List<Prestador> prestadores){
+    public AdaptadorTrabajadores(@NonNull Context contexto, int resource, @NonNull List<Prestador> prestadores, Solicitante solicitante){
         super(contexto, resource, prestadores);
         this.contexto = contexto;
         this.layout = resource;
         this.prestadores = prestadores;
+        this.solicitante = solicitante;
     }
 
     @Override
@@ -45,6 +50,7 @@ public class AdaptadorTrabajadores extends ArrayAdapter{
         textDescripcion.setText(prestador.getDescripcionPrestador());
         new ObtenerFotoTask(FotoUsuario.PRESTADOR, prestador.getIdPrestador(), imagenPrestador).execute();
         new ObtenerPromedioTask(prestador.getIdPrestador(), textEstrellas, imagenEstrella).execute();
+        //new ObtenerDistanciaTask(this.solicitante.getIdSolicitante(), prestador.getIdPrestador(), distancia).execute();
         return elemento;
     }
 }

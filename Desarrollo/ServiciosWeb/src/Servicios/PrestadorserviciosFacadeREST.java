@@ -1,7 +1,9 @@
 package Servicios;
 
+import BL.OperacionesString;
 import Modelo.Prestadorservicios;
 import Modelo.Solicitud;
+import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -54,6 +56,22 @@ public class PrestadorserviciosFacadeREST extends AbstractFacade<Prestadorservic
     @Produces({MediaType.APPLICATION_JSON})
     public List<Prestadorservicios> findAll() {
         return super.findAll();
+    }
+    @GET
+    @Path("{clave}")
+    @Consumes({MediaType.APPLICATION_JSON})
+    @Produces({MediaType.APPLICATION_JSON})
+    public List<Prestadorservicios> obtenerPrestadores(@PathParam("clave") String clave){
+        List<Prestadorservicios> prestadores = new ArrayList();
+        super.findAll().forEach((prestador) -> {
+            if (OperacionesString.coincide(clave, prestador.getDescripcionPrestador())
+                    || OperacionesString.coincide(clave, prestador.getDireccionPrestador())
+                    || OperacionesString.coincide(clave, prestador.getNombrePrestador())
+                    || PrestadorserviciosFacadeREST.esCategoria(clave)){
+                prestadores.add(prestador);
+            }
+        });
+        return prestadores;
     }
     @GET
     @Path("{from}/{to}")
@@ -127,5 +145,18 @@ public class PrestadorserviciosFacadeREST extends AbstractFacade<Prestadorservic
             }
         } 
         return promedio;
+    }
+    public static boolean esCategoria(String clave){
+        boolean es = false;
+        String[] categorias = {"Carpintería", "Software", "Repostería", "Cocina", "Fontanería", "Transporte", "Construcción", "Mecánica", "Metalurgia"};
+        clave = OperacionesString.sinAcentosYMayusculas(clave);
+        for (String categoria : categorias) {
+            categoria = OperacionesString.sinAcentosYMayusculas(categoria);
+            if (clave.equals(categoria)){
+                es = true;
+                break;
+            }
+        }
+        return es;
     }
 }

@@ -16,15 +16,15 @@ import com.victorjavier.workbook.Solicitante.Tasks.BuscarPrestadoresTask;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BuscarTrabajadorActivity extends AppCompatActivity {
+public class BuscarTrabajadorActivity extends AppCompatActivity implements SearchView.OnQueryTextListener {
     private SearchView textBuscar;
     private ListView listaPrestadores;
     private List<Prestador> prestadores;
     private Solicitante solicitante;
 
-    private void cargarListaPrestadaores(){
+    private void cargarListaPrestadaores(String clave){
         this.prestadores.clear();
-        new BuscarPrestadoresTask(this.prestadores, listaPrestadores).execute();
+        new BuscarPrestadoresTask(this.prestadores, listaPrestadores, clave).execute();
     }
 
     @Override
@@ -35,8 +35,9 @@ public class BuscarTrabajadorActivity extends AppCompatActivity {
         this.listaPrestadores = (ListView) findViewById(R.id.listaPrestadores);
         this.solicitante = (Solicitante) getIntent().getSerializableExtra("solicitante");
         this.prestadores = new ArrayList();
-        this.cargarListaPrestadaores();
-        AdaptadorTrabajadores adaptador = new AdaptadorTrabajadores(this, R.layout.panel_trabajador, this.prestadores);
+        this.textBuscar.setOnQueryTextListener(this);
+        //this.cargarListaPrestadaores();
+        AdaptadorTrabajadores adaptador = new AdaptadorTrabajadores(this, R.layout.panel_trabajador, this.prestadores, this.solicitante);
         this.listaPrestadores.setAdapter(adaptador);
         this.listaPrestadores.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -47,5 +48,22 @@ public class BuscarTrabajadorActivity extends AppCompatActivity {
                 BuscarTrabajadorActivity.this.startActivity(intento);
             }
         });
+    }
+
+    @Override
+    public boolean onQueryTextSubmit(String s) {
+        if (s.trim().length() > 0){
+            this.listaPrestadores.invalidateViews();
+            this.cargarListaPrestadaores(s);
+            this.listaPrestadores.invalidateViews();
+        }
+        return false;
+    }
+    @Override
+    public boolean onQueryTextChange(String s) {
+        /*this.listaPrestadores.invalidateViews();
+        this.cargarListaPrestadaores(s);
+        this.listaPrestadores.invalidateViews();*/
+        return false;
     }
 }

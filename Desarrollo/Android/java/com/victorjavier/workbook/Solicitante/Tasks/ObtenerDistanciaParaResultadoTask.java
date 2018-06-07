@@ -2,9 +2,14 @@ package com.victorjavier.workbook.Solicitante.Tasks;
 
 import android.os.AsyncTask;
 import android.widget.TextView;
+
 import com.victorjavier.workbook.Entidades.Posicion;
+import com.victorjavier.workbook.EscuchadorDistancia;
+
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -12,18 +17,18 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-public class ObtenerDistanciaTask extends AsyncTask<Void, Void, Boolean> implements EscuchadorPosicion {
+public class ObtenerDistanciaParaResultadoTask extends AsyncTask<Void, Void, Boolean> implements EscuchadorPosicion {
     private int idSolicitante;
     private int idPrestador;
     private Posicion posicionX;
     private Posicion posicionY;
     private String distacia;
-    private TextView texto;
+    private EscuchadorDistancia escuchador;
 
-    public ObtenerDistanciaTask(int idSolicitante, int idPrestador, TextView texto){
+    public ObtenerDistanciaParaResultadoTask(int idSolicitante, int idPrestador, EscuchadorDistancia escuchador){
         this.idSolicitante = idSolicitante;
         this.idPrestador = idPrestador;
-        this.texto = texto;
+        this.escuchador = escuchador;
         new ObtenerPosicionTask(this.idSolicitante, "solicitante", this).execute();
         new ObtenerPosicionTask(this.idPrestador, "prestador", this).execute();
     }
@@ -63,7 +68,7 @@ public class ObtenerDistanciaTask extends AsyncTask<Void, Void, Boolean> impleme
     }
     @Override
     protected void onPostExecute(final Boolean success) {
-        this.texto.setText(success?this.distacia:"</>");
+        this.escuchador.distanciaObtenida(success?this.distacia:"</>", this.posicionX, this.posicionY);
     }
 
     @Override

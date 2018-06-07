@@ -1,7 +1,6 @@
 package com.victorjavier.workbook.Solicitante;
 
 import android.content.Intent;
-import android.support.v4.app.SupportActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -11,19 +10,18 @@ import com.victorjavier.workbook.Dates;
 import com.victorjavier.workbook.Entidades.Posicion;
 import com.victorjavier.workbook.Entidades.Prestador;
 import com.victorjavier.workbook.Entidades.Solicitante;
+import com.victorjavier.workbook.EscuchadorDistancia;
 import com.victorjavier.workbook.FotoUsuario;
 import com.victorjavier.workbook.MapaActivity;
 import com.victorjavier.workbook.ObtenerFotoTask;
 import com.victorjavier.workbook.R;
-import com.victorjavier.workbook.Solicitante.Tasks.EscuchadorPosicion;
-import com.victorjavier.workbook.Solicitante.Tasks.ObtenerDistanciaTask;
+import com.victorjavier.workbook.Solicitante.Tasks.ObtenerDistanciaParaResultadoTask;
 import com.victorjavier.workbook.Solicitante.Tasks.ObtenerEstudioTask;
-import com.victorjavier.workbook.Solicitante.Tasks.ObtenerPosicionTask;
 import com.victorjavier.workbook.Solicitante.Tasks.ObtenerPromedioTask;
 
 import java.util.Date;
 
-public class DatosTrabajadorActivity extends AppCompatActivity implements EscuchadorPosicion{
+public class DatosTrabajadorActivity extends AppCompatActivity implements EscuchadorDistancia {
     private TextView textDistancia;
     private TextView textEdad;
     private TextView textCiudad;
@@ -46,8 +44,7 @@ public class DatosTrabajadorActivity extends AppCompatActivity implements Escuch
         this.textDireccion.setText(this.prestador.getDireccionPrestador());
         this.textCorreo.setText(this.prestador.getCorreoPrestador());
         this.textTelefono.setText(this.prestador.getTelefonoPrestador());
-        new ObtenerPosicionTask(this.prestador.getIdPrestador(), "prestador", this).execute();
-        new ObtenerPosicionTask(this.solicitante.getIdSolicitante(), "solicitante", this).execute();
+        new ObtenerDistanciaParaResultadoTask(this.solicitante.getIdSolicitante(), this.prestador.getIdPrestador(), this).execute();
         new ObtenerFotoTask(FotoUsuario.PRESTADOR, this.prestador.getIdPrestador(), this.imagen).execute();
         new ObtenerEstudioTask(this.prestador.getIdPrestador(), this.textEstudio).execute();
     }
@@ -69,7 +66,6 @@ public class DatosTrabajadorActivity extends AppCompatActivity implements Escuch
         this.textTelefono = (TextView) findViewById(R.id.textTelefonoPrestador);
         this.imagen = (ImageView) findViewById(R.id.imagenPrestadorDatos);
         this.imagenMundo = (ImageView) findViewById(R.id.imagenMundoDatos);
-        this.imagenMundo.setEnabled(false);
         TextView textEstrellas = (TextView) findViewById(R.id.textPuntuacionDatosTrabajador);
         ImageView image = (ImageView) findViewById(R.id.imagenEstrellaDatosTrabajador);
         this.solicitante = (Solicitante) getIntent().getSerializableExtra("solicitante");
@@ -90,22 +86,20 @@ public class DatosTrabajadorActivity extends AppCompatActivity implements Escuch
         this.startActivity(intento);
     }
     public void mundo_onClick(View view){
-        Intent intento = new Intent(this, MapaActivity.class);
-        intento.putExtra("posicionPrestador", this.posicionPrestador);
-        intento.putExtra("posicionSolicitante", this.posicionSolicitante);
-        intento.putExtra("nombrePrestador", this.prestador.getNombrePrestador());
-        intento.putExtra("nombreSolicitante", this.solicitante.getNombreSolicitante());
-        this.startActivity(intento);
+        if (this.textDistancia.getText().toString().endsWith("km")){
+            Intent intento = new Intent(this, MapaActivity.class);
+            intento.putExtra("posicionPrestador", this.posicionPrestador);
+            intento.putExtra("posicionSolicitante", this.posicionSolicitante);
+            intento.putExtra("nombrePrestador", this.prestador.getNombrePrestador());
+            intento.putExtra("nombreSolicitante", this.solicitante.getNombreSolicitante());
+            this.startActivity(intento);
+        }
     }
 
     @Override
-    public void posicionObtenida(Posicion posicion, String usuario) {
-        if (usuario.equals("prestador")){
-            this.posicionPrestador = posicion;
-        }else{
-            this.posicionSolicitante = posicion;
-            this.imagenMundo.setEnabled(true);
-            new ObtenerDistanciaTask(this.posicionPrestador, this.posicionSolicitante, this.textDistancia).execute();
-        }
+    public void distanciaObtenida(String distancia, Posicion posicionSolicitante, Posicion posicionPrestador) {
+        this.posicionSolicitante = posicionSolicitante;
+        this.posicionPrestador = posicionPrestador;
+        this.textDistancia.setText(distancia);
     }
 }

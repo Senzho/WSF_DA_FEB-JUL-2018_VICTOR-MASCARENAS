@@ -11,17 +11,17 @@ import com.victorjavier.workbook.Dates;
 import com.victorjavier.workbook.Entidades.Posicion;
 import com.victorjavier.workbook.Entidades.Solicitante;
 import com.victorjavier.workbook.Entidades.Solicitud;
+import com.victorjavier.workbook.EscuchadorDistancia;
 import com.victorjavier.workbook.FotoUsuario;
 import com.victorjavier.workbook.MapaActivity;
 import com.victorjavier.workbook.ObtenerFotoTask;
 import com.victorjavier.workbook.PrestadorServicios.Tasks.ResponderSolicitudTask;
 import com.victorjavier.workbook.R;
-import com.victorjavier.workbook.Solicitante.Tasks.EscuchadorPosicion;
-import com.victorjavier.workbook.Solicitante.Tasks.ObtenerDistanciaTask;
-import com.victorjavier.workbook.Solicitante.Tasks.ObtenerPosicionTask;
+import com.victorjavier.workbook.Solicitante.Tasks.ObtenerDistanciaParaResultadoTask;
+
 import java.util.Date;
 
-public class ResponderSolicitudActivity extends AppCompatActivity implements EscuchadorPosicion, EscuchadorSolicitudAceptada{
+public class ResponderSolicitudActivity extends AppCompatActivity implements EscuchadorSolicitudAceptada, EscuchadorDistancia{
     private TextView textDistancia;
     private TextView textCorreo;
     private TextView textFecha;
@@ -42,8 +42,7 @@ public class ResponderSolicitudActivity extends AppCompatActivity implements Esc
         Solicitante solicitante = this.solicitud.getSolicitante();
         ImageView imagen = (ImageView) findViewById(R.id.imagenSolicitanteResponder);
         new ObtenerFotoTask(FotoUsuario.SOLICITANTE, solicitante.getIdSolicitante(), imagen).execute();
-        new ObtenerPosicionTask(solicitante.getIdSolicitante(), "solicitante", this).execute();
-        new ObtenerPosicionTask(this.solicitud.getPrestador().getIdPrestador(), "prestador", this).execute();
+        new ObtenerDistanciaParaResultadoTask(solicitante.getIdSolicitante(), this.solicitud.getPrestador().getIdPrestador(), this).execute();
         this.textDireccion.setText(solicitante.getDireccionSolicitante());
         this.textCorreo.setText(solicitante.getCorreoSolicitante());
         this.textFecha.setText(Dates.getSentence(this.solicitud.getFechaInicial()));
@@ -66,22 +65,8 @@ public class ResponderSolicitudActivity extends AppCompatActivity implements Esc
         this.textFecha = (TextView) findViewById(R.id.textFechaResponder);
         this.textRespuesta = (TextView) findViewById(R.id.textRespuestaResponder);
         this.imagenMapa = (ImageView) findViewById(R.id.imagenMapaResponder);
-        this.imagenMapa.setEnabled(false);
         this.solicitud = (Solicitud) getIntent().getSerializableExtra("solicitud");
         this.cargarSolicitud();
-    }
-
-    @Override
-    public void posicionObtenida(Posicion posicion, String usuario) {
-        if (usuario.equals("solicitante")){
-            this.posicionSolicitante = posicion;
-        }else{
-            this.posicionPrestador = posicion;
-        }
-        if (this.posicionPrestador != null && this.posicionSolicitante != null){
-            new ObtenerDistanciaTask(this.posicionPrestador, this.posicionSolicitante, this.textDistancia).execute();
-            this.imagenMapa.setEnabled(true);
-        }
     }
 
     public void botonCancelar_onClick(View view){
@@ -96,12 +81,14 @@ public class ResponderSolicitudActivity extends AppCompatActivity implements Esc
         }
     }
     public void imagenMapa_onClick(View view){
-        Intent intento = new Intent(this, MapaActivity.class);
-        intento.putExtra("posicionSolicitante", this.posicionSolicitante);
-        intento.putExtra("posicionPrestador", this.posicionPrestador);
-        intento.putExtra("nombreSolicitante", this.solicitud.getSolicitante().getNombreSolicitante());
-        intento.putExtra("nombrePrestador", this.solicitud.getPrestador().getNombrePrestador());
-        this.startActivity(intento);
+        if (this.textDistancia.getText().toString().endsWith("km")){
+            Intent intento = new Intent(this, MapaActivity.class);
+            intento.putExtra("posicionSolicitante", this.posicionSolicitante);
+            intento.putExtra("posicionPrestador", this.posicionPrestador);
+            intento.putExtra("nombreSolicitante", this.solicitud.getSolicitante().getNombreSolicitante());
+            intento.putExtra("nombrePrestador", this.solicitud.getPrestador().getNombrePrestador());
+            this.startActivity(intento);
+        }
     }
 
     @Override
@@ -112,5 +99,12 @@ public class ResponderSolicitudActivity extends AppCompatActivity implements Esc
         }else{
             Toast.makeText(this, "La respuesta no fue enviada, intente de nuevo más tarde", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    @Override
+    public void distanciaObtenida(String distancia, Posicion posicionSolicitante, Posicion posicionPrestador) {
+        this.posicionSolicitante = posicionSolicitante;
+        this.posicionPrestador = posicionPrestador;
+        this.textDistancia.setText(distancia);
     }
 }
