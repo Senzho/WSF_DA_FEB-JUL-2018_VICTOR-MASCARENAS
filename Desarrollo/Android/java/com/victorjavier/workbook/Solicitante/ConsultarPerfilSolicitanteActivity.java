@@ -64,6 +64,7 @@ public class ConsultarPerfilSolicitanteActivity extends AppCompatActivity {
         this.textCorreoSolicitante = (TextView) findViewById(R.id.textCorreo);
         this.lista = (ListView) findViewById(R.id.listaPeticionesTerminadas);
         this.imagenUsuario = (ImageView) findViewById(R.id.imagenSolicitantePerfil);
+        this.getSupportActionBar().setTitle("Mi perfil");
         this.solicitante = (Solicitante) getIntent().getSerializableExtra("solicitante");
         this.cragarSolicitante();
         this.solicitudes = new ArrayList();

@@ -36,7 +36,7 @@ public class BuscarTrabajadorActivity extends AppCompatActivity implements Searc
         this.solicitante = (Solicitante) getIntent().getSerializableExtra("solicitante");
         this.prestadores = new ArrayList();
         this.textBuscar.setOnQueryTextListener(this);
-        //this.cargarListaPrestadaores();
+        this.getSupportActionBar().setTitle("Buscar trabajadores");
         AdaptadorTrabajadores adaptador = new AdaptadorTrabajadores(this, R.layout.panel_trabajador, this.prestadores, this.solicitante);
         this.listaPrestadores.setAdapter(adaptador);
         this.listaPrestadores.setOnItemClickListener(new AdapterView.OnItemClickListener() {

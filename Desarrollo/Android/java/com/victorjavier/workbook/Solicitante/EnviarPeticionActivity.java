@@ -18,6 +18,8 @@ import com.victorjavier.workbook.R;
 import com.victorjavier.workbook.Solicitante.Tasks.EscuchadorSolicitud;
 import com.victorjavier.workbook.Solicitante.Tasks.GuardarSolicitudTask;
 
+import java.util.Date;
+
 public class EnviarPeticionActivity extends AppCompatActivity implements EscuchadorSolicitud{
     private TextView textNombre;
     private TextView textCategoria;
@@ -44,6 +46,7 @@ public class EnviarPeticionActivity extends AppCompatActivity implements Escucha
         this.imagen = (ImageView) findViewById(R.id.imagenPrestadorPeticion);
         this.prestador = (Prestador) getIntent().getSerializableExtra("prestador");
         this.solicitante = (Solicitante) getIntent().getSerializableExtra("solicitante");
+        this.getSupportActionBar().setTitle("Enviar petición");
         this.cargarPrestador();
     }
 
@@ -57,7 +60,10 @@ public class EnviarPeticionActivity extends AppCompatActivity implements Escucha
             Toast.makeText(this, "Ingresa la fecha", Toast.LENGTH_SHORT).show();
         }else if(!Dates.isDate(fecha)){
             Toast.makeText(this, "La fecha no es válida (año-mes-dia)", Toast.LENGTH_SHORT).show();
-        }else if(descripcion.length() == 0){
+        }else if (Dates.getDiference(Dates.toDate(fecha), new Date()) > 0){
+            Toast.makeText(this, "Ingresa una fecha futura", Toast.LENGTH_SHORT).show();
+        }
+        else if(descripcion.length() == 0){
             Toast.makeText(this, "Ingresa la descripcion", Toast.LENGTH_SHORT).show();
         }else{
             Solicitud solicitud = new Solicitud();

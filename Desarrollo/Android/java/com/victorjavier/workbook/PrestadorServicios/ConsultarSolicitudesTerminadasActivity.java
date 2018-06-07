@@ -38,6 +38,7 @@ public class ConsultarSolicitudesTerminadasActivity extends AppCompatActivity {
         this.prestador = (Prestador) getIntent().getSerializableExtra("prestador");
         new ObtenerPromedioTask(this.prestador.getIdPrestador(), this.textEstrellas, this.imagenEstrella).execute();
         this.solicitudes = new ArrayList();
+        this.getSupportActionBar().setTitle("Mis trabajos");
         this.cargarSolicitudes();
         AdaptadorSolicitudes adaptador = new AdaptadorSolicitudes(this, R.layout.panel_trabajo_realizado, this.solicitudes);
         this.listaSolicitudes.setAdapter(adaptador);

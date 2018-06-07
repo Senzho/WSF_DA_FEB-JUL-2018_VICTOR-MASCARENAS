@@ -33,6 +33,7 @@ public class ConsultarSolicitudesActivity extends AppCompatActivity {
         setContentView(R.layout.activity_consultar_solicitudes);
         this.listaSolicitudes = (ListView) findViewById(R.id.listaSolicitudesPrestador);
         this.prestador = (Prestador) getIntent().getSerializableExtra("prestador");
+        this.getSupportActionBar().setTitle("Solicitudes recibidas");
         this.solicitudes = new ArrayList();
         this.cargarSolicitudes();
         AdaptadorSolicitudesPendientes adaptador = new AdaptadorSolicitudesPendientes(this, R.layout.panel_solicitud, this.solicitudes);

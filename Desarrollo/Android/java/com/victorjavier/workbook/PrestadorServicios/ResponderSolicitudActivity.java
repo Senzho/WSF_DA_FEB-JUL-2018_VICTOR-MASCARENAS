@@ -66,6 +66,7 @@ public class ResponderSolicitudActivity extends AppCompatActivity implements Esc
         this.textRespuesta = (TextView) findViewById(R.id.textRespuestaResponder);
         this.imagenMapa = (ImageView) findViewById(R.id.imagenMapaResponder);
         this.solicitud = (Solicitud) getIntent().getSerializableExtra("solicitud");
+        this.getSupportActionBar().setTitle("Responder solicitud");
         this.cargarSolicitud();
     }
 

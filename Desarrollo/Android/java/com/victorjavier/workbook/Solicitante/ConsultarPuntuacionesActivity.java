@@ -27,6 +27,7 @@ public class ConsultarPuntuacionesActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_consultar_puntuaciones);
         this.lista = (ListView) findViewById(R.id.listaPuntuaciones);
+        this.getSupportActionBar().setTitle("Puntuaciones");
         this.solicitudes = new ArrayList();
         this.idPrestador = this.getIntent().getIntExtra("idPrestador", 0);
         this.cargarPuntuaciones();

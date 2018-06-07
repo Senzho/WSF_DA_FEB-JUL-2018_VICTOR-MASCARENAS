@@ -28,6 +28,7 @@ public class InicioSesionActivity extends AppCompatActivity implements Escuchado
         setContentView(R.layout.activity_inicio_sesion);
         this.textUsuario = (TextView) findViewById(R.id.textUsuario);
         this.textContrasena = (TextView) findViewById(R.id.textContrasena);
+        this.getSupportActionBar().setTitle("Iniciar sesión");
     }
 
     public void iniciarSesion_onClick(View view){

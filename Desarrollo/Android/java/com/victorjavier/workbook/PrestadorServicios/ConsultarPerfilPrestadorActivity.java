@@ -63,6 +63,7 @@ public class ConsultarPerfilPrestadorActivity extends AppCompatActivity {
         this.textCategoria = (TextView) findViewById(R.id.textCategoriaPerfil);
         this.textGenero = (TextView) findViewById(R.id.textGeneroPrestadorPerfil);
         this.prestador = (Prestador) getIntent().getSerializableExtra("prestador");
+        this.getSupportActionBar().setTitle("Mi perfil");
         this.cargarPrestador();
     }
     @Override

@@ -57,6 +57,7 @@ public class PuntuarTrabajadorActivity extends AppCompatActivity implements Escu
         this.spinnerEstrellas = (Spinner) findViewById(R.id.spinnerPuntuar);
         this.imagenEstrellas = (ImageView) findViewById(R.id.imagenEstrellaPuntuar);
         this.solicitud = (Solicitud) getIntent().getSerializableExtra("solicitud");
+        this.getSupportActionBar().setTitle("Puntuar - " + solicitud.getPrestador().getNombrePrestador());
         this.cargarSolicitud();
         String[] estrellas = {"0", "1", "2", "3", "4", "5"};
         this.spinnerEstrellas.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, estrellas));
