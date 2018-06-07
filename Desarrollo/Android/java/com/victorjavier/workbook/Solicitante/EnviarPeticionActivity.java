@@ -31,7 +31,7 @@ public class EnviarPeticionActivity extends AppCompatActivity implements Escucha
 
     private void cargarPrestador(){
         this.textNombre.setText(this.prestador.getNombrePrestador());
-        this.textCategoria.setText(Categorias.categorias[this.prestador.getCategoría()]);
+        this.textCategoria.setText(Categorias.categorias[this.prestador.getCategoría() - 1]);
         new ObtenerFotoTask(FotoUsuario.PRESTADOR, this.prestador.getIdPrestador(), this.imagen).execute();
     }
 

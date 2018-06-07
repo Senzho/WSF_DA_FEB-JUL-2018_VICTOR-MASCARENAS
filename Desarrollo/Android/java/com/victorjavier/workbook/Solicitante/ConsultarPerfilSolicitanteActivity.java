@@ -32,7 +32,6 @@ public class ConsultarPerfilSolicitanteActivity extends AppCompatActivity {
     private TextView textTelefonoSolicitante;
     private TextView textGeneroSolicitante;
     private TextView textEdadSolicitante;
-    private TextView textCiudadSolicitante;
     private TextView textDireccionSolicitante;
     private ImageView imagenUsuario;
     private Solicitante solicitante;
@@ -56,7 +55,6 @@ public class ConsultarPerfilSolicitanteActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_consultar_perfil_solicitante);
         this.textNombreSolicitante = (TextView) findViewById(R.id.textNombreSolicitante);
-        this.textCiudadSolicitante = (TextView) findViewById(R.id.textCiudadSolicitante);
         this.textDireccionSolicitante = (TextView) findViewById(R.id.textDireccionSolicitante);
         this.textEdadSolicitante = (TextView) findViewById(R.id.textEdadSolicitante);
         this.textGeneroSolicitante = (TextView) findViewById(R.id.textGeneroSolicitante);

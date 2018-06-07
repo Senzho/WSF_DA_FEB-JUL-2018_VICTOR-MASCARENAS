@@ -50,7 +50,7 @@ public class AdaptadorTrabajadores extends ArrayAdapter{
         textDescripcion.setText(prestador.getDescripcionPrestador());
         new ObtenerFotoTask(FotoUsuario.PRESTADOR, prestador.getIdPrestador(), imagenPrestador).execute();
         new ObtenerPromedioTask(prestador.getIdPrestador(), textEstrellas, imagenEstrella).execute();
-        //new ObtenerDistanciaTask(this.solicitante.getIdSolicitante(), prestador.getIdPrestador(), distancia).execute();
+        new ObtenerDistanciaTask(this.solicitante.getIdSolicitante(), prestador.getIdPrestador(), distancia).execute();
         return elemento;
     }
 }

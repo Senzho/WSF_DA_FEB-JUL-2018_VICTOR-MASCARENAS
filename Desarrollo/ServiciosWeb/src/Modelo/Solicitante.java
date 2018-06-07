@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Modelo;
 
 import java.io.Serializable;
@@ -27,10 +22,6 @@ import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
-/**
- *
- * @author Victor Javier
- */
 @Entity
 @Table(name = "solicitante")
 @XmlRootElement
@@ -46,7 +37,6 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "Solicitante.findByIdUsuario", query = "SELECT s FROM Solicitante s WHERE s.idUsuario.idUsuario = :idUsuario")
 })
 public class Solicitante implements Serializable {
-
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -81,7 +71,6 @@ public class Solicitante implements Serializable {
 
     public Solicitante() {
     }
-
     public Solicitante(Integer idSolicitante) {
         this.idSolicitante = idSolicitante;
     }
@@ -89,91 +78,70 @@ public class Solicitante implements Serializable {
     public Integer getIdSolicitante() {
         return idSolicitante;
     }
-
     public void setIdSolicitante(Integer idSolicitante) {
         this.idSolicitante = idSolicitante;
     }
-
     public String getNombreSolicitante() {
         return nombreSolicitante;
     }
-
     public void setNombreSolicitante(String nombreSolicitante) {
         this.nombreSolicitante = nombreSolicitante;
     }
-
     public String getCorreoSolicitante() {
         return correoSolicitante;
     }
-
     public void setCorreoSolicitante(String correoSolicitante) {
         this.correoSolicitante = correoSolicitante;
     }
-
     public String getTelefonoSolicitante() {
         return telefonoSolicitante;
     }
-
     public void setTelefonoSolicitante(String telefonoSolicitante) {
         this.telefonoSolicitante = telefonoSolicitante;
     }
-
     public String getDireccionSolicitante() {
         return direccionSolicitante;
     }
-
     public void setDireccionSolicitante(String direccionSolicitante) {
         this.direccionSolicitante = direccionSolicitante;
     }
-
     public Date getFechaNacimiento() {
         return fechaNacimiento;
     }
-
     public void setFechaNacimiento(Date fechaNacimiento) {
         this.fechaNacimiento = fechaNacimiento;
     }
-
     public Integer getTipo() {
         return tipo;
     }
-
     public void setTipo(Integer tipo) {
         this.tipo = tipo;
     }
-
     public Integer getGeneroSolicitante() {
         return generoSolicitante;
     }
-
     public void setGeneroSolicitante(Integer generoSolicitante) {
         this.generoSolicitante = generoSolicitante;
     }
-
     @XmlTransient
     public Collection<Solicitud> getSolicitudCollection() {
         return solicitudCollection;
     }
-
     public void setSolicitudCollection(Collection<Solicitud> solicitudCollection) {
         this.solicitudCollection = solicitudCollection;
     }
-
     public Usuario getIdUsuario() {
         return idUsuario;
     }
-
     public void setIdUsuario(Usuario idUsuario) {
         this.idUsuario = idUsuario;
     }
-
     @Override
     public int hashCode() {
         int hash = 0;
         hash += (idSolicitante != null ? idSolicitante.hashCode() : 0);
         return hash;
     }
-
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
@@ -186,10 +154,8 @@ public class Solicitante implements Serializable {
         }
         return true;
     }
-
     @Override
     public String toString() {
         return "Modelo.Solicitante[ idSolicitante=" + idSolicitante + " ]";
     }
-    
 }

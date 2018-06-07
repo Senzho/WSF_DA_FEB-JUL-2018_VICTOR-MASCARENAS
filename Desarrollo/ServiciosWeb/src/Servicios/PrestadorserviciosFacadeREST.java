@@ -17,6 +17,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
 @Stateless
 @Path("SWPrestador")
@@ -33,6 +34,25 @@ public class PrestadorserviciosFacadeREST extends AbstractFacade<Prestadorservic
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public void create(Prestadorservicios entity) {
         super.create(entity);
+    }
+    @PUT
+    @Path("/estado/{idPrestador}/{estado}")
+    @Consumes({MediaType.APPLICATION_JSON})
+    @Produces({MediaType.APPLICATION_JSON})
+    public Response establecerEstado(@PathParam("idPrestador") Integer idPrestador, @PathParam("estado") String booleano){
+        Response response;
+        try{
+            Prestadorservicios prestador = (Prestadorservicios) this.getEntityManager().createNamedQuery("Prestadorservicios.findByIdPrestador")
+                    .setParameter("idPrestador", idPrestador)
+                    .getSingleResult();
+            prestador.setEstado(booleano.equals("true")?1:0);
+            super.edit(prestador);
+            response = Response.status(200).entity("ok").build();
+        }catch(Exception excepcion){
+            excepcion.printStackTrace();
+            response = Response.status(200).entity("err").build();
+        }
+        return response;
     }
     @PUT
     @Path("{id}")
@@ -63,14 +83,20 @@ public class PrestadorserviciosFacadeREST extends AbstractFacade<Prestadorservic
     @Produces({MediaType.APPLICATION_JSON})
     public List<Prestadorservicios> obtenerPrestadores(@PathParam("clave") String clave){
         List<Prestadorservicios> prestadores = new ArrayList();
-        super.findAll().forEach((prestador) -> {
-            if (OperacionesString.coincide(clave, prestador.getDescripcionPrestador())
-                    || OperacionesString.coincide(clave, prestador.getDireccionPrestador())
-                    || OperacionesString.coincide(clave, prestador.getNombrePrestador())
-                    || PrestadorserviciosFacadeREST.esCategoria(clave, prestador.getCategoria())){
-                prestadores.add(prestador);
-            }
-        });
+        try{
+            this.getEntityManager().createNamedQuery("Prestadorservicios.findActivos")
+                    .getResultList().forEach((prestadorJpa) -> {
+                        Prestadorservicios prestador = (Prestadorservicios) prestadorJpa;
+                        if (OperacionesString.coincide(clave, prestador.getDescripcionPrestador())
+                                || OperacionesString.coincide(clave, prestador.getDireccionPrestador())
+                                || OperacionesString.coincide(clave, prestador.getNombrePrestador())
+                                || PrestadorserviciosFacadeREST.esCategoria(clave, prestador.getCategoria())){
+                            prestadores.add(prestador);
+                        }
+                    });
+        }catch(Exception excepcion){
+            excepcion.printStackTrace();
+        }
         return prestadores;
     }
     @GET

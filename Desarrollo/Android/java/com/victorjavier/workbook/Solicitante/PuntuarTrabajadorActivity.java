@@ -9,6 +9,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.victorjavier.workbook.Categorias;
 import com.victorjavier.workbook.Dates;
 import com.victorjavier.workbook.Entidades.Solicitud;
 import com.victorjavier.workbook.FotoUsuario;
@@ -22,7 +23,7 @@ import java.util.Date;
 public class PuntuarTrabajadorActivity extends AppCompatActivity implements EscuchadorSolicitud{
     private TextView textNombrePrestador;
     private TextView textEdadPrestador;
-    private TextView textCiudadPrestador;
+    private TextView textCategoria;
     private TextView textDescripcion;
     private TextView textFecha;
     private TextView textComentario;
@@ -36,6 +37,7 @@ public class PuntuarTrabajadorActivity extends AppCompatActivity implements Escu
         this.textNombrePrestador.setText(this.solicitud.getPrestador().getNombrePrestador());
         this.textEdadPrestador.setText(this.calcularEdad() + " años.");
         this.textDescripcion.setText(this.solicitud.getDescripcion());
+        this.textCategoria.setText(Categorias.categorias[this.solicitud.getPrestador().getCategoría() - 1]);
         this.textFecha.setText(Dates.getSentence(this.solicitud.getFechaRealizacion()));
         ImageView imagen = (ImageView) findViewById(R.id.imagenPrestadorPuntuar);
         new ObtenerFotoTask(FotoUsuario.PRESTADOR, this.solicitud.getPrestador().getIdPrestador(), imagen).execute();
@@ -48,7 +50,7 @@ public class PuntuarTrabajadorActivity extends AppCompatActivity implements Escu
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_puntuar_trabajador);
-        this.textCiudadPrestador = (TextView) findViewById(R.id.textCiudadPrestadorPuntuar);
+        this.textCategoria = (TextView) findViewById(R.id.textCategoriaPuntuar);
         this.textComentario = (TextView) findViewById(R.id.textComentarioPuntuar);
         this.textDescripcion = (TextView) findViewById(R.id.textDescripcionSolicitudPuntuar);
         this.textEdadPrestador = (TextView) findViewById(R.id.textEdadPrestadorPuntuar);

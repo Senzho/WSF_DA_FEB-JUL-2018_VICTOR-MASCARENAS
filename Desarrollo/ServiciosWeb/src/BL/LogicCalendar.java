@@ -1,4 +1,4 @@
-package Modelo;
+package BL;
 
 import java.util.Calendar;
 import java.util.Date;

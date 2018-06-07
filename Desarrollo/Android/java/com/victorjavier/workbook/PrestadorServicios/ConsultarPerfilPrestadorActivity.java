@@ -9,18 +9,20 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.victorjavier.workbook.Categorias;
 import com.victorjavier.workbook.Dates;
 import com.victorjavier.workbook.Entidades.Prestador;
 import com.victorjavier.workbook.FotoUsuario;
 import com.victorjavier.workbook.ObtenerFotoTask;
+import com.victorjavier.workbook.PrestadorServicios.Tasks.EstadoTask;
 import com.victorjavier.workbook.R;
 import com.victorjavier.workbook.Solicitante.Tasks.ObtenerEstudioTask;
 
 import java.util.Date;
 
-public class ConsultarPerfilPrestadorActivity extends AppCompatActivity {
+public class ConsultarPerfilPrestadorActivity extends AppCompatActivity implements EscuchadorEstado {
     private TextView textNombre;
     private TextView textTelefono;
     private TextView textEdad;
@@ -31,6 +33,7 @@ public class ConsultarPerfilPrestadorActivity extends AppCompatActivity {
     private TextView textEstudios;
     private TextView textGenero;
     private Prestador prestador;
+    private MenuItem estadoItem;
 
     private void cargarPrestador(){
         this.textCorreo.setText(this.prestador.getCorreoPrestador());
@@ -39,7 +42,7 @@ public class ConsultarPerfilPrestadorActivity extends AppCompatActivity {
         this.textDescripcion.setText(this.prestador.getDescripcionPrestador());
         this.textDireccion.setText(this.prestador.getDireccionPrestador());
         this.textEdad.setText(this.calcularEdad() + " años.");
-        this.textCategoria.setText(Categorias.categorias[this.prestador.getCategoría()]);
+        this.textCategoria.setText(Categorias.categorias[this.prestador.getCategoría() - 1]);
         this.textGenero.setText(this.prestador.getGeneroPrestador()==0?"Femenino":"Masculino");
         ImageView imagen = (ImageView) findViewById(R.id.imagenPrestadorPerfil);
         new ObtenerFotoTask(FotoUsuario.PRESTADOR, this.prestador.getIdPrestador(), imagen).execute();
@@ -70,6 +73,12 @@ public class ConsultarPerfilPrestadorActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu){
         MenuInflater inflador = getMenuInflater();
         inflador.inflate(R.menu.menu_prestador, menu);
+        this.estadoItem = menu.getItem(1);
+        if (this.prestador.getEstado()){
+            this.estadoItem.setIcon(R.mipmap.chevron_up);
+        }else{
+            this.estadoItem.setIcon(R.mipmap.chevron_down);
+        }
         return true;
     }
     @Override
@@ -81,6 +90,7 @@ public class ConsultarPerfilPrestadorActivity extends AppCompatActivity {
                 this.startActivity(intento);
                 break;
             case R.id.menuEstablecerDisponibilidad:
+                new EstadoTask(this.prestador.getIdPrestador(), !this.prestador.getEstado(), this).execute();
                 break;
             default:
                 break;
@@ -92,5 +102,20 @@ public class ConsultarPerfilPrestadorActivity extends AppCompatActivity {
         Intent intento = new Intent(this, ConsultarSolicitudesTerminadasActivity.class);
         intento.putExtra("prestador", this.prestador);
         this.startActivity(intento);
+    }
+
+    @Override
+    public void estadoEstablecido(boolean establecido, boolean estado) {
+        if (establecido){
+            this.prestador.setEstado(estado);
+            if (estado){
+                this.estadoItem.setIcon(R.mipmap.chevron_up);
+            }else{
+                this.estadoItem.setIcon(R.mipmap.chevron_down);
+            }
+            Toast.makeText(this, "Tu estado cambió a " + (estado?"activo":"inactivo"), Toast.LENGTH_SHORT).show();
+        }else{
+            Toast.makeText(this, "No se pudo actualizar el estado", Toast.LENGTH_SHORT).show();
+        }
     }
 }

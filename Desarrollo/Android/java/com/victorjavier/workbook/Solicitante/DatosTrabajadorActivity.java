@@ -24,7 +24,6 @@ import java.util.Date;
 public class DatosTrabajadorActivity extends AppCompatActivity implements EscuchadorDistancia {
     private TextView textDistancia;
     private TextView textEdad;
-    private TextView textCiudad;
     private TextView textDescripcion;
     private TextView textDireccion;
     private TextView textEstudio;
@@ -58,7 +57,6 @@ public class DatosTrabajadorActivity extends AppCompatActivity implements Escuch
         setContentView(R.layout.activity_datos_trabajador);
         this.textDescripcion = (TextView) findViewById(R.id.textDescripcionProfesional);
         this.textEdad = (TextView) findViewById(R.id.textEdadPrestador);
-        this.textCiudad = (TextView) findViewById(R.id.textCiudadPrestador);
         this.textDireccion = (TextView) findViewById(R.id.textDireccionPrestador);
         this.textDistancia = (TextView) findViewById(R.id.textDistanciaPrestador);
         this.textEstudio = (TextView) findViewById(R.id.textEstudio);

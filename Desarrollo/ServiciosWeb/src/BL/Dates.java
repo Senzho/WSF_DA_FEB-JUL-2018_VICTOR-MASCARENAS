@@ -1,4 +1,4 @@
-package Modelo;
+package BL;
 
 import java.text.DateFormat;
 import java.text.ParseException;

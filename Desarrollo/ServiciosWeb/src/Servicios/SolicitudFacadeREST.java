@@ -1,6 +1,6 @@
 package Servicios;
 
-import Modelo.Dates;
+import BL.Dates;
 import Modelo.Prestadorservicios;
 import Modelo.Solicitante;
 import Modelo.Solicitud;

@@ -21,6 +21,7 @@ public class Prestador implements Serializable{
     private Date fechaNacimiento;
     private String direccionPrestador;
     private int generoPrestador;
+    private boolean estado;
 
     public Prestador(){
 
@@ -35,6 +36,7 @@ public class Prestador implements Serializable{
         this.fechaNacimiento = Dates.toDate(json.getString("fechaNacimiento"));
         this.direccionPrestador = json.getString("direccionPrestador");
         this.generoPrestador = json.getInt("generoPrestador");
+        this.estado = json.getInt("estado") == 1;
     }
 
     public int getIdPrestador() {
@@ -90,5 +92,11 @@ public class Prestador implements Serializable{
     }
     public void setGeneroPrestador(int generoPrestador) {
         this.generoPrestador = generoPrestador;
+    }
+    public boolean getEstado(){
+        return this.estado;
+    }
+    public void setEstado(boolean estado){
+        this.estado = estado;
     }
 }

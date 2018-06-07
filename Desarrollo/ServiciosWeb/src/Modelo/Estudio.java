@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Modelo;
 
 import java.io.Serializable;
@@ -21,10 +16,6 @@ import javax.persistence.Table;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 
-/**
- *
- * @author Victor Javier
- */
 @Entity
 @Table(name = "estudio")
 @XmlRootElement
@@ -34,7 +25,6 @@ import javax.xml.bind.annotation.XmlRootElement;
     , @NamedQuery(name = "Estudio.findByIdPrestador", query = "SELECT e FROM Estudio e WHERE e.idPrestador.idPrestador = :idPrestador")
 })
 public class Estudio implements Serializable {
-
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -51,7 +41,6 @@ public class Estudio implements Serializable {
 
     public Estudio() {
     }
-
     public Estudio(Integer idEstudio) {
         this.idEstudio = idEstudio;
     }
@@ -59,34 +48,27 @@ public class Estudio implements Serializable {
     public Integer getIdEstudio() {
         return idEstudio;
     }
-
     public void setIdEstudio(Integer idEstudio) {
         this.idEstudio = idEstudio;
     }
-
     public String getEstudio() {
         return estudio;
     }
-
     public void setEstudio(String estudio) {
         this.estudio = estudio;
     }
-
     public Prestadorservicios getIdPrestador() {
         return idPrestador;
     }
-
     public void setIdPrestador(Prestadorservicios idPrestador) {
         this.idPrestador = idPrestador;
     }
-
     @Override
     public int hashCode() {
         int hash = 0;
         hash += (idEstudio != null ? idEstudio.hashCode() : 0);
         return hash;
     }
-
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
@@ -99,10 +81,8 @@ public class Estudio implements Serializable {
         }
         return true;
     }
-
     @Override
     public String toString() {
         return "Modelo.Estudio[ idEstudio=" + idEstudio + " ]";
     }
-    
 }
