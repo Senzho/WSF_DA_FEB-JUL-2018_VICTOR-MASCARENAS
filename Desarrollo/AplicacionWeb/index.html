@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <title>Workbook Web</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="css/bootstrap.min.css" rel="stylesheet"/>
+        <script src="js/jquery-3.3.1.min.js"></script>
+        <script src="js/bootstrap.min.js"></script>
+    </head>
+    <body>
+        <center>
+            <div class="container">
+                <img width="150" height="150" alt="" src="Fotos/workbook_logo.png"/>
+                <label style="color: #FF4000; font-size: 100px; vertical-align: bottom" >orkbook</label>
+            </div>
+        </center>
+        <div style="padding-left: 25%; padding-right: 25%">
+            <form>
+                <div class="form-group row">
+                    <label for="nombreUsuario" class="col-md-2 col-form-label">Usuario</label>
+                    <div class="col-lg-10">
+                        <input type="text" class="form-control" id="nombreUsuario" placeholder="Ingresa tu usuario">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="contrasena" class="col-md-2 col-form-label">Constraseña</label>
+                    <div class="col-lg-10">
+                        <input type="password" class="form-control" id="contrasena" placeholder="Ingresa tu contraseña">
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div style="bottom: 0px; right: 25%; position: fixed; padding: 1em 1em 1em 1em">
+            <button type="button" class="btn btn-primary btn-lg" onclick="validarCampos();">Iniciar sesión</button>
+        </div>
+        <div style="bottom: 0px; left: 25%; position: fixed; padding: 1em 1em 1em 1em">
+            <button type="button" class="btn btn-secondary btn-lg" onclick="mostrarDialogoTipoCuenta();">Crear cuenta</button>
+        </div>
+        <div class="modal" tabindex="-1" role="dialog" id="dialogoTipoCuenta">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title">¿Qué tipo de cuenta deseas?</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="form-group row">
+                            <div class="col-sm-1">
+                                <input type="radio" class="form-control" id="radioSolicitante">
+                            </div>
+                            <label for="radioSolicitante" class="col-sm-8 col-form-label">Solicitante</label>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-sm-1">
+                                <input type="radio" class="form-control" id="radioPrestador">
+                            </div>
+                            <label for="radioPrestador" class="col-sm-8 col-form-label">Prestador de servicios</label>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary btn-sm" onclick="continuarCreacion();">Continuar</button>
+                    <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal" onclick="">Cancelar</button>
+                </div>
+              </div>
+            </div>
+        </div>
+        <script>
+            function mostrarDialogoTipoCuenta(){
+                $("#radioPrestador").prop("checked", false);
+                $("#radioSolicitante").prop("checked", false);
+                $("#dialogoTipoCuenta").modal("show");
+            }
+            function continuarCreacion(){
+                if ($("#radioPrestador").prop("checked")){
+                    alert("Seleccionaste el tipo Prestador de servicios");
+                }else{
+                    alert("Seleccionaste el tipo Solicitante");
+                }
+            }
+            function validarCampos(){
+                var usuario = $("#nombreUsuario").val();
+                var contrasena = $("#contrasena").val();
+                if (usuario.trim() !== ""){
+                    if (contrasena.trim() !== ""){
+                        obtenerUsuario(usuario, contrasena);
+                    }else{
+                        alert("Ingresa tu contraseña");
+                    }
+                }else{
+                    alert("Ingresa tu nombre de usuario");
+                }
+            }
+            function obtenerUsuario(usuario, contrasena){
+                $.ajax({
+                    url: 'http://localhost:8080/ServiciosWorkbook/webresources/SWUsuario/' + usuario + '/' + contrasena,
+                    type: 'GET',
+                    cache: false,
+                    dataType: 'json',
+                    provessData: false,
+                    contentType: false,
+                    success: function (data, textStatus, jqXHR){
+                        var idUsuario = data["idUsuario"];
+                        if (idUsuario > 0){
+                            obtenerSolicitante(idUsuario);
+                        }else{
+                            alert("Usuario y contraseña incorrectos");
+                        }
+                    },
+                    error: function (jqXHR, textStatus, errorThrown){
+                        alert("No se pudo obbtener el usuario, intente más tarde");
+                    }
+                });
+            }
+            function obtenerSolicitante(idUsuario){
+                $.ajax({
+                    url: 'http://localhost:8080/ServiciosWorkbook/webresources/SWSolicitante/usuario/' + idUsuario,
+                    type: 'GET',
+                    cache: false,
+                    dataType: 'json',
+                    provessData: false,
+                    contentType: false,
+                    success: function (data, textStatus, jqXHR){
+                        if (data["idSolicitante"] > 0){
+                            document.location = "perfilSolicitante.html?id=" + idUsuario;
+                        }else{
+                            obtenerPrestador(idUsuario);
+                        }
+                    },
+                    error: function (jqXHR, textStatus, errorThrown){
+                        alert("Ocurrió un error, intente más tarde");
+                    }
+                });
+            }
+            function obtenerPrestador(idUsuario){
+                $.ajax({
+                    url: 'http://localhost:8080/ServiciosWorkbook/webresources/SWPrestador/usuario/' + idUsuario,
+                    type: 'GET',
+                    cache: false,
+                    dataType: 'json',
+                    provessData: false,
+                    contentType: false,
+                    success: function (data, textStatus, jqXHR){
+                        if (data["idPrestador"] > 0){
+                            document.location = "perfilPrestador.html?id=" + idUsuario;
+                        }else{
+                            alert("No se pudo obtener la cuenta, intente más tarde");
+                        }
+                    },
+                    error: function (jqXHR, textStatus, errorThrown){
+                        alert("Ocurrió un error, intente más tarde");
+                    }
+                });
+            }
+        </script>
+    </body>
+</html>
