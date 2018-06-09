@@ -127,7 +127,7 @@
                     contentType: false,
                     success: function (data, textStatus, jqXHR){
                         if (data["idSolicitante"] > 0){
-                            document.location = "perfilSolicitante.html?id=" + idUsuario;
+                            document.location = "perfilSolicitante.html?id=" + data["idSolicitante"];
                         }else{
                             obtenerPrestador(idUsuario);
                         }
@@ -147,7 +147,7 @@
                     contentType: false,
                     success: function (data, textStatus, jqXHR){
                         if (data["idPrestador"] > 0){
-                            document.location = "perfilPrestador.html?id=" + idUsuario;
+                            document.location = "perfilPrestador.html?id=" + data["idPrestador"];
                         }else{
                             alert("No se pudo obtener la cuenta, intente más tarde");
                         }

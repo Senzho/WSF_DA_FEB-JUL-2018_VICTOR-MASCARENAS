@@ -5,13 +5,112 @@
         <title>Perfil solicitante</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="css/bootstrap.min.css" rel="stylesheet"/>
+        <script src="js/jquery-3.3.1.min.js"></script>
+        <script src="js/bootstrap.min.js"></script>
+        <script src="http://momentjs.com/downloads/moment.min.js"></script>
     </head>
     <body>
-        <div>TODO write content</div>
+        <div id="barraLateral" style="position: fixed; left: 0px; height: 100%; width: 40px; background-color: #BDBDBD">
+            <img id="imagenHome" width="40" height="40" alt="" src="Fotos/home.png"/>
+            <img id="imagenSolicitudes" width="40" height="40" alt="" src="Fotos/repo.png"/>
+        </div>
+        <div id="panelCentral" style="padding: 10px 10px 10px 50px;">
+            <div id="datosBasicos">
+                <img id="imagenPerfil" width="60" height="60" alt="" src="Fotos/person.png" style="border-radius: 50%; border-width: 2px; border-color: #FFFF00; border-style: solid"/>
+                <label id="nombreSolicitante" style="font-size: 30px; vertical-align: bottom"></label>
+                <img id="imagenEditar" width="30" height="30" alt="" src="Fotos/pencil.png" style="right: 10px; position: absolute; top: 25px"/>
+            </div>
+            <div id="datosGenerales">
+                <DL>
+                    <DD id="edad">Edad</DD>
+                    <DD id="direccion">Dirección</DD>
+                </DL>
+            </div>
+            <label style="font-size: 30px; color: #FF4000">Peticiones realizadas</label>
+            <div id="panelSolicitudes"></div>
+        </div>
         <script>
-            $(document).ready(function(){
-                alert("X");
+            $(document).ready(function validarParametro(){
+                var parametro;
+                var link = document.location.href;
+                if (link.indexOf("?") > 0){
+                    parametro = link.split("?")[1].split("=")[1];
+                }
+                if (parametro !== ""){
+                    obtenerSolicitante(parametro);
+                    obtenerPeticionesRealizadas(parametro);
+                }else{
+                    alert("La página no fue invocada correctamente");
+                }
             });
+            function obtenerCategoria(numeroCategoria){
+                var categoria = "";
+                var categorias = ["Carpintería", "Software", "Repostería", "Cocina", "Fontanería", "Transporte", "Construcción", "Mecánica", "Metalurgia"];
+                for (var i = 0; i < categorias.length; i ++){
+                    if (i === (numeroCategoria - 1)){
+                        categoria = categorias[i];
+                        break;
+                    }
+                }
+                return categoria;
+            }
+            function obtenerSolicitante(idSolicitante){
+                $.ajax({
+                    url: 'http://localhost:8080/ServiciosWorkbook/webresources/SWSolicitante/' + idSolicitante,
+                    type: 'GET',
+                    cache: false,
+                    dataType: 'json',
+                    provessData: false,
+                    contentType: false,
+                    success: function (data, textStatus, jqXHR){
+                        document.getElementById("imagenPerfil").src = "http://localhost:8080/ServiciosWorkbook/Fotos/Solicitantes/" + idSolicitante + ".jpg";
+                        document.getElementById("nombreSolicitante").innerHTML = data["nombreSolicitante"];
+                        var fechaActual = new Date();
+                        var cadActual = moment(fechaActual.getFullYear() + "-" + (fechaActual.getMonth() + 1) + "-" + fechaActual.getDay());
+                        var fechaSolicitante = moment(data["fechaNacimiento"].substring(0, 10));
+                        document.getElementById("edad").innerHTML = cadActual.diff(fechaSolicitante, "years") + " años";
+                        document.getElementById("direccion").innerHTML = data["direccionSolicitante"];
+                    },
+                    error: function (jqXHR, textStatus, errorThrown){
+                        alert("No se pudo obbtener el usuario, intente más tarde");
+                    }
+                });
+            }
+            function obtenerPeticionesRealizadas(idSolicitante){
+                $.ajax({
+                    url: 'http://localhost:8080/ServiciosWorkbook/webresources/SWSolicitud/terminadas/solicitante/' + idSolicitante,
+                    type: 'GET',
+                    cache: false,
+                    dataType: 'json',
+                    provessData: false,
+                    contentType: false,
+                    success: function (data, textStatus, jqXHR){
+                        $.each(data, function(i, solicitud){
+                            var prestador = solicitud["idPrestador"];
+                            var estrellas = solicitud["estrellas"];
+                            $cadHTML = "<div style=\"background-color: #E6E6E6; padding: 5px 5px 5px 5px\">";
+                            $cadHTML += "<img width=\"40\" height=\"40\" alt=\"\" src=\"http://localhost:8080/ServiciosWorkbook/Fotos/Prestadores/" + prestador["idPrestador"] + ".jpg" + "\" style=\"border-radius: 50%; border-width: 2px; border-color: #FFFF00; border-style: solid; vertical-align: middle\"/>";
+                            $cadHTML += "<label>&nbsp &nbsp" + obtenerCategoria(prestador["categoria"]) + "&nbsp &nbsp</label>";
+                            $cadHTML += "<label>&nbsp &nbsp" + prestador["nombrePrestador"] + "&nbsp &nbsp</label>";
+                            var rutaIcono;
+                            if (estrellas === -1){
+                                rutaIcono = "Fotos/star_empty.png";
+                            }else{
+                                rutaIcono = "Fotos/star_fill.png";
+                            }
+                            $cadHTML += "<div style=\"float: right\"><label>" + solicitud["fechaRealizacion"].substring(0, 10) + "&nbsp &nbsp</label>";
+                            $cadHTML += "<label style=\"font-size: 30px; vertical-align: middle\">" + estrellas + "</label>";
+                            $cadHTML += "<img width=\"30\" height=\"30\" alt=\"\" src=\"" + rutaIcono + "\" style=\"vertical-align: middle\"/></div>";
+                            $cadHTML += "</div><br/>";
+                            $("#panelSolicitudes").append($cadHTML);
+                        });
+                    },
+                    error: function (jqXHR, textStatus, errorThrown){
+                        alert("No se pudieron obbtener las solicitudes, intente más tarde");
+                    }
+                });
+            }
         </script>
     </body>
 </html>
