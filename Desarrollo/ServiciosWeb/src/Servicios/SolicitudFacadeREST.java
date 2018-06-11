@@ -229,6 +229,21 @@ public class SolicitudFacadeREST extends AbstractFacade<Solicitud> {
         }
         return solicitudes;
     }
+    @GET
+    @Path("/enviadas/{idSolicitante}")
+    @Consumes({MediaType.APPLICATION_JSON})
+    @Produces({MediaType.APPLICATION_JSON})
+    public List<Solicitud> obtenerSolicitudesEnviadas(@PathParam("idSolicitante") Integer idSolicitante){
+        List<Solicitud> solicitudes = new ArrayList();
+        try{
+            solicitudes = this.getEntityManager().createNamedQuery("Solicitud.findEnviadasByIdSolicitante")
+                    .setParameter("idSolicitante", idSolicitante)
+                    .getResultList();
+        }catch(Exception excepcion){
+            excepcion.printStackTrace();
+        }
+        return solicitudes;
+    }
     @Override
     protected EntityManager getEntityManager() {
         return em;

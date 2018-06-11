@@ -1,0 +1,28 @@
+.titulo{
+    color: #ff8000;
+    font-size: 100px;
+    vertical-align: bottom;
+}
+.encabezado{
+    font-size: 30px;
+    color: #ff8000;
+}
+.lateral{
+    position: fixed;
+    left: 0px;
+    height: 100%;
+    width: 40px;
+    background-color: #b18904;
+}
+.usuario_principal{
+    border-radius: 50%;
+    border-width: 2px; 
+    border-color: #ff8000; 
+    border-style: solid;
+}
+.usuario_secundario{
+    border-radius: 50%;
+    border-width: 1px;
+    border-color: #dba901;
+    border-style: solid;
+}

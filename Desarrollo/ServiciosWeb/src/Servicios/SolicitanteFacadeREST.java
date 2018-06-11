@@ -1,6 +1,7 @@
 package Servicios;
 
 import Modelo.Solicitante;
+import Modelo.Usuario;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -26,9 +27,8 @@ public class SolicitanteFacadeREST extends AbstractFacade<Solicitante> {
     }
 
     @POST
-    @Override
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public void create(Solicitante entity) {
+    public void crear(Solicitante entity) {
         super.create(entity);
     }
     @PUT

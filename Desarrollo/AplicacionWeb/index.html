@@ -2,10 +2,11 @@
 
 <html>
     <head>
-        <title>Workbook Web</title>
+        <title>Workbook Web - Iniciar sesión</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link href="css/bootstrap.min.css" rel="stylesheet"/>
+        <link href="css/Generales.css" rel="stylesheet"/>
         <script src="js/jquery-3.3.1.min.js"></script>
         <script src="js/bootstrap.min.js"></script>
     </head>
@@ -13,7 +14,7 @@
         <center>
             <div class="container">
                 <img width="150" height="150" alt="" src="Fotos/workbook_logo.png"/>
-                <label style="color: #FF4000; font-size: 100px; vertical-align: bottom" >orkbook</label>
+                <label class="titulo">orkbook</label>
             </div>
         </center>
         <div style="padding-left: 25%; padding-right: 25%">
@@ -80,7 +81,7 @@
                 if ($("#radioPrestador").prop("checked")){
                     alert("Seleccionaste el tipo Prestador de servicios");
                 }else{
-                    alert("Seleccionaste el tipo Solicitante");
+                    document.location = "cruCuentaSolicitante.html";
                 }
             }
             function validarCampos(){

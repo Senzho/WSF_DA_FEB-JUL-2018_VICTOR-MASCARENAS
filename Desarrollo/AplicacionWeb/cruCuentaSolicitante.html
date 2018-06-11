@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Nueva cuenta</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="css/bootstrap.min.css" rel="stylesheet"/>
+        <link href="css/Generales.css" rel="stylesheet"/>
+        <script src="js/jquery-3.3.1.min.js"></script>
+        <script src="js/bootstrap.min.js"></script>
+        <script src="http://momentjs.com/downloads/moment.min.js"></script>
+        <script src="js/Util.js"></script>
+    </head>
+    <body>
+        <label class="encabezado">Registra una cuenta</label>
+        <form>
+            <div style="position: absolute; width: 50%; padding: 10px 10px 10px 10px">
+                <div class="form-group row">
+                    <label for="nombre" class="col-md-2 col-form-label">Nombre</label>
+                    <div class="col-lg-10">
+                        <input type="text" class="form-control" id="nombre" placeholder="Ingresa tu usuario">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="apellido" class="col-md-2 col-form-label">Apellido</label>
+                    <div class="col-lg-10">
+                        <input type="text" class="form-control" id="apellido" placeholder="Ingresa tu apellido">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="genero" class="col-md-2 col-form-label">Género</label>
+                    <div class="col-lg-10">
+                        <select id="genero" class="form-control">
+                            <option value="1">Masculino</option>
+                            <option value="0">Femenino</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="correo" class="col-md-2 col-form-label">Correo</label>
+                    <div class="col-lg-10">
+                        <input type="text" class="form-control" id="correo" placeholder="Ingresa tu correo">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="telefono" class="col-md-2 col-form-label">Teléfono</label>
+                    <div class="col-lg-10">
+                        <input type="text" class="form-control" id="telefono" placeholder="Ingresa tu teléfono">
+                    </div>
+                </div>
+                <div class="form-group row" style="height: 20%">
+                    <label for="direccion" class="col-md-2 col-form-label">Dirección</label>
+                    <div class="col-lg-10">
+                        <textarea id="direccion" rows="4" cols="30" class="form-control" placeholder="Ingresa tu direccion"></textarea>
+                    </div>
+                </div>
+            </div>
+            <div style="position: absolute; width: 50%; left: 50%; padding: 10px 10px 10px 10px">
+                <div class="form-group row">
+                    <label for="fechaNacimiento" class="col-lg-4 col-form-label">Fecha de nacimiento</label>
+                    <div class="col-md-8">
+                        <input type="date" class="form-control" id="fechaNacimiento">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="usuario" class="col-md-2 col-form-label">Usuario</label>
+                    <div class="col-lg-10">
+                        <input type="text" class="form-control" id="usuario" placeholder="Ingresa tu usuario">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="contrasena" class="col-md-2 col-form-label">Contraseña</label>
+                    <div class="col-lg-10">
+                        <input type="password" class="form-control" id="contrasena">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="confirmacionContrasena" class="col-md-5 col-form-label">Confirma la contraseña</label>
+                    <div class="col-lg-7">
+                        <input type="password" class="form-control" id="confirmacionContrasena">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="ubicacion" class="col-md-2 col-form-label">Ubicación</label>
+                    <div class="col-md-2">
+                        <button type="button" class="btn btn-sm btn-secondary" id="ubicacion" onclick="mostrarMapa();">Seleccionar</button>
+                    </div>
+                </div>
+            </div>
+            <div style="position: fixed; bottom: 0px; right: 0px; padding: 1em 1em 1em 1em">
+                <button id="cancelar" type="button" class="btn btn-lg btn-secondary" onclick="regresarInicio();">Cancelar</button>
+                <button type="button" class="btn btn-lg btn-primary" onclick="validarCampos();">Registrarme</button>
+            </div>
+        </form>
+        <div class="modal" tabindex="-1" role="dialog" id="dialogoMapa">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Muestranos dónde vives</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div style="height: 300px" id="mapa" class="modal-body"></div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary btn-sm" onclick="esconderMapa();">Listo</button>
+                </div>
+              </div>
+            </div>
+        </div>
+        <script>
+            var marker = 0;
+            function initMap(){
+                var uluru = {lat: -25.363, lng: 131.044};
+                var map = new google.maps.Map(document.getElementById("mapa"), {
+                    zoom: 4,
+                    center: uluru
+                });
+                if (navigator.geolocation) {
+                    navigator.geolocation.getCurrentPosition(function(position) {
+                        uluru = {lat: position.coords.latitude, lng: position.coords.longitude};
+                        map.setCenter(uluru);
+                        map.setZoom(10);
+                    });
+                }
+                map.addListener("click", function(e){
+                    if (marker !== 0){
+                        marker.setMap(null);
+                    }
+                    marker = new google.maps.Marker({
+                        position: e.latLng,
+                        map: map
+                    });
+                    map.panTo(e.latLng);
+                });
+            }
+            function mostrarMapa(){
+                $("#dialogoMapa").modal("show");
+            }
+            function esconderMapa(){
+                if (marker !== 0){
+                    $("#dialogoMapa").modal("hide");
+                }else{
+                    alert("Selecciona tu ubicación");
+                }
+            }
+            function fechaValida(fechaNacimiento){
+                var valida;
+                var fechaActual = new Date();
+                var mes = obtenerMes(fechaActual);
+                var dia = obtenerDia(fechaActual);
+                var momentoActual = moment(fechaActual.getFullYear() + "-" + mes + "-" + dia);
+                var momentoUsuario = moment(fechaNacimiento);
+                if (momentoActual.diff(momentoUsuario, "years") >= 18){
+                    valida = true;
+                }else{
+                    valida = false;
+                }
+                return valida;
+            }
+            function validarCampos(){
+                var nombre = $("#nombre").val().trim();
+                var correo = $("#correo").val().trim();
+                var apellido = $("#apellido").val().trim();
+                var telefono = $("#telefono").val().trim();
+                var direccion = $("#direccion").val().trim();
+                var usuario = $("#usuario").val().trim();
+                var contrasena = $("#contrasena").val().trim();
+                var confirmacionContrasena = $("#confirmacionContrasena").val().trim();
+                var fechaNacimiento = $("#fechaNacimiento").val().trim();
+                if (nombre === ""){
+                    alert("Ingresa tu nombre");
+                }else if (correo === ""){
+                    alert("Ingresa tu correo");
+                }else if (apellido === ""){
+                    alert("Ingresa tu apellido");
+                }else if (telefono === ""){
+                    alert("Ingresa tu telefono");
+                }else if (direccion === ""){
+                    alert("Ingresa tu direccion");
+                }else if (usuario === ""){
+                    alert("Ingresa tu usuario");
+                }else if (contrasena === ""){
+                    alert("Ingresa tu contraseña");
+                }else if (confirmacionContrasena === ""){
+                    alert("Confirma tu contraseña");
+                }else if (contrasena !== confirmacionContrasena){
+                    alert("Las contraseñas no coinciden");
+                }else if (fechaNacimiento === ""){
+                    alert("Selecciona tu fecha de nacimiento");
+                }else if (!fechaValida(fechaNacimiento)){
+                    alert("Debes tener al menos 18 años");
+                }
+                else if (marker === 0){
+                    alert("Selecciona tu ubicación");
+                }else{
+                    registrarUsuario(nombre, apellido, correo, telefono, direccion, fechaNacimiento, usuario, contrasena);
+                }
+            }
+            function regresarInicio(){
+                document.location = "index.html";
+            }
+            function registrarUsuario(nombre, apellido, correo, telefono, direccion, fechaNacimiento, usuario, contrasena){
+                document.getElementById("cancelar").disabled = true;
+                data = {"idUsuario": 0, "nombreUsuario": usuario, "contrasena": contrasena};
+                $.ajax({
+                    url: 'http://localhost:8080/ServiciosWorkbook/webresources/SWUsuario',
+                    type: 'POST',
+                    data: JSON.stringify(data),
+                    cache: false,
+                    dataType: 'json',
+                    processData: false,
+                    contentType: 'application/json',
+                    success: function (data, textStatus, jqXHR){
+                        registrarSolicitante(nombre, apellido, correo, telefono, direccion, fechaNacimiento, data);
+                    },
+                    error: function(jqXHR, textStatus, errorThrown){
+                        alert("Lo sentimos, ocurrió un error en el registro, intente de nuevo más tarde");
+                    }
+                });
+            }
+            function registrarSolicitante(nombre, apellido, correo, telefono, direccion, fechaNacimiento, usuario){
+                var genero = $("#genero").val();
+                data = {"idSolicitante": 0, "nombreSolicitante": nombre + " " + apellido, "correoSolicitante": correo, "telefonoSolicitante": telefono, "direccionSolicitante": direccion, "fechaNacimiento": fechaNacimiento + "T00:00:00-06:00", "idUsuario": usuario, "tipo": 0, "generoSolicitante": genero};
+                $.ajax({
+                    url: 'http://localhost:8080/ServiciosWorkbook/webresources/SWSolicitante/',
+                    type: 'POST',
+                    data: JSON.stringify(data),
+                    cache: false,
+                    dataType: 'json',
+                    processData: false,
+                    contentType: 'application/json',
+                    success: function (data, textStatus, jqXHR){
+                        alert("La cuenta se registro exitosamente");
+                        regresarInicio();
+                    },
+                    error: function(jqXHR, textStatus, errorThrown){
+                        alert("Lo sentimos, ocurrió un error en el registro, intente de nuevo más tarde");
+                    }
+                });
+            }
+        </script>
+        <script async defer
+            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCrmegsWTIh5-9FTyCca6shBrroq4oBiZo&callback=initMap">
+        </script>
+    </body>
+</html>

@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Mis peticiones</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="css/bootstrap.min.css" rel="stylesheet"/>
+        <link href="css/Generales.css" rel="stylesheet"/>
+        <script src="js/jquery-3.3.1.min.js"></script>
+        <script src="js/bootstrap.min.js"></script>
+        <script src="js/Parametros.js"></script>
+        <script src="js/Util.js"></script>
+    </head>
+    <body>
+        <div id="barraLateral" class="lateral">
+            <img id="imagenHome" width="40" height="40" alt="" src="Fotos/home.png" onClick="regresarPerfil();"/>
+            <img id="imagenSolicitudes" width="40" height="40" alt="" src="Fotos/repo.png"/>
+        </div>
+        <div id="panelCentral" style="padding: 10px 10px 10px 50px;">
+            <label class="encabezado">Mis peticiones</label>
+            <div id="panelSolicitudes"></div>
+        </div>
+        <script>
+            var id;
+            $(document).ready(function(){
+                var parametro = obtenerUnico(document.location.href);
+                if (parametro !== ""){
+                    id = parametro;
+                    obtenerPeticionesEnviadas(parametro);
+                }else{
+                    alert("La página no fue invocada correctamente");
+                }
+            });
+            function obtenerPeticionesEnviadas(idSolicitante){
+                $.ajax({
+                    url: 'http://localhost:8080/ServiciosWorkbook/webresources/SWSolicitud/enviadas/' + idSolicitante,
+                    type: 'GET',
+                    cache: false,
+                    dataType: 'json',
+                    provessData: false,
+                    contentType: false,
+                    success: function (data, textStatus, jqXHR){
+                        $.each(data, function(i, solicitud){
+                            var prestador = solicitud["idPrestador"];
+                            $cadHTML = "<div style=\"background-color: #E6E6E6; padding: 5px 5px 5px 5px\">";
+                            $cadHTML += "<img width=\"40\" height=\"40\" alt=\"\" src=\"http://localhost:8080/ServiciosWorkbook/Fotos/Prestadores/" + prestador["idPrestador"] + ".jpg" + "\" class=\"usuario_secundario\" style=\"vertical-align: middle\"/>";
+                            $cadHTML += "<label>&nbsp &nbsp" + obtenerCategoria(prestador["categoria"]) + "&nbsp &nbsp</label>";
+                            $cadHTML += "<label>&nbsp &nbsp" + prestador["nombrePrestador"] + "&nbsp &nbsp</label>";
+                            $cadHTML += "<div style=\"float: right\"><label>" + solicitud["fechaInicial"].substring(0, 10) + "&nbsp &nbsp</label>";
+                            var estado = solicitud["estado"];
+                            var estadoCadena;
+                            if (estado === 0){
+                                estadoCadena = "En espera";
+                            }else if (estado === 1){
+                                estadoCadena = "Aceptada";
+                            }else if (estado === 2){
+                                estadoCadena = "Cancelada";
+                            }
+                            $cadHTML += "<label style=\"vertical-align: middle\">" + estadoCadena + "</label>";
+                            if (estado ===0){
+                                $cadHTML += "<img width=\"30\" height=\"30\" alt=\"\" src=\"Fotos/x.png\" style=\"vertical-align: middle\"/></div>";
+                            }else{
+                                $cadHTML += "</div>";
+                            }
+                            $cadHTML += "</div><br/>";
+                            $("#panelSolicitudes").append($cadHTML);
+                        });
+                    },
+                    error: function (jqXHR, textStatus, errorThrown){
+                        alert("No se pudieron obbtener las solicitudes, intente más tarde");
+                    }
+                });
+            }
+            function regresarPerfil(){
+                document.location = "perfilSolicitante.html?id=" + id;
+            }
+        </script>
+    </body>
+</html>

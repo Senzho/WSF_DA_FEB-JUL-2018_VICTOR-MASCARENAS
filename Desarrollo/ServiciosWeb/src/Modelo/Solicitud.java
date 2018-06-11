@@ -34,6 +34,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     , @NamedQuery(name = "Solicitud.findTerminadasByIdSolicitante", query = "SELECT s FROM Solicitud s WHERE s.idSolicitante.idSolicitante = :idSolicitante AND s.estado = 3")
     , @NamedQuery(name = "Solicitud.findTerminadasByIdPrestador", query = "SELECT s FROM Solicitud s WHERE s.idPrestador.idPrestador = :idPrestador AND s.estado = 3")
     , @NamedQuery(name = "Solicitud.findPendientesByIdPrestador", query = "SELECT s FROM Solicitud s WHERE s.idPrestador.idPrestador = :idPrestador AND s.estado < 2")
+    , @NamedQuery(name = "Solicitud.findEnviadasByIdSolicitante", query = "SELECT s FROM Solicitud s WHERE s.idSolicitante.idSolicitante = :idSolicitante AND s.estado < 3")
 })
 public class Solicitud implements Serializable {
     private static final long serialVersionUID = 1L;

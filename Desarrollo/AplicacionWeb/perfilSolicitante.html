@@ -2,22 +2,25 @@
 
 <html>
     <head>
-        <title>Perfil solicitante</title>
+        <title>Mi perfil</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link href="css/bootstrap.min.css" rel="stylesheet"/>
+        <link href="css/Generales.css" rel="stylesheet"/>
         <script src="js/jquery-3.3.1.min.js"></script>
         <script src="js/bootstrap.min.js"></script>
+        <script src="js/Parametros.js"></script>
+        <script src="js/Util.js"></script>
         <script src="http://momentjs.com/downloads/moment.min.js"></script>
     </head>
     <body>
-        <div id="barraLateral" style="position: fixed; left: 0px; height: 100%; width: 40px; background-color: #BDBDBD">
+        <div id="barraLateral" class="lateral">
             <img id="imagenHome" width="40" height="40" alt="" src="Fotos/home.png"/>
-            <img id="imagenSolicitudes" width="40" height="40" alt="" src="Fotos/repo.png"/>
+            <img id="imagenSolicitudes" width="40" height="40" alt="" src="Fotos/repo.png" onClick="consultarPeticiones();"/>
         </div>
         <div id="panelCentral" style="padding: 10px 10px 10px 50px;">
             <div id="datosBasicos">
-                <img id="imagenPerfil" width="60" height="60" alt="" src="Fotos/person.png" style="border-radius: 50%; border-width: 2px; border-color: #FFFF00; border-style: solid"/>
+                <img id="imagenPerfil" width="60" height="60" alt="" src="Fotos/person.png" class="usuario_principal"/>
                 <label id="nombreSolicitante" style="font-size: 30px; vertical-align: bottom"></label>
                 <img id="imagenEditar" width="30" height="30" alt="" src="Fotos/pencil.png" style="right: 10px; position: absolute; top: 25px"/>
             </div>
@@ -27,34 +30,21 @@
                     <DD id="direccion">Dirección</DD>
                 </DL>
             </div>
-            <label style="font-size: 30px; color: #FF4000">Peticiones realizadas</label>
+            <label class="encabezado">Peticiones realizadas</label>
             <div id="panelSolicitudes"></div>
         </div>
         <script>
+            var id;
             $(document).ready(function validarParametro(){
-                var parametro;
-                var link = document.location.href;
-                if (link.indexOf("?") > 0){
-                    parametro = link.split("?")[1].split("=")[1];
-                }
+                var parametro = obtenerUnico(document.location.href);
                 if (parametro !== ""){
+                    id = parametro;
                     obtenerSolicitante(parametro);
                     obtenerPeticionesRealizadas(parametro);
                 }else{
                     alert("La página no fue invocada correctamente");
                 }
             });
-            function obtenerCategoria(numeroCategoria){
-                var categoria = "";
-                var categorias = ["Carpintería", "Software", "Repostería", "Cocina", "Fontanería", "Transporte", "Construcción", "Mecánica", "Metalurgia"];
-                for (var i = 0; i < categorias.length; i ++){
-                    if (i === (numeroCategoria - 1)){
-                        categoria = categorias[i];
-                        break;
-                    }
-                }
-                return categoria;
-            }
             function obtenerSolicitante(idSolicitante){
                 $.ajax({
                     url: 'http://localhost:8080/ServiciosWorkbook/webresources/SWSolicitante/' + idSolicitante,
@@ -67,7 +57,9 @@
                         document.getElementById("imagenPerfil").src = "http://localhost:8080/ServiciosWorkbook/Fotos/Solicitantes/" + idSolicitante + ".jpg";
                         document.getElementById("nombreSolicitante").innerHTML = data["nombreSolicitante"];
                         var fechaActual = new Date();
-                        var cadActual = moment(fechaActual.getFullYear() + "-" + (fechaActual.getMonth() + 1) + "-" + fechaActual.getDay());
+                        var mes = obtenerMes(fechaActual);
+                        var dia = obtenerDia(fechaActual);
+                        var cadActual = moment(fechaActual.getFullYear() + "-" + mes + "-" + dia);
                         var fechaSolicitante = moment(data["fechaNacimiento"].substring(0, 10));
                         document.getElementById("edad").innerHTML = cadActual.diff(fechaSolicitante, "years") + " años";
                         document.getElementById("direccion").innerHTML = data["direccionSolicitante"];
@@ -90,7 +82,7 @@
                             var prestador = solicitud["idPrestador"];
                             var estrellas = solicitud["estrellas"];
                             $cadHTML = "<div style=\"background-color: #E6E6E6; padding: 5px 5px 5px 5px\">";
-                            $cadHTML += "<img width=\"40\" height=\"40\" alt=\"\" src=\"http://localhost:8080/ServiciosWorkbook/Fotos/Prestadores/" + prestador["idPrestador"] + ".jpg" + "\" style=\"border-radius: 50%; border-width: 2px; border-color: #FFFF00; border-style: solid; vertical-align: middle\"/>";
+                            $cadHTML += "<img width=\"40\" height=\"40\" alt=\"\" src=\"http://localhost:8080/ServiciosWorkbook/Fotos/Prestadores/" + prestador["idPrestador"] + ".jpg" + "\" class=\"usuario_secundario\" style=\"vertical-align: middle\"/>";
                             $cadHTML += "<label>&nbsp &nbsp" + obtenerCategoria(prestador["categoria"]) + "&nbsp &nbsp</label>";
                             $cadHTML += "<label>&nbsp &nbsp" + prestador["nombrePrestador"] + "&nbsp &nbsp</label>";
                             var rutaIcono;
@@ -110,6 +102,9 @@
                         alert("No se pudieron obbtener las solicitudes, intente más tarde");
                     }
                 });
+            }
+            function consultarPeticiones(){
+                document.location = "consultarPeticiones.html?id=" + id;
             }
         </script>
     </body>
