@@ -1,8 +1,11 @@
 package Servicios;
 
 import Modelo.Solicitante;
-import Modelo.Usuario;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -15,6 +18,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+import org.apache.commons.codec.binary.Base64;
 
 @Stateless
 @Path("SWSolicitante")
@@ -28,13 +32,31 @@ public class SolicitanteFacadeREST extends AbstractFacade<Solicitante> {
 
     @POST
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public void crear(Solicitante entity) {
+    public Solicitante crear(Solicitante entity) {
         super.create(entity);
+        return entity;
+    }
+    @POST
+    @Path("/imagen/{idSolicitante}")
+    @Consumes({MediaType.TEXT_PLAIN})
+    public void guardarFoto(String cadenaBase64, @PathParam("idSolicitante") Integer idSolicitante){
+        String imagen = cadenaBase64.split(",")[1];
+        Base64 decoder = new Base64();
+        byte[] imgBytes = decoder.decode(imagen);
+        FileOutputStream osf;
+        try {
+            String rutaBase = "C:/Users/Victor Javier/Documents/NetBeansProjects/ServiciosWorkbook/web/Fotos/Solicitantes/" + idSolicitante + ".jpg";
+            osf = new FileOutputStream(rutaBase);
+            osf.write(imgBytes);
+            osf.flush();
+            osf.close();
+        } catch (IOException ex) {
+            Logger.getLogger(SolicitanteFacadeREST.class.getName()).log(Level.SEVERE, null, ex);
+        }   
     }
     @PUT
-    @Path("{id}")
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public void edit(@PathParam("id") Integer id, Solicitante entity) {
+    public void editar(Solicitante entity) {
         super.edit(entity);
     }
     @DELETE

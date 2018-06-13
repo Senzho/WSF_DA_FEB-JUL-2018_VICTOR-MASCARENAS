@@ -5,6 +5,7 @@
         <title>Mi perfil</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="icon" type="image/png" href="Fotos/workbook_logo.png"/>
         <link href="css/bootstrap.min.css" rel="stylesheet"/>
         <link href="css/Generales.css" rel="stylesheet"/>
         <script src="js/jquery-3.3.1.min.js"></script>
@@ -22,7 +23,7 @@
             <div id="datosBasicos">
                 <img id="imagenPerfil" width="60" height="60" alt="" src="Fotos/person.png" class="usuario_principal"/>
                 <label id="nombreSolicitante" style="font-size: 30px; vertical-align: bottom"></label>
-                <img id="imagenEditar" width="30" height="30" alt="" src="Fotos/pencil.png" style="right: 10px; position: absolute; top: 25px"/>
+                <img id="imagenEditar" width="30" height="30" alt="" src="Fotos/pencil.png" style="right: 10px; position: absolute; top: 25px" onclick="editarCuenta();"/>
             </div>
             <div id="datosGenerales">
                 <DL>
@@ -54,14 +55,24 @@
                     provessData: false,
                     contentType: false,
                     success: function (data, textStatus, jqXHR){
-                        document.getElementById("imagenPerfil").src = "http://localhost:8080/ServiciosWorkbook/Fotos/Solicitantes/" + idSolicitante + ".jpg";
+                        var imagen = document.getElementById("imagenPerfil");
+                        imagen.src = "http://localhost:8080/ServiciosWorkbook/Fotos/Solicitantes/" + idSolicitante + ".jpg";
+                        imagen.onerror = function(){
+                            imagen.src = "Fotos/person.png";
+                        };
                         document.getElementById("nombreSolicitante").innerHTML = data["nombreSolicitante"];
                         var fechaActual = new Date();
                         var mes = obtenerMes(fechaActual);
                         var dia = obtenerDia(fechaActual);
-                        var cadActual = moment(fechaActual.getFullYear() + "-" + mes + "-" + dia);
-                        var fechaSolicitante = moment(data["fechaNacimiento"].substring(0, 10));
-                        document.getElementById("edad").innerHTML = cadActual.diff(fechaSolicitante, "years") + " años";
+                        var fechaFinal = data["fechaNacimiento"].substring(0, 10);
+                        try{
+                            var cadActual = moment(fechaActual.getFullYear() + "-" + mes + "-" + dia);
+                            var fechaSolicitante = moment(fechaFinal);
+                            fechaFinal = cadActual.diff(fechaSolicitante, "years") + " años";
+                        }catch(e){
+                            console.log(e);
+                        }
+                        document.getElementById("edad").innerHTML = fechaFinal;
                         document.getElementById("direccion").innerHTML = data["direccionSolicitante"];
                     },
                     error: function (jqXHR, textStatus, errorThrown){
@@ -105,6 +116,9 @@
             }
             function consultarPeticiones(){
                 document.location = "consultarPeticiones.html?id=" + id;
+            }
+            function editarCuenta(){
+                document.location = "editarCuentaSolicitante.html?id=" + id;
             }
         </script>
     </body>

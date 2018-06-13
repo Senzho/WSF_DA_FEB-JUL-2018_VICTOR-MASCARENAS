@@ -9,6 +9,9 @@ function obtenerCategoria(numeroCategoria){
     }
     return categoria;
 }
+function obtenerAno(cadena){
+    return cadena.substring(0, 4);
+}
 function obtenerMes(fecha){
     var mes = fecha.getMonth() + 1;
     if (mes < 10){

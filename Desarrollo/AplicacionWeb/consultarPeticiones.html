@@ -6,6 +6,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link href="css/bootstrap.min.css" rel="stylesheet"/>
         <link href="css/Generales.css" rel="stylesheet"/>
+        <link rel="icon" type="image/png" href="Fotos/workbook_logo.png"/>
         <script src="js/jquery-3.3.1.min.js"></script>
         <script src="js/bootstrap.min.js"></script>
         <script src="js/Parametros.js"></script>
@@ -40,6 +41,9 @@
                     provessData: false,
                     contentType: false,
                     success: function (data, textStatus, jqXHR){
+                        $("#panelSolicitudes").find("div")
+                                .remove()
+                                .end();
                         $.each(data, function(i, solicitud){
                             var prestador = solicitud["idPrestador"];
                             $cadHTML = "<div style=\"background-color: #E6E6E6; padding: 5px 5px 5px 5px\">";
@@ -58,7 +62,7 @@
                             }
                             $cadHTML += "<label style=\"vertical-align: middle\">" + estadoCadena + "</label>";
                             if (estado ===0){
-                                $cadHTML += "<img width=\"30\" height=\"30\" alt=\"\" src=\"Fotos/x.png\" style=\"vertical-align: middle\"/></div>";
+                                $cadHTML += "<img width=\"30\" height=\"30\" alt=\"\" src=\"Fotos/x.png\" style=\"vertical-align: middle\" onclick=\"cancelarPeticion(" + solicitud["idSolicitud"] + ");\"/></div>";
                             }else{
                                 $cadHTML += "</div>";
                             }
@@ -67,12 +71,29 @@
                         });
                     },
                     error: function (jqXHR, textStatus, errorThrown){
-                        alert("No se pudieron obbtener las solicitudes, intente más tarde");
+                        alert("No se pudieron obtener las solicitudes, intente más tarde");
                     }
                 });
             }
             function regresarPerfil(){
                 document.location = "perfilSolicitante.html?id=" + id;
+            }
+            function cancelarPeticion(idSolicitud){
+                $.ajax({
+                    url: 'http://localhost:8080/ServiciosWorkbook/webresources/SWSolicitud/denegar/' + idSolicitud,
+                    type: 'PUT',
+                    cache: false,
+                    dataType: 'json',
+                    provessData: false,
+                    contentType: false,
+                    success: function (data, textStatus, jqXHR){
+                        alert("La petición fue cancelada");
+                        obtenerPeticionesEnviadas(id);
+                    },
+                    error: function (jqXHR, textStatus, errorThrown){
+                        alert("La petición no fue cancelada: " + textStatus);
+                    }
+                });
             }
         </script>
     </body>

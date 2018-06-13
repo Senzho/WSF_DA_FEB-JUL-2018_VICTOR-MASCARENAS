@@ -1,18 +1,20 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Nueva cuenta</title>
+        <title>Editar mi cuenta</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link href="css/bootstrap.min.css" rel="stylesheet"/>
         <link href="css/Generales.css" rel="stylesheet"/>
+        <link rel="icon" type="image/png" href="Fotos/workbook_logo.png"/>
         <script src="js/jquery-3.3.1.min.js"></script>
         <script src="js/bootstrap.min.js"></script>
         <script src="http://momentjs.com/downloads/moment.min.js"></script>
         <script src="js/Util.js"></script>
+        <script src="js/Parametros.js"></script>
     </head>
     <body>
-        <label class="encabezado">Registra una cuenta</label>
+        <label class="encabezado">Edita tu cuenta</label>
         <form>
             <div style="position: absolute; width: 50%; padding: 10px 10px 10px 10px">
                 <div class="form-group row">
@@ -24,7 +26,7 @@
                 <div class="form-group row">
                     <label for="apellido" class="col-md-2 col-form-label">Apellido</label>
                     <div class="col-lg-10">
-                        <input type="text" class="form-control" id="apellido" placeholder="Ingresa tu apellido">
+                        <input type="text" class="form-control" id="apellido" placeholder="Ingresa tu apellido" disabled="disabled">
                     </div>
                 </div>
                 <div class="form-group row">
@@ -82,21 +84,27 @@
                 </div>
                 <div class="form-group row">
                     <label for="ubicacion" class="col-md-2 col-form-label">Ubicación</label>
-                    <div class="col-md-2">
+                    <div class="col-sm-2">
                         <button type="button" class="btn btn-sm btn-secondary" id="ubicacion" onclick="mostrarMapa();">Seleccionar</button>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="foto" class="col-md-2 col-form-label">Foto de perfíl</label>
+                    <div class="col-lg-7">
+                        <input type="file" class="btn btn-sm btn-secondary" id="foto" onchange="encodeImageFileAsURL(this);" accept="image/jpg"/>
                     </div>
                 </div>
             </div>
             <div style="position: fixed; bottom: 0px; right: 0px; padding: 1em 1em 1em 1em">
-                <button id="cancelar" type="button" class="btn btn-lg btn-secondary" onclick="regresarInicio();">Cancelar</button>
-                <button type="button" class="btn btn-lg btn-primary" onclick="validarCampos();">Registrarme</button>
+                <button id="cancelar" type="button" class="btn btn-lg btn-secondary" onclick="regresarPerfil();">Cancelar</button>
+                <button id="guardar" type="button" class="btn btn-lg btn-primary" onclick="validarCampos();">Guardar</button>
             </div>
         </form>
         <div class="modal" tabindex="-1" role="dialog" id="dialogoMapa">
             <div class="modal-dialog" role="document">
               <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Muestranos dónde vives</h5>
+                    <h5 class="modal-title">Mi ubicación</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -109,10 +117,85 @@
             </div>
         </div>
         <script>
+            var id;
+            var idUsuario;
+            var idPosicion;
+            $(document).ready(function validarParametro(){
+                document.getElementById("guardar").disabled = true;
+                var parametro = obtenerUnico(document.location.href);
+                if (parametro !== ""){
+                    id = parametro;
+                    obtenerSolicitante(parametro);
+                    obtenerPosicion(parametro);
+                }else{
+                    alert("La página no fue invocada correctamente");
+                }
+            });
+            function obtenerSolicitante(idSolicitante){
+                $.ajax({
+                    url: 'http://localhost:8080/ServiciosWorkbook/webresources/SWSolicitante/' + idSolicitante,
+                    type: 'GET',
+                    cache: false,
+                    dataType: 'json',
+                    provessData: false,
+                    contentType: false,
+                    success: function (data, textStatus, jqXHR){
+                        document.getElementById("nombre").value = data["nombreSolicitante"];
+                        document.getElementById("correo").value = data["correoSolicitante"];
+                        document.getElementById("telefono").value = data["telefonoSolicitante"];
+                        document.getElementById("direccion").innerHTML = data["direccionSolicitante"];
+                        document.getElementById("genero").value = data["generoSolicitante"];
+                        var usuario = data["idUsuario"];
+                        idUsuario = usuario["idUsuario"];
+                        document.getElementById("usuario").value = usuario["nombreUsuario"];
+                        document.getElementById("contrasena").value = usuario["contrasena"];
+                        document.getElementById("confirmacionContrasena").value = usuario["contrasena"];
+                        document.getElementById("fechaNacimiento").value = data["fechaNacimiento"].substring(0, 10);
+                    },
+                    error: function (jqXHR, textStatus, errorThrown){
+                        alert("No se pudo obbtener el usuario, intente más tarde");
+                        regresarPerfil();
+                    }
+                });
+            }
+            function obtenerPosicion(idSolicitante){
+                $.ajax({
+                    url: 'http://localhost:8080/ServiciosWorkbook/webresources/SWPosicion/solicitante/' + idSolicitante,
+                    type: 'GET',
+                    cache: false,
+                    dataType: 'json',
+                    provessData: false,
+                    contentType: false,
+                    success: function (data, textStatus, jqXHR){
+                        idPosicion = data["idPosicion"];
+                        document.getElementById("guardar").disabled = false;
+                        var latlng = new google.maps.LatLng(data["latitud"], data["longitud"]);
+                        marker = new google.maps.Marker({
+                            position: latlng,
+                            map: map
+                        });
+                        map.panTo(latlng);
+                    },
+                    error: function (jqXHR, textStatus, errorThrown){
+                        alert("No se pudo obtener la posicion, intente más tarde");
+                        regresarPerfil();
+                    }
+                });
+            }
+            var base64 = "null";
+            function encodeImageFileAsURL(element) {
+                var file = element.files[0];
+                var reader = new FileReader();
+                reader.onloadend = function() {
+                    base64 = reader.result;
+                };
+                reader.readAsDataURL(file);
+            }
             var marker = 0;
+            var map;
             function initMap(){
                 var uluru = {lat: -25.363, lng: 131.044};
-                var map = new google.maps.Map(document.getElementById("mapa"), {
+                map = new google.maps.Map(document.getElementById("mapa"), {
                     zoom: 4,
                     center: uluru
                 });
@@ -145,23 +228,29 @@
                 }
             }
             function fechaValida(fechaNacimiento){
-                var valida;
+                var valida = false;
                 var fechaActual = new Date();
                 var mes = obtenerMes(fechaActual);
                 var dia = obtenerDia(fechaActual);
-                var momentoActual = moment(fechaActual.getFullYear() + "-" + mes + "-" + dia);
-                var momentoUsuario = moment(fechaNacimiento);
-                if (momentoActual.diff(momentoUsuario, "years") >= 18){
-                    valida = true;
-                }else{
-                    valida = false;
-                }
+                try{
+                    var momentoActual = moment(fechaActual.getFullYear() + "-" + mes + "-" + dia);
+                    var momentoUsuario = moment(fechaNacimiento);
+                    if (momentoActual.diff(momentoUsuario, "years") >= 18){
+                        valida = true;
+                    }
+                }catch(e){
+                    console.log(e);
+                    var anoNacimiento = obtenerAno(fechaNacimiento);
+                    var anoActual = fechaActual.getFullYear();
+                    if (anoActual - anoNacimiento >= 18){
+                        valida = true;
+                    }
+                } 
                 return valida;
             }
             function validarCampos(){
                 var nombre = $("#nombre").val().trim();
                 var correo = $("#correo").val().trim();
-                var apellido = $("#apellido").val().trim();
                 var telefono = $("#telefono").val().trim();
                 var direccion = $("#direccion").val().trim();
                 var usuario = $("#usuario").val().trim();
@@ -172,8 +261,6 @@
                     alert("Ingresa tu nombre");
                 }else if (correo === ""){
                     alert("Ingresa tu correo");
-                }else if (apellido === ""){
-                    alert("Ingresa tu apellido");
                 }else if (telefono === ""){
                     alert("Ingresa tu telefono");
                 }else if (direccion === ""){
@@ -194,45 +281,92 @@
                 else if (marker === 0){
                     alert("Selecciona tu ubicación");
                 }else{
-                    registrarUsuario(nombre, apellido, correo, telefono, direccion, fechaNacimiento, usuario, contrasena);
+                    document.getElementById("guardar").disabled = true;
+                    editarUsuario(nombre, correo, telefono, direccion, fechaNacimiento, usuario, contrasena);
                 }
             }
-            function regresarInicio(){
-                document.location = "index.html";
+            function regresarPerfil(){
+                document.location = "perfilSolicitante.html?id=" + id;
             }
-            function registrarUsuario(nombre, apellido, correo, telefono, direccion, fechaNacimiento, usuario, contrasena){
+            function editarUsuario(nombre, correo, telefono, direccion, fechaNacimiento, usuario, contrasena){
                 document.getElementById("cancelar").disabled = true;
-                data = {"idUsuario": 0, "nombreUsuario": usuario, "contrasena": contrasena};
+                var dataU = {"idUsuario": idUsuario, "nombreUsuario": usuario, "contrasena": contrasena};
                 $.ajax({
                     url: 'http://localhost:8080/ServiciosWorkbook/webresources/SWUsuario',
-                    type: 'POST',
+                    type: 'PUT',
+                    data: JSON.stringify(dataU),
+                    cache: false,
+                    dataType: 'json',
+                    processData: false,
+                    contentType: 'application/json',
+                    success: function (data, textStatus, jqXHR){
+                        editarSolicitante(nombre, correo, telefono, direccion, fechaNacimiento, dataU);
+                    },
+                    error: function(jqXHR, textStatus, errorThrown){
+                        document.getElementById("editar").disabled = false;
+                        alert("Lo sentimos, ocurrió un error en la actualización, intente de nuevo más tarde");
+                    }
+                });
+            }
+            function editarSolicitante(nombre, correo, telefono, direccion, fechaNacimiento, usuario){
+                var genero = $("#genero").val();
+                var data = {"idSolicitante": id, "nombreSolicitante": nombre, "correoSolicitante": correo, "telefonoSolicitante": telefono, "direccionSolicitante": direccion, "fechaNacimiento": fechaNacimiento + "T00:00:00-06:00", "idUsuario": usuario, "tipo": 0, "generoSolicitante": genero};
+                $.ajax({
+                    url: 'http://localhost:8080/ServiciosWorkbook/webresources/SWSolicitante/',
+                    type: 'PUT',
                     data: JSON.stringify(data),
                     cache: false,
                     dataType: 'json',
                     processData: false,
                     contentType: 'application/json',
                     success: function (data, textStatus, jqXHR){
-                        registrarSolicitante(nombre, apellido, correo, telefono, direccion, fechaNacimiento, data);
+                        editarPosicion();
+                    },
+                    error: function(jqXHR, textStatus, errorThrown){
+                        alert("Lo sentimos, ocurrió un error en la actualización, intente de nuevo más tarde");
+                    }
+                });
+            }
+            function editarPosicion(){
+                var lat = marker.getPosition().lat();
+                var len = marker.getPosition().lng();
+                data = {"idPosicion": idPosicion, "tipo": 0, "idTipo": id, "longitud": len, "latitud": lat};
+                $.ajax({
+                    url: 'http://localhost:8080/ServiciosWorkbook/webresources/SWPosicion/',
+                    type: 'PUT',
+                    data: JSON.stringify(data),
+                    cache: false,
+                    dataType: 'json',
+                    processData: false,
+                    contentType: 'application/json',
+                    success: function (data, textStatus, jqXHR){
+                        if (base64 !== "null"){
+                            var value = document.getElementById("foto").value;
+                            if (value.substring(value.length - 3, value.length) === "jpg"){
+                                subirFoto(id);
+                            }else{
+                                alert("La foto debe ser jpg");
+                            }
+                        }
+                        alert("La cuenta se actualizó exitosamente");
+                        regresarPerfil();
                     },
                     error: function(jqXHR, textStatus, errorThrown){
                         alert("Lo sentimos, ocurrió un error en el registro, intente de nuevo más tarde");
                     }
                 });
             }
-            function registrarSolicitante(nombre, apellido, correo, telefono, direccion, fechaNacimiento, usuario){
-                var genero = $("#genero").val();
-                data = {"idSolicitante": 0, "nombreSolicitante": nombre + " " + apellido, "correoSolicitante": correo, "telefonoSolicitante": telefono, "direccionSolicitante": direccion, "fechaNacimiento": fechaNacimiento + "T00:00:00-06:00", "idUsuario": usuario, "tipo": 0, "generoSolicitante": genero};
+            function subirFoto(idSolicitante){
                 $.ajax({
-                    url: 'http://localhost:8080/ServiciosWorkbook/webresources/SWSolicitante/',
+                    url: 'http://localhost:8080/ServiciosWorkbook/webresources/SWSolicitante/imagen/' + idSolicitante,
                     type: 'POST',
-                    data: JSON.stringify(data),
+                    data: base64,
                     cache: false,
                     dataType: 'json',
                     processData: false,
-                    contentType: 'application/json',
+                    contentType: 'text/plain',
                     success: function (data, textStatus, jqXHR){
-                        alert("La cuenta se registro exitosamente");
-                        regresarInicio();
+                        alert("La imagen se guardó exitosamente");
                     },
                     error: function(jqXHR, textStatus, errorThrown){
                         alert("Lo sentimos, ocurrió un error en el registro, intente de nuevo más tarde");
