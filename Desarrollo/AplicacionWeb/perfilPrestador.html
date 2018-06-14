@@ -1,13 +1,178 @@
 <!DOCTYPE html>
 
-<html>
-    <head>
+<head>
         <title>Mi perfil</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="icon" type="image/png" href="Fotos/workbook_logo.png"/>
+        <link href="css/bootstrap.min.css" rel="stylesheet"/>
+        <link href="css/Generales.css" rel="stylesheet"/>
+        <script src="js/jquery-3.3.1.min.js"></script>
+        <script src="js/bootstrap.min.js"></script>
+        <script src="js/Parametros.js"></script>
+        <script src="js/Util.js"></script>
+        <script src="http://momentjs.com/downloads/moment.min.js"></script>
     </head>
     <body>
-        <div>TODO write content</div>
+        <div id="panelCentral" style="padding: 10px 10px 10px 10px;">
+            <div id="datosBasicos">
+                <img id="imagenPerfil" width="60" height="60" alt="" src="Fotos/person.png" class="usuario_principal"/>
+                <label id="nombrePrestador" style="font-size: 30px; vertical-align: bottom"></label>
+                <select id ="estado" class="form-control-sm" style="vertical-align: middle" onchange="establecerEstado(this.value);">
+                    <option value="1">Activo</option>
+                    <option value="0">Inactivo</option>
+                </select>
+                <img id="imagenEditar" width="30" height="30" alt="" src="Fotos/pencil.png" style="right: 10px; position: absolute; top: 25px" onclick="editarCuenta();"/>
+            </div>
+            <div id="datosGenerales">
+                <DL>
+                    <DD id="edad">Edad</DD>
+                    <DD id="direccion">Dirección</DD>
+                    <DD id="estudios">Estudios</DD>
+                    <DD id="descripcion">Descripción</DD>
+                </DL>
+            </div>
+            <div>
+                <label class="encabezado">Trabajos realizados &nbsp;</label>
+                <label id="estrellas" style="color: #00BFFF; font-size: 40px">0</label>
+                <img id="imagenEstrellas" width="30" height="30" alt="" src="Fotos/star_empty.png" style="vertical-align: middle; margin-bottom: 18px"/>
+            </div>
+            <div id="panelSolicitudes"></div>
+        </div>
+        <script>
+            var id;
+            $(document).ready(function validarParametro(){
+                var parametro = obtenerUnico(document.location.href);
+                if (parametro !== ""){
+                    id = parametro;
+                    obtenerPrestador(parametro);
+                    obtenerEstudios(parametro);
+                    obtenerPromedio(parametro);
+                    obtenerSolicitudes(parametro);
+                }else{
+                    alert("La página no fue invocada correctamente");
+                }
+            });
+            function obtenerPrestador(idPrestador){
+                $.ajax({
+                    url: 'http://localhost:8080/ServiciosWorkbook/webresources/SWPrestador/obtener/' + idPrestador,
+                    type: 'GET',
+                    cache: false,
+                    dataType: 'json',
+                    provessData: false,
+                    contentType: false,
+                    success: function (data, textStatus, jqXHR){
+                        var imagen = document.getElementById("imagenPerfil");
+                        imagen.src = "http://localhost:8080/ServiciosWorkbook/Fotos/Prestadores/" + idPrestador + ".jpg";
+                        imagen.onerror = function(){
+                            imagen.src = "Fotos/person.png";
+                        };
+                        document.getElementById("nombrePrestador").innerHTML = data["nombrePrestador"];
+                        var fechaActual = new Date();
+                        var mes = obtenerMes(fechaActual);
+                        var dia = obtenerDia(fechaActual);
+                        var fechaFinal = data["fechaNacimiento"].substring(0, 10);
+                        try{
+                            var cadActual = moment(fechaActual.getFullYear() + "-" + mes + "-" + dia);
+                            var fechaSolicitante = moment(fechaFinal);
+                            fechaFinal = cadActual.diff(fechaSolicitante, "years") + " años";
+                        }catch(e){
+                            console.log(e);
+                        }
+                        document.getElementById("edad").innerHTML = fechaFinal;
+                        document.getElementById("direccion").innerHTML = data["direccionPrestador"];
+                        document.getElementById("descripcion").innerHTML = data["descripcionPrestador"];
+                        document.getElementById("estado").value = data["estado"];
+                    },
+                    error: function (jqXHR, textStatus, errorThrown){
+                        alert("No se pudo obtener el usuario, intente más tarde");
+                    }
+                });
+            }
+            function obtenerEstudios(idPrestador){
+                $.ajax({
+                    url: 'http://localhost:8080/ServiciosWorkbook/webresources/SWEstudio/' + idPrestador,
+                    type: 'GET',
+                    cache: false,
+                    dataType: 'json',
+                    provessData: false,
+                    contentType: false,
+                    success: function (data, textStatus, jqXHR){
+                        $.each(data, function (i, estudio){
+                            var label = document.getElementById("estudios");
+                            label.innerHTML = label.innerHTML + " | " + estudio["estudio"];
+                        });
+                    },
+                    error: function (jqXHR, textStatus, errorThrown){
+                        alert("No se pudo obtener el usuario, intente más tarde");
+                    }
+                });
+            }
+            function obtenerPromedio(idPrestador){
+                $.ajax({
+                    url: 'http://localhost:8080/ServiciosWorkbook/webresources/SWPrestador/promedioPuntuaciones/' + idPrestador,
+                    type: 'GET',
+                    cache: false,
+                    dataType: 'json',
+                    provessData: false,
+                    contentType: false,
+                    success: function (data, textStatus, jqXHR){
+                        document.getElementById("estrellas").innerHTML = data;
+                        var rutaIcono = "Fotos/star_fill.png";
+                        if (data === -1){
+                            rutaIcono = "Fotos/star_empty.png";
+                        }
+                        document.getElementById("imagenEstrellas").src = rutaIcono;
+                    },
+                    error: function (jqXHR, textStatus, errorThrown){
+                        alert("No se pudo obtener el usuario, intente más tarde");
+                    }
+                });
+            }
+            function obtenerSolicitudes(idPrestador){
+                $.ajax({
+                    url: 'http://localhost:8080/ServiciosWorkbook/webresources/SWSolicitud/terminadas/prestador/' + idPrestador,
+                    type: 'GET',
+                    cache: false,
+                    dataType: 'json',
+                    provessData: false,
+                    contentType: false,
+                    success: function (data, textStatus, jqXHR){
+                        $.each(data, function(i, solicitud){
+                            var solicitante = solicitud["idSolicitante"];
+                            $cadHTML = "<div style=\"background-color: #E6E6E6; padding: 5px 5px 5px 5px\">";
+                            $cadHTML += "<img width=\"40\" height=\"40\" alt=\"\" src=\"http://localhost:8080/ServiciosWorkbook/Fotos/Solicitantes/" + solicitante["idSolicitante"] + ".jpg" + "\" class=\"usuario_secundario\" style=\"vertical-align: middle\"/>";
+                            $cadHTML += "<label>&nbsp &nbsp" + solicitante["nombreSolicitante"] + "&nbsp &nbsp</label>";
+                            $cadHTML += "<label>&nbsp &nbsp" + solicitud["descripcion"] + "&nbsp &nbsp</label>";
+                            $cadHTML += "<label style=\"float: right\">" + solicitud["fechaRealizacion"].substring(0, 10) + "</label></div><br/>";
+                            $("#panelSolicitudes").append($cadHTML);
+                        });
+                    },
+                    error: function (jqXHR, textStatus, errorThrown){
+                        alert("No se pudieron obbtener las solicitudes, intente más tarde");
+                    }
+                });
+            }
+            function establecerEstado(estado){
+                var estadoEnviar = "true";
+                if (estado === "0"){
+                    estadoEnviar = "false";
+                }
+                $.ajax({
+                    url: 'http://localhost:8080/ServiciosWorkbook/webresources/SWPrestador/estado/' + id + "/" + estadoEnviar,
+                    type: 'PUT',
+                    cache: false,
+                    dataType: 'json',
+                    provessData: false,
+                    contentType: false,
+                    success: function (data, textStatus, jqXHR){
+                        console.log("success");
+                    },
+                    error: function (jqXHR, textStatus, errorThrown){
+                        console.log("error");
+                    }
+                });
+            }
+        </script>
     </body>
 </html>

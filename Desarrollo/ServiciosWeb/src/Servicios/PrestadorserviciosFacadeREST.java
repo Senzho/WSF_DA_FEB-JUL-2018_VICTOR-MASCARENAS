@@ -66,8 +66,8 @@ public class PrestadorserviciosFacadeREST extends AbstractFacade<Prestadorservic
         super.remove(super.find(id));
     }
     @GET
-    @Path("{id}")
-    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    @Path("/obtener/{id}")
+    @Produces({MediaType.APPLICATION_JSON})
     public Prestadorservicios find(@PathParam("id") Integer id) {
         return super.find(id);
     }

@@ -87,13 +87,13 @@
                     provessData: false,
                     contentType: false,
                     success: function (data, textStatus, jqXHR){
-                        alert("La petición fue cancelada");
-                        obtenerPeticionesEnviadas(id);
+                        console.log("success");
                     },
                     error: function (jqXHR, textStatus, errorThrown){
-                        alert("La petición no fue cancelada: " + textStatus);
+                        console.log("error" + textStatus);
                     }
                 });
+                obtenerPeticionesEnviadas(id);
             }
         </script>
     </body>
