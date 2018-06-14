@@ -21,6 +21,22 @@
             <label class="encabezado">Mis peticiones</label>
             <div id="panelSolicitudes"></div>
         </div>
+        <div class="modal" tabindex="-1" role="dialog" id="dialogoConfirmacion">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title">¿Estás seguro de eliminar tu petición?</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary btn-sm" data-dismiss="modal" onclick="cancelarPeticion();">Si</button>
+                    <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal" onclick="">No</button>
+                </div>
+              </div>
+            </div>
+        </div>
         <script>
             var id;
             $(document).ready(function(){
@@ -62,7 +78,7 @@
                             }
                             $cadHTML += "<label style=\"vertical-align: middle\">" + estadoCadena + "</label>";
                             if (estado ===0){
-                                $cadHTML += "<img width=\"30\" height=\"30\" alt=\"\" src=\"Fotos/x.png\" style=\"vertical-align: middle\" onclick=\"cancelarPeticion(" + solicitud["idSolicitud"] + ");\"/></div>";
+                                $cadHTML += "<img width=\"30\" height=\"30\" alt=\"\" src=\"Fotos/x.png\" style=\"vertical-align: middle\" onclick=\"mostrarConfirmacion(" + solicitud["idSolicitud"] + ");\"/></div>";
                             }else{
                                 $cadHTML += "</div>";
                             }
@@ -78,7 +94,7 @@
             function regresarPerfil(){
                 document.location = "perfilSolicitante.html?id=" + id;
             }
-            function cancelarPeticion(idSolicitud){
+            function cancelarPeticion(){
                 $.ajax({
                     url: 'http://localhost:8080/ServiciosWorkbook/webresources/SWSolicitud/denegar/' + idSolicitud,
                     type: 'PUT',
@@ -93,7 +109,12 @@
                         console.log("error" + textStatus);
                     }
                 });
-                obtenerPeticionesEnviadas(id);
+                document.location = "consultarPeticiones.html?id=" + id;
+            }
+            var idSolicitud;
+            function mostrarConfirmacion(id){
+                idSolicitud = id;
+                $("#dialogoConfirmacion").modal("show");
             }
         </script>
     </body>

@@ -117,7 +117,12 @@
                     provessData: false,
                     contentType: false,
                     success: function (data, textStatus, jqXHR){
-                        document.getElementById("estrellas").innerHTML = data;
+                        var label = document.getElementById("estrellas");
+                        if (data === "-1"){
+                            label.innerHTML = 0;
+                        }else{
+                            label.innerHTML = data;
+                        }
                         var rutaIcono = "Fotos/star_fill.png";
                         if (data === -1){
                             rutaIcono = "Fotos/star_empty.png";

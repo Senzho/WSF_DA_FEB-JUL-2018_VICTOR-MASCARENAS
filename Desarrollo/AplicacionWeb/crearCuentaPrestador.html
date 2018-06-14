@@ -23,17 +23,27 @@
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label for="apellido" class="col-md-2 col-form-label">Apellido</label>
-                    <div class="col-lg-10">
-                        <input type="text" class="form-control" id="apellido" placeholder="Ingresa tu apellido">
-                    </div>
-                </div>
-                <div class="form-group row">
                     <label for="genero" class="col-md-2 col-form-label">Género</label>
                     <div class="col-lg-10">
                         <select id="genero" class="form-control">
                             <option value="1">Masculino</option>
                             <option value="0">Femenino</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="categoria" class="col-md-2 col-form-label">Categoría</label>
+                    <div class="col-lg-10">
+                        <select id="categoria" class="form-control">
+                            <option value="1">Carpintería</option>
+                            <option value="2">Software</option>
+                            <option value="3">Repostería</option>
+                            <option value="4">Cocina</option>
+                            <option value="5">Fontanería</option>
+                            <option value="6">Transporte</option>
+                            <option value="7">Construcción</option>
+                            <option value="8">Mecánica</option>
+                            <option value="9">Metalurgia</option>
                         </select>
                     </div>
                 </div>
@@ -53,6 +63,12 @@
                     <label for="direccion" class="col-md-2 col-form-label">Dirección</label>
                     <div class="col-lg-10">
                         <textarea id="direccion" rows="4" cols="30" class="form-control" placeholder="Ingresa tu direccion"></textarea>
+                    </div>
+                </div>
+                <div class="form-group row" style="height: 20%">
+                    <label for="descripcion" class="col-md-2 col-form-label">Descripción</label>
+                    <div class="col-lg-10">
+                        <textarea id="descripcion" rows="4" cols="30" class="form-control" placeholder="Ingresa tu descripción profesional"></textarea>
                     </div>
                 </div>
             </div>
@@ -184,9 +200,9 @@
             function validarCampos(){
                 var nombre = $("#nombre").val().trim();
                 var correo = $("#correo").val().trim();
-                var apellido = $("#apellido").val().trim();
                 var telefono = $("#telefono").val().trim();
                 var direccion = $("#direccion").val().trim();
+                var descripcion = $("#descripcion").val().trim();
                 var usuario = $("#usuario").val().trim();
                 var contrasena = $("#contrasena").val().trim();
                 var confirmacionContrasena = $("#confirmacionContrasena").val().trim();
@@ -195,8 +211,8 @@
                     alert("Ingresa tu nombre");
                 }else if (correo === ""){
                     alert("Ingresa tu correo");
-                }else if (apellido === ""){
-                    alert("Ingresa tu apellido");
+                }else if (descripcion === ""){
+                    alert("Ingresa tu descripción profesional");
                 }else if (telefono === ""){
                     alert("Ingresa tu telefono");
                 }else if (direccion === ""){
@@ -218,13 +234,13 @@
                     alert("Selecciona tu ubicación");
                 }else{
                     document.getElementById("registrar").disabled = true;
-                    registrarUsuario(nombre, apellido, correo, telefono, direccion, fechaNacimiento, usuario, contrasena);
+                    registrarUsuario(nombre, descripcion, correo, telefono, direccion, fechaNacimiento, usuario, contrasena);
                 }
             }
             function regresarInicio(){
                 document.location = "index.html";
             }
-            function registrarUsuario(nombre, apellido, correo, telefono, direccion, fechaNacimiento, usuario, contrasena){
+            function registrarUsuario(nombre, descripcion, correo, telefono, direccion, fechaNacimiento, usuario, contrasena){
                 document.getElementById("cancelar").disabled = true;
                 var data = {"idUsuario": 0, "nombreUsuario": usuario, "contrasena": contrasena};
                 $.ajax({
@@ -236,7 +252,7 @@
                     processData: false,
                     contentType: 'application/json',
                     success: function (data, textStatus, jqXHR){
-                        registrarSolicitante(nombre, apellido, correo, telefono, direccion, fechaNacimiento, data);
+                        registrarPrestador(nombre, descripcion, correo, telefono, direccion, fechaNacimiento, data);
                     },
                     error: function(jqXHR, textStatus, errorThrown){
                         document.getElementById("registrar").disabled = false;
@@ -244,11 +260,12 @@
                     }
                 });
             }
-            function registrarSolicitante(nombre, apellido, correo, telefono, direccion, fechaNacimiento, usuario){
+            function registrarPrestador(nombre, descripcion, correo, telefono, direccion, fechaNacimiento, usuario){
                 var genero = $("#genero").val();
-                var data = {"idSolicitante": 0, "nombreSolicitante": nombre + " " + apellido, "correoSolicitante": correo, "telefonoSolicitante": telefono, "direccionSolicitante": direccion, "fechaNacimiento": fechaNacimiento + "T00:00:00-06:00", "idUsuario": usuario, "tipo": 0, "generoSolicitante": genero};
+                var categoria = $("#categoria").val();
+                var data = {"idPrestador": 0, "nombrePrestador": nombre, "telefonoPrestador": telefono, "correoPrestador": correo, "categoria": categoria, "descripcionPrestador": descripcion, "fechaNacimiento": fechaNacimiento + "T00:00:00-06:00", "idUsuario": usuario, "direccionPrestador": direccion, "generoPrestador": genero, "estado": 0};
                 $.ajax({
-                    url: 'http://localhost:8080/ServiciosWorkbook/webresources/SWSolicitante/',
+                    url: 'http://localhost:8080/ServiciosWorkbook/webresources/SWPrestador/',
                     type: 'POST',
                     data: JSON.stringify(data),
                     cache: false,
@@ -263,10 +280,10 @@
                     }
                 });
             }
-            function registrarPosicion(solicitante){
+            function registrarPosicion(prestador){
                 var lat = marker.getPosition().lat();
                 var len = marker.getPosition().lng();
-                var data = {"idPosicion": 0, "tipo": 0, "idTipo": solicitante["idSolicitante"], "longitud": len, "latitud": lat};
+                var data = {"idPosicion": 0, "tipo": 1, "idTipo": prestador["idPrestador"], "longitud": len, "latitud": lat};
                 $.ajax({
                     url: 'http://localhost:8080/ServiciosWorkbook/webresources/SWPosicion/',
                     type: 'POST',
@@ -279,7 +296,7 @@
                         if (base64 !== "null"){
                             var value = document.getElementById("foto").value;
                             if (value.substring(value.length - 3, value.length) === "jpg"){
-                                subirFoto(solicitante["idSolicitante"]);
+                                subirFoto(prestador["idPrestador"]);
                             }else{
                                 alert("La foto debe ser jpg");
                             }
@@ -292,9 +309,9 @@
                     }
                 });
             }
-            function subirFoto(idSolicitante){
+            function subirFoto(idPrestador){
                 $.ajax({
-                    url: 'http://localhost:8080/ServiciosWorkbook/webresources/SWSolicitante/imagen/' + idSolicitante,
+                    url: 'http://localhost:8080/ServiciosWorkbook/webresources/SWPrestador/imagen/' + idPrestador,
                     type: 'POST',
                     data: base64,
                     cache: false,

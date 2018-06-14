@@ -3,8 +3,12 @@ package Servicios;
 import BL.OperacionesString;
 import Modelo.Prestadorservicios;
 import Modelo.Solicitud;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -18,6 +22,7 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import org.apache.commons.codec.binary.Base64;
 
 @Stateless
 @Path("SWPrestador")
@@ -30,10 +35,28 @@ public class PrestadorserviciosFacadeREST extends AbstractFacade<Prestadorservic
     }
 
     @POST
-    @Override
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public void create(Prestadorservicios entity) {
+    public Prestadorservicios crear(Prestadorservicios entity) {
         super.create(entity);
+        return entity;
+    }
+    @POST
+    @Path("/imagen/{idPrestador}")
+    @Consumes({MediaType.TEXT_PLAIN})
+    public void guardarFoto(String cadenaBase64, @PathParam("idPrestador") Integer idPrestador){
+        String imagen = cadenaBase64.split(",")[1];
+        Base64 decoder = new Base64();
+        byte[] imgBytes = decoder.decode(imagen);
+        FileOutputStream osf;
+        try {
+            String rutaBase = "C:/Users/Victor Javier/Documents/NetBeansProjects/ServiciosWorkbook/web/Fotos/Prestadores/" + idPrestador + ".jpg";
+            osf = new FileOutputStream(rutaBase);
+            osf.write(imgBytes);
+            osf.flush();
+            osf.close();
+        } catch (IOException ex) {
+            Logger.getLogger(SolicitanteFacadeREST.class.getName()).log(Level.SEVERE, null, ex);
+        }   
     }
     @PUT
     @Path("/estado/{idPrestador}/{estado}")
