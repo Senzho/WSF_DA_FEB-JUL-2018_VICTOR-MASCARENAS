@@ -78,9 +78,8 @@ public class PrestadorserviciosFacadeREST extends AbstractFacade<Prestadorservic
         return response;
     }
     @PUT
-    @Path("{id}")
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public void edit(@PathParam("id") Integer id, Prestadorservicios entity) {
+    public void editar(Prestadorservicios entity) {
         super.edit(entity);
     }
     @DELETE

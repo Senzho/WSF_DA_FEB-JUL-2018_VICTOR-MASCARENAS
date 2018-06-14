@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Nueva cuenta</title>
+        <title>Editar mi cuenta</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link href="css/bootstrap.min.css" rel="stylesheet"/>
@@ -11,6 +11,7 @@
         <script src="js/bootstrap.min.js"></script>
         <script src="http://momentjs.com/downloads/moment.min.js"></script>
         <script src="js/Util.js"></script>
+        <script src="js/Parametros.js"></script>
     </head>
     <body>
         <label class="encabezado">Registra una cuenta</label>
@@ -118,14 +119,14 @@
             </div>
             <div style="position: fixed; bottom: 0px; right: 0px; padding: 1em 1em 1em 1em">
                 <button id="cancelar" type="button" class="btn btn-lg btn-secondary" onclick="regresarInicio();">Cancelar</button>
-                <button id="registrar" type="button" class="btn btn-lg btn-primary" onclick="validarCampos();">Registrarme</button>
+                <button id="guardar" type="button" class="btn btn-lg btn-primary" onclick="validarCampos();">Guardar</button>
             </div>
         </form>
         <div class="modal" tabindex="-1" role="dialog" id="dialogoMapa">
             <div class="modal-dialog" role="document">
               <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Muestranos dónde vives</h5>
+                    <h5 class="modal-title">Mi ubicación</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -138,6 +139,98 @@
             </div>
         </div>
         <script>
+            var id;
+            var estadoActual;
+            var idUsuario;
+            var idPosicion;
+            var idEstudio;
+            $(document).ready(function validarParametro(){
+                document.getElementById("guardar").disabled = true;
+                var parametro = obtenerUnico(document.location.href);
+                if (parametro !== ""){
+                    id = parametro;
+                    obtenerPrestador(parametro);
+                    obtenerPosicion(parametro);
+                    obtenerEstudio(parametro);
+                }else{
+                    alert("La página no fue invocada correctamente");
+                }
+            });
+            function obtenerPrestador(idPrestador){
+                $.ajax({
+                    url: 'http://localhost:8080/ServiciosWorkbook/webresources/SWPrestador/obtener/' + idPrestador,
+                    type: 'GET',
+                    cache: false,
+                    dataType: 'json',
+                    provessData: false,
+                    contentType: false,
+                    success: function (data, textStatus, jqXHR){
+                        estadoActual = data["estado"];
+                        document.getElementById("nombre").value = data["nombrePrestador"];
+                        document.getElementById("correo").value = data["correoPrestador"];
+                        document.getElementById("telefono").value = data["telefonoPrestador"];
+                        document.getElementById("direccion").innerHTML = data["direccionPrestador"];
+                        document.getElementById("genero").value = data["generoPrestador"];
+                        document.getElementById("descripcion").innerHTML = data["descripcionPrestador"];
+                        document.getElementById("categoria").value = data["categoria"];
+                        var usuario = data["idUsuario"];
+                        idUsuario = usuario["idUsuario"];
+                        document.getElementById("usuario").value = usuario["nombreUsuario"];
+                        document.getElementById("contrasena").value = usuario["contrasena"];
+                        document.getElementById("confirmacionContrasena").value = usuario["contrasena"];
+                        document.getElementById("fechaNacimiento").value = data["fechaNacimiento"].substring(0, 10);
+                    },
+                    error: function (jqXHR, textStatus, errorThrown){
+                        alert("No se pudo obbtener el usuario, intente más tarde");
+                        regresarPerfil();
+                    }
+                });
+            }
+            function obtenerPosicion(idPrestador){
+                $.ajax({
+                    url: 'http://localhost:8080/ServiciosWorkbook/webresources/SWPosicion/prestador/' + idPrestador,
+                    type: 'GET',
+                    cache: false,
+                    dataType: 'json',
+                    provessData: false,
+                    contentType: false,
+                    success: function (data, textStatus, jqXHR){
+                        idPosicion = data["idPosicion"];
+                        document.getElementById("guardar").disabled = false;
+                        var latlng = new google.maps.LatLng(data["latitud"], data["longitud"]);
+                        marker = new google.maps.Marker({
+                            position: latlng,
+                            map: map
+                        });
+                        map.panTo(latlng);
+                    },
+                    error: function (jqXHR, textStatus, errorThrown){
+                        alert("No se pudo obtener la posicion, intente más tarde");
+                        regresarPerfil();
+                    }
+                });
+            }
+            function obtenerEstudio(idPrestador){
+                $.ajax({
+                    url: 'http://localhost:8080/ServiciosWorkbook/webresources/SWEstudio/' + idPrestador,
+                    type: 'GET',
+                    cache: false,
+                    dataType: 'json',
+                    provessData: false,
+                    contentType: false,
+                    success: function (data, textStatus, jqXHR){
+                        var elemento = document.getElementById("estudio");
+                        $.each(data, function(i, estudio){
+                            idEstudio = estudio["idEstudio"];
+                            elemento.value = elemento.value + estudio["estudio"];
+                        });
+                    },
+                    error: function (jqXHR, textStatus, errorThrown){
+                        alert("No se pudieron obtener los estudios, intente más tarde");
+                        regresarPerfil();
+                    }
+                });
+            }
             var base64 = "null";
             function encodeImageFileAsURL(element) {
                 var file = element.files[0];
@@ -148,9 +241,10 @@
                 reader.readAsDataURL(file);
             }
             var marker = 0;
+            var map;
             function initMap(){
                 var uluru = {lat: -25.363, lng: 131.044};
-                var map = new google.maps.Map(document.getElementById("mapa"), {
+                map = new google.maps.Map(document.getElementById("mapa"), {
                     zoom: 4,
                     center: uluru
                 });
@@ -241,26 +335,26 @@
                 }else if (marker === 0){
                     alert("Selecciona tu ubicación");
                 }else{
-                    document.getElementById("registrar").disabled = true;
-                    registrarUsuario(nombre, descripcion, correo, telefono, direccion, fechaNacimiento, usuario, contrasena, estudio);
+                    document.getElementById("guardar").disabled = true;
+                    editarUsuario(nombre, descripcion, correo, telefono, direccion, fechaNacimiento, usuario, contrasena, estudio);
                 }
             }
-            function regresarInicio(){
-                document.location = "index.html";
+            function regresarPerfil(){
+                document.location = "perfilPrestador.html?id=" + id;
             }
-            function registrarUsuario(nombre, descripcion, correo, telefono, direccion, fechaNacimiento, usuario, contrasena, estudio){
+            function editarUsuario(nombre, descripcion, correo, telefono, direccion, fechaNacimiento, usuario, contrasena, estudio){
                 document.getElementById("cancelar").disabled = true;
-                var data = {"idUsuario": 0, "nombreUsuario": usuario, "contrasena": contrasena};
+                var dataU = {"idUsuario": idUsuario, "nombreUsuario": usuario, "contrasena": contrasena};
                 $.ajax({
                     url: 'http://localhost:8080/ServiciosWorkbook/webresources/SWUsuario',
-                    type: 'POST',
-                    data: JSON.stringify(data),
+                    type: 'PUT',
+                    data: JSON.stringify(dataU),
                     cache: false,
                     dataType: 'json',
                     processData: false,
                     contentType: 'application/json',
                     success: function (data, textStatus, jqXHR){
-                        registrarPrestador(nombre, descripcion, correo, telefono, direccion, fechaNacimiento, data, estudio);
+                        editarPrestador(nombre, descripcion, correo, telefono, direccion, fechaNacimiento, dataU, estudio);
                     },
                     error: function(jqXHR, textStatus, errorThrown){
                         document.getElementById("registrar").disabled = false;
@@ -268,51 +362,51 @@
                     }
                 });
             }
-            function registrarPrestador(nombre, descripcion, correo, telefono, direccion, fechaNacimiento, usuario, estudio){
+            function editarPrestador(nombre, descripcion, correo, telefono, direccion, fechaNacimiento, usuario, estudio){
                 var genero = $("#genero").val();
                 var categoria = $("#categoria").val();
-                var data = {"idPrestador": 0, "nombrePrestador": nombre, "telefonoPrestador": telefono, "correoPrestador": correo, "categoria": categoria, "descripcionPrestador": descripcion, "fechaNacimiento": fechaNacimiento + "T00:00:00-06:00", "idUsuario": usuario, "direccionPrestador": direccion, "generoPrestador": genero, "estado": 0};
+                var dataP = {"idPrestador": id, "nombrePrestador": nombre, "telefonoPrestador": telefono, "correoPrestador": correo, "categoria": categoria, "descripcionPrestador": descripcion, "fechaNacimiento": fechaNacimiento + "T00:00:00-06:00", "idUsuario": usuario, "direccionPrestador": direccion, "generoPrestador": genero, "estado": estadoActual};
                 $.ajax({
                     url: 'http://localhost:8080/ServiciosWorkbook/webresources/SWPrestador/',
-                    type: 'POST',
-                    data: JSON.stringify(data),
+                    type: 'PUT',
+                    data: JSON.stringify(dataP),
                     cache: false,
                     dataType: 'json',
                     processData: false,
                     contentType: 'application/json',
                     success: function (data, textStatus, jqXHR){
-                        registrarPosicion(data, estudio);
+                        editarPosicion(dataP, estudio);
                     },
                     error: function(jqXHR, textStatus, errorThrown){
                         alert("Lo sentimos, ocurrió un error en el registro, intente de nuevo más tarde");
                     }
                 });
             }
-            function registrarPosicion(prestador, estudio){
+            function editarPosicion(prestador, estudio){
                 var lat = marker.getPosition().lat();
                 var len = marker.getPosition().lng();
-                var data = {"idPosicion": 0, "tipo": 1, "idTipo": prestador["idPrestador"], "longitud": len, "latitud": lat};
+                var data = {"idPosicion": idPosicion, "tipo": 1, "idTipo": id, "longitud": len, "latitud": lat};
                 $.ajax({
                     url: 'http://localhost:8080/ServiciosWorkbook/webresources/SWPosicion/',
-                    type: 'POST',
+                    type: 'PUT',
                     data: JSON.stringify(data),
                     cache: false,
                     dataType: 'json',
                     processData: false,
                     contentType: 'application/json',
                     success: function (data, textStatus, jqXHR){
-                        registrarEstudio(prestador, estudio);
+                        editarEstudio(prestador, estudio);
                     },
                     error: function(jqXHR, textStatus, errorThrown){
                         alert("Lo sentimos, ocurrió un error en el registro, intente de nuevo más tarde");
                     }
                 });
             }
-            function registrarEstudio(prestador, estudio){
-                var data = {"idEstudio": 0, "estudio": estudio, "idPrestador": prestador};
+            function editarEstudio(prestador, estudio){
+                var data = {"idEstudio": idEstudio, "estudio": estudio, "idPrestador": prestador};
                 $.ajax({
                     url: 'http://localhost:8080/ServiciosWorkbook/webresources/SWEstudio/',
-                    type: 'POST',
+                    type: 'PUT',
                     data: JSON.stringify(data),
                     cache: false,
                     dataType: 'json',
@@ -328,7 +422,7 @@
                             }
                         }
                         alert("La cuenta se registro exitosamente");
-                        regresarInicio();
+                        regresarPerfil();
                     },
                     error: function(jqXHR, textStatus, errorThrown){
                         alert("Lo sentimos, ocurrió un error en el registro, intente de nuevo más tarde");
