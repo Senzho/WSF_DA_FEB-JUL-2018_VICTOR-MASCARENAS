@@ -37,6 +37,28 @@
               </div>
             </div>
         </div>
+        <div class="modal" tabindex="-1" role="dialog" id="dialogoSolicitud">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title">Petición aceptada</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                    <div>
+                        <img id="imagenPrestador" width="40" height="40" alt="" src="" class="usuario_secundario" style="vertical-align: middle"/>
+                        <label id="nombrePrestador"></label>
+                    </div>
+                    <label id="respuesta"></label>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary btn-sm" data-dismiss="modal">Aceptar</button>
+                </div>
+              </div>
+            </div>
+        </div>
         <script>
             var id;
             $(document).ready(function(){
@@ -65,7 +87,7 @@
                             $cadHTML = "<div style=\"background-color: #E6E6E6; padding: 5px 5px 5px 5px\">";
                             $cadHTML += "<img width=\"40\" height=\"40\" alt=\"\" src=\"http://localhost:8080/ServiciosWorkbook/Fotos/Prestadores/" + prestador["idPrestador"] + ".jpg" + "\" class=\"usuario_secundario\" style=\"vertical-align: middle\"/>";
                             $cadHTML += "<label>&nbsp &nbsp" + obtenerCategoria(prestador["categoria"]) + "&nbsp &nbsp</label>";
-                            $cadHTML += "<label>&nbsp &nbsp" + prestador["nombrePrestador"] + "&nbsp &nbsp</label>";
+                            $cadHTML += "<label onclick=\"mostrarVisualizacion(" + solicitud["idSolicitud"] + ");\">&nbsp &nbsp" + prestador["nombrePrestador"] + "&nbsp &nbsp</label>";
                             $cadHTML += "<div style=\"float: right\"><label>" + solicitud["fechaInicial"].substring(0, 10) + "&nbsp &nbsp</label>";
                             var estado = solicitud["estado"];
                             var estadoCadena;
@@ -88,6 +110,26 @@
                     },
                     error: function (jqXHR, textStatus, errorThrown){
                         alert("No se pudieron obtener las solicitudes, intente más tarde");
+                    }
+                });
+            }
+            function obtenerSolicitud(){
+                $.ajax({
+                    url: 'http://localhost:8080/ServiciosWorkbook/webresources/SWSolicitud/' + idSolicitud,
+                    type: 'GET',
+                    cache: false,
+                    dataType: 'json',
+                    provessData: false,
+                    contentType: false,
+                    success: function (data, textStatus, jqXHR){
+                        var prestador = data["idPrestador"];
+                        document.getElementById("imagenPrestador").src = "http://localhost:8080/ServiciosWorkbook/Fotos/Prestadores/" + prestador["idPrestador"] + ".jpg";
+                        document.getElementById("nombrePrestador").innerHTML = prestador["nombrePrestador"];
+                        document.getElementById("respuesta").innerHTML = data["respuesta"];
+                        $("#dialogoSolicitud").modal("show");
+                    },
+                    error: function (jqXHR, textStatus, errorThrown){
+                        alert("Ocurrió un error al obtener la solicitud, intente de nuevo más tarde");
                     }
                 });
             }
@@ -115,6 +157,10 @@
             function mostrarConfirmacion(id){
                 idSolicitud = id;
                 $("#dialogoConfirmacion").modal("show");
+            }
+            function mostrarVisualizacion(id){
+                idSolicitud = id;
+                obtenerSolicitud();
             }
         </script>
     </body>

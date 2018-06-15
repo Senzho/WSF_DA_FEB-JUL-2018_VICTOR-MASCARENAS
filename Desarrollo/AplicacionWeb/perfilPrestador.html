@@ -118,7 +118,7 @@
                     contentType: false,
                     success: function (data, textStatus, jqXHR){
                         var label = document.getElementById("estrellas");
-                        if (data === "-1"){
+                        if (data === -1){
                             label.innerHTML = 0;
                         }else{
                             label.innerHTML = data;
